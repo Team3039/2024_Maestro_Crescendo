@@ -4,15 +4,13 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -54,15 +52,12 @@ public class Elevator extends SubsystemBase {
 			Constants.Elevator.ELEVATOR_KI,
 			Constants.Elevator.ELEVATOR_KD);
 
-	@SuppressWarnings("removal")
-	SparkMaxLimitSwitch forwardLimit = elevator.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
-	@SuppressWarnings("removal")
-	SparkMaxLimitSwitch ReverseLimit = elevator.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+	SparkLimitSwitch forwardLimit = elevator.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
+	SparkLimitSwitch ReverseLimit = elevator.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
 
 	// neo rotations
 	public static double setpointElevator = 0;
 
-	@SuppressWarnings("removal")
 	public Elevator() {
 		forwardLimit.enableLimitSwitch(false);
 		ReverseLimit.enableLimitSwitch(false);
