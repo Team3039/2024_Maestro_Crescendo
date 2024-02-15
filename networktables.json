@@ -1,0 +1,10 @@
+[
+  {
+    "name": "/SmartDashboard/Auto Selector",
+    "type": "string",
+    "value": "Select Autonomous ...",
+    "properties": {
+      "persistent": true
+    }
+  }
+]
