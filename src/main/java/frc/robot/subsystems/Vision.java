@@ -12,6 +12,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,44 +20,42 @@ public class Vision extends SubsystemBase {
 
   public enum VisionState {
     DRIVING,
-    INTAKING
+    INTAKING,
+    SHOOTING
   }
 
   VisionState visionState = VisionState.DRIVING;
-
-   public PhotonCamera intakeCamera = new PhotonCamera("IntakeCamera");
+   
    public PhotonCamera shootCamera = new PhotonCamera("ShootCamera");
-   public PhotonCamera driveCamera = new PhotonCamera("DriveCamera");
+   public PhotonCamera intakeCamera = new PhotonCamera("IntakeCamera");
 
    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
 
-   PhotonPoseEstimator photonPoseEstimatorA = new PhotonPoseEstimator(aprilTagFieldLayout,
-      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+   PhotonPoseEstimator photonPoseEstimatorshoot = new PhotonPoseEstimator(aprilTagFieldLayout,
+      PoseStrategy.AVERAGE_BEST_TARGETS,
       shootCamera,
       Constants.Vision.shootCameraToRobot);
 
-    PhotonPoseEstimator photonPoseEstimatorB = new PhotonPoseEstimator(aprilTagFieldLayout,
-      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+    PhotonPoseEstimator photonPoseEstimatorIntake = new PhotonPoseEstimator(aprilTagFieldLayout,
+      PoseStrategy.AVERAGE_BEST_TARGETS,
       intakeCamera,
       Constants.Vision.intakeCameraToRobot);
 
 
 
 
-  public PhotonPipelineResult resultA;
-  public PhotonPipelineResult resultB;
+  public PhotonPipelineResult resultShoot;
+  public PhotonPipelineResult resultIntake;
 
-  public PhotonTrackedTarget targetA;
-  public PhotonTrackedTarget targetB;
+  public PhotonTrackedTarget targetShoot;
+  public PhotonTrackedTarget targetIntake;
 
 
   /** Creates a new Vision. */
   public Vision() {
-    driveCamera.setDriverMode(true);
     shootCamera.setDriverMode(true);
     intakeCamera.setDriverMode(true);
-
     setState(VisionState.DRIVING);
   }
 
@@ -67,23 +66,20 @@ public VisionState getState() {
   public void setState(VisionState state) {
     visionState = state;
   }
-  public void getCameraResult() {
-    resultA = shootCamera.getLatestResult();
-    if(intakeCamera.getPipelineIndex() == 1){
-      resultB = intakeCamera.getLatestResult();
-    }
+  public void getCameraResult(PhotonCamera camera, PhotonPipelineResult result) {
+    result = camera.getLatestResult();
   }
   public void recieveShootTarget() {
-    if (resultA != null) {
-      if (resultA.hasTargets()) {
-        targetA = resultA.getBestTarget();
+    if (resultShoot != null) {
+      if (resultShoot.hasTargets()) {
+        targetShoot = resultShoot.getBestTarget();
       }
     }
   }
   public void recieveIntakeTarget() {
-    if (resultB != null) {
-      if (resultB.hasTargets()) {
-        targetB = resultB.getBestTarget();
+    if (resultIntake != null) {
+      if (resultIntake.hasTargets()) {
+        targetIntake = resultIntake.getBestTarget();
       }
     }
   }
@@ -91,10 +87,9 @@ public VisionState getState() {
   /** @return The X (forward/back) distance from the target */
   public double getX() {
     if (visionState.equals(VisionState.DRIVING)) {
-      if (resultA.hasTargets() && resultB.hasTargets()) {
-        return (targetA.getBestCameraToTarget().getX() + targetB.getBestCameraToTarget().getX())/2;
+      if (resultShoot.hasTargets() && resultIntake.hasTargets() != true) {
+        return (targetShoot.getBestCameraToTarget().getX() + targetIntake.getBestCameraToTarget().getX())/2;
       }
-      
     }
     return 0;
   }
@@ -103,21 +98,44 @@ public VisionState getState() {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.out.println(intakeCamera.getPipelineIndex());
+    System.out.println(intakeCamera.getName());
+    System.out.println(intakeCamera.getDriverMode());
+    System.out.println(intakeCamera.getLatestResult().hasTargets());
+
+    System.out.println(shootCamera.getPipelineIndex());
+    System.out.println(shootCamera.getName());
+    System.out.println(shootCamera.getDriverMode());
+    System.out.println(shootCamera.getLatestResult().hasTargets());
+
     switch (visionState) {
+
       case DRIVING:
         shootCamera.setDriverMode(false);
-        driveCamera.setDriverMode(true);
         intakeCamera.setDriverMode(true);
+        getCameraResult(shootCamera, resultShoot);
+        recieveShootTarget();
         break;
+
       case INTAKING:
        shootCamera.setDriverMode(true);
-       driveCamera.setDriverMode(true);
-        getCameraResult();
+        getCameraResult(shootCamera, resultShoot);
+        getCameraResult(intakeCamera, resultIntake);
+        intakeCamera.setPipelineIndex(1);
         recieveShootTarget();
         recieveIntakeTarget();
-        if (resultA.hasTargets()) {
-          
+        if (resultIntake.hasTargets()) {
         }
+        break;
+
+      case SHOOTING:
+      shootCamera.setDriverMode(false);
+      intakeCamera.setDriverMode(false);
+      intakeCamera.setPipelineIndex(0);
+      recieveShootTarget();
+      recieveIntakeTarget();
+        break;
+
     }
   }
 }

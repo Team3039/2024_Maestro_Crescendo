@@ -29,7 +29,6 @@ public class SetElevatorPercent extends Command {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.elevator.setElevatorOpenLoop(0);
-
   }
 
   // Returns true when the command should end.
