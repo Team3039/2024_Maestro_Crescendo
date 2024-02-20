@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -12,9 +13,12 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase {
 
@@ -32,7 +36,7 @@ public class Vision extends SubsystemBase {
    AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
 
-   PhotonPoseEstimator photonPoseEstimatorshoot = new PhotonPoseEstimator(aprilTagFieldLayout,
+   public PhotonPoseEstimator photonPoseEstimatorshoot = new PhotonPoseEstimator(aprilTagFieldLayout,
       PoseStrategy.AVERAGE_BEST_TARGETS,
       shootCamera,
       Constants.Vision.shootCameraToRobot);
@@ -42,7 +46,10 @@ public class Vision extends SubsystemBase {
       intakeCamera,
       Constants.Vision.intakeCameraToRobot);
 
-
+    // public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    //     photonPoseEstimatorIntake.setReferencePose(prevEstimatedRobotPose);
+    //     return photonPoseEstimatorIntake.update();
+    // }
 
 
   public PhotonPipelineResult resultShoot;
@@ -57,6 +64,7 @@ public class Vision extends SubsystemBase {
     shootCamera.setDriverMode(true);
     intakeCamera.setDriverMode(true);
     setState(VisionState.DRIVING);
+    shootCamera.setPipelineIndex(1);
   }
 
 public VisionState getState() {
@@ -121,7 +129,7 @@ public VisionState getState() {
        shootCamera.setDriverMode(true);
         getCameraResult(shootCamera, resultShoot);
         getCameraResult(intakeCamera, resultIntake);
-        intakeCamera.setPipelineIndex(1);
+        intakeCamera.setPipelineIndex(2);
         recieveShootTarget();
         recieveIntakeTarget();
         if (resultIntake.hasTargets()) {
@@ -131,7 +139,7 @@ public VisionState getState() {
       case SHOOTING:
       shootCamera.setDriverMode(false);
       intakeCamera.setDriverMode(false);
-      intakeCamera.setPipelineIndex(0);
+      intakeCamera.setPipelineIndex(1);
       recieveShootTarget();
       recieveIntakeTarget();
         break;

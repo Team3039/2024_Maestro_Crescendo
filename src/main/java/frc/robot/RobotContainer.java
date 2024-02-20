@@ -17,19 +17,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 
 public class RobotContainer {
-  private double MaxSpeed = 3; // 6 meters per second desired top speed
-  private double MaxAngularRate = .75 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
+  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static CommandPS4Controller driverPad = new CommandPS4Controller(0); // My joystick
   public  static CommandPS4Controller operatorPad = new CommandPS4Controller(0); // My joystick
 
-  public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public final  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public static final Elevator elevator = new Elevator();
   public static final Intake intake = new Intake();
   public static final Vision vision = new Vision();
@@ -40,6 +41,10 @@ public class RobotContainer {
 
  
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+
+   /* Path follower */
+   private Command runAuto = drivetrain.getAutoPath("test run");
+
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   private void configureBindings() {
@@ -66,6 +71,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return runAuto;
+
   }
 }
