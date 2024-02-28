@@ -4,50 +4,96 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
+import com.fasterxml.jackson.databind.util.Named;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain.SwerveDriveState;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import frc.robot.commands.ActuateIntake;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.autos.PPTrajectoryGenerator;
+// import frc.robot.commands.ActuateIntake;
+import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Vision;
+// import frc.robot.subsystems.Indexer;
+// import frc.robot.subsystems.Elevator;
+// import frc.robot.subsystems.Intake;
+// import frc.robot.subsystems.Vision;
+// import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-  private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
-  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private static double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
+  private static double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
-  /* Setting up bindings for necessary control of the swerve drive platform */
-  public static CommandPS4Controller driverPad = new CommandPS4Controller(0); // My joystick
-  public  static CommandPS4Controller operatorPad = new CommandPS4Controller(0); // My joystick
-
-  public final  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  public static final Elevator elevator = new Elevator();
-  public static final Intake intake = new Intake();
-  public static final Vision vision = new Vision();
-
-  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  public static final  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  // public static final Elevator elevator = new Elevator();
+  // public static final Intake intake = new Intake();
+  // public static final Vision vision = new Vision();
+  // public static final Indexer indexer = new Indexer();
+  // public static final Shooter shooter = new Shooter();
+  private static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
+      
+  
+  /* Setting up bindings for necessary control of the swerve drive platform */
+  public static final InterpolatedPS4Gamepad driverPad = new InterpolatedPS4Gamepad(0); // My joystick
+  public static final InterpolatedPS4Gamepad operatorPad = new InterpolatedPS4Gamepad(1); // My joystick
 
- 
+    /* Driver Buttons */
+    private final JoystickButton driverX = new JoystickButton(driverPad, PS4Controller.Button.kCross.value);
+    private final JoystickButton driverSquare = new JoystickButton(driverPad, PS4Controller.Button.kSquare.value);
+    private final JoystickButton driverTriangle = new JoystickButton(driverPad, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton driverCircle = new JoystickButton(driverPad, PS4Controller.Button.kCircle.value);
+  
+    private final JoystickButton driverL1 = new JoystickButton(driverPad, PS4Controller.Button.kL1.value);
+    private final JoystickButton driverR1 = new JoystickButton(driverPad, PS4Controller.Button.kR1.value);
+    private final JoystickButton driverL2 = new JoystickButton(driverPad, PS4Controller.Button.kL2.value);
+    private final JoystickButton driverR2 = new JoystickButton(driverPad, PS4Controller.Button.kR2.value);
+    private final JoystickButton driverL3 = new JoystickButton(driverPad, PS4Controller.Button.kL3.value);
+    private final JoystickButton driverR3 = new JoystickButton(driverPad, PS4Controller.Button.kR3.value);
+  
+  
+    private final JoystickButton driverPadButton = new JoystickButton(driverPad, PS4Controller.Button.kTouchpad.value);
+    private final JoystickButton driverStart = new JoystickButton(driverPad, PS4Controller.Button.kPS.value);
+  
+    private final JoystickButton driverShare = new JoystickButton(driverPad, PS4Controller.Button.kShare.value);
+    private final JoystickButton driverOptions = new JoystickButton(driverPad, PS4Controller.Button.kOptions.value);
+
+  
+
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
+
    /* Path follower */
-   private Command runAuto = drivetrain.getAutoPath("test run");
+  private final SendableChooser<Command> autoChooser;
+
+  public Command runAuto = drivetrain.getAutoPath("test");
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   private void configureBindings() {
+
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
@@ -55,23 +101,28 @@ public class RobotContainer {
             .withRotationalRate(-driverPad.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-    driverPad.cross().whileTrue(drivetrain
+    driverX.whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driverPad.getLeftY(), -driverPad.getLeftX()))));
 
-    // reset the field-centric heading on options press
-    driverPad.options().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    // // reset the field-centric heading on options press
+    driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-    driverPad.R2().whileTrue(new ActuateIntake());
-
+    // driverCircle.whileTrue(new ActuateIntake());
     drivetrain.registerTelemetry(logger::telemeterize);
   }
+  
 
+ 
   public RobotContainer() {
+    NamedCommands.registerCommands(PPTrajectoryGenerator.eventMap);
     configureBindings();
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    
+
   }
 
   public Command getAutonomousCommand() {
-    return runAuto;
-
+    return autoChooser.getSelected();
   }
 }
