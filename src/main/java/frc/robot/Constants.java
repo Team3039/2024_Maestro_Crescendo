@@ -66,16 +66,19 @@ public class Constants {
 		public static int Indexer = 0;
 
 	}
-	public static final class Hood {
-		public static final double HOOD_KP = 0.008;
-		public static final double HOOD_KI = 0;
-		public static final double HOOD_KD = 0;
-		public static final double HOOD_KS = 0.025;
-		public static final double HOOD_KG = 0.025;
-		public static final double HOOD_KV = 0;
+	public static final class Wrist {
+		public static final double WRIST_KP = 0.000;
+		public static final double WRIST_KI = 0;
+		public static final double WRIST_KD = 0;
+		public static final double WRIST_KS = 0.000;
+		public static final double WRIST_KG = 0.000;
+		public static final double WRIST_KV = 0;
 
-		public static final double HOOD_GEAR_RATIO = 127.27272727;
-		public static final double HOOD_MAX_VEL = 0;
-		public static final double HOOD_MAX_ACCEL = 0;
+		public static final double WRIST_GEAR_RATIO = 0;
+		public static final float Forward_Limit = 30;
+        public static final float Reverse_Limit = 0;
+		public static final double K_P = 0;
+        public static final double K_I = 0;
+        public static final double K_D = 0;
 	}
 }

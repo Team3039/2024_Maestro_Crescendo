@@ -63,7 +63,7 @@
 //         setWheelSpeed(.6);
 //         break;
 //       case INTAKING:
-//        setWheelSpeed(.6);
+//        setWheelSpeed(.8);
 //         break;
 //     }
 //   }

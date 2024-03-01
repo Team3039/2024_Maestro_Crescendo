@@ -13,6 +13,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
@@ -30,7 +31,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.autos.PPTrajectoryGenerator;
+// import frc.robot.autos.PPTrajectoryGenerator;
 // import frc.robot.commands.ActuateIntake;
 import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
@@ -52,8 +53,10 @@ public class RobotContainer {
   // public static final Indexer indexer = new Indexer();
   // public static final Shooter shooter = new Shooter();
   private static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
+      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
+  // private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric().withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate *0.1).withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
       
   
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -88,7 +91,7 @@ public class RobotContainer {
    /* Path follower */
   private final SendableChooser<Command> autoChooser;
 
-  public Command runAuto = drivetrain.getAutoPath("test");
+  public Command runAuto = drivetrain.getAutoPath("Test");
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
@@ -98,7 +101,8 @@ public class RobotContainer {
         drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-driverPad.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-driverPad.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withRotationalRate(-driverPad.getRightX() * MaxAngularRate
+            ) // Drive counterclockwise with negative X (left)
         ));
 
     driverX.whileTrue(drivetrain
@@ -114,7 +118,7 @@ public class RobotContainer {
 
  
   public RobotContainer() {
-    NamedCommands.registerCommands(PPTrajectoryGenerator.eventMap);
+    // NamedCommands.registerCommands(PPTrajectoryGenerator.eventMap);
     configureBindings();
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -123,6 +127,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
+   return runAuto;
+   }
 }
