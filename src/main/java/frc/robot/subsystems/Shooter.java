@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -23,10 +25,14 @@ public class Shooter extends SubsystemBase {
         FARSHOT
   }
 	
-	public TalonFX shooterLeft = new TalonFX(Constants.Shooter.ShooterLeft);
-	public TalonFX shooterRight = new TalonFX(Constants.Shooter.ShooterRight);
+	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
+	public TalonFX shooterRight = new TalonFX(Constants.Ports.SHOOTER_RIGHT);
 
-    public ShooterState shooterState;
+    public ShooterState shooterState = ShooterState.PASSIVE;
+
+	VelocityVoltage voltageLeft = new VelocityVoltage(0);
+	VelocityVoltage voltageRight = new VelocityVoltage(0);
+
 
 
 
@@ -34,6 +40,12 @@ public class Shooter extends SubsystemBase {
 		
 		shooterLeft.setNeutralMode(NeutralModeValue.Coast);
 		shooterRight.setNeutralMode(NeutralModeValue.Coast);
+		Slot0Configs configs = new Slot0Configs()
+        .withKP(Constants.Shooter.SHOOTER_KP)
+        .withKI(Constants.Shooter.SHOOTER_KI)
+        .withKD(Constants.Shooter.SHOOTER_KD);
+        shooterLeft.getConfigurator().apply(configs);
+        shooterRight.getConfigurator().apply(configs);
 		
 
 		
@@ -60,15 +72,21 @@ public class Shooter extends SubsystemBase {
 		shooterLeft.set(speedLeft);
 		shooterRight.set(speedRight);
 	}
+	public void setShooterVelocity(double RPMLeft, double RPMRight){
+        shooterLeft.setControl(voltageLeft.withVelocity(RPMLeft));
+		shooterRight.setControl(voltageRight.withVelocity(RPMRight));
+    }
 
 
 
 	@Override
 	public void periodic() {
 
-		SmartDashboard.putNumber("RPM Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble() * 60);
-        SmartDashboard.putNumber("RPM Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble() * 60);
+		setShooterVelocity(500, 500);
 
+		SmartDashboard.putNumber("RPM Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble() );
+        SmartDashboard.putNumber("RPM Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
+	
 		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
 
@@ -76,7 +94,7 @@ public class Shooter extends SubsystemBase {
 
 		switch (shooterState) {
 			case PASSIVE:
-				setWheelSpeed(0.2,0.2);
+			setShooterVelocity(40, 40);
 				break;
 			case FARSHOT:
 				setWheelSpeed(-0.7,-0.7);
@@ -85,7 +103,7 @@ public class Shooter extends SubsystemBase {
 				setWheelSpeed(0.5, 0.5);
 				break;
             default:
-            setWheelSpeed(0, 0);
+            setWheelSpeed(20, 20);
 		}
 	}
 }

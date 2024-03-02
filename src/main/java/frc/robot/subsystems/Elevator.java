@@ -30,55 +30,43 @@ public class Elevator extends SubsystemBase {
 
 	public ElevatorState elevatorState = ElevatorState.IDLE;
 
-	public CANSparkMax elevator = new CANSparkMax(15, MotorType.kBrushless);
-    public CANSparkMax elevatorB = new CANSparkMax(14, MotorType.kBrushless);
+	public CANSparkMax elevatorA = new CANSparkMax(15, MotorType.kBrushless);
+    public CANSparkMax elevatorB = new CANSparkMax(60, MotorType.kBrushless);
 
-	public RelativeEncoder encoder = elevator.getEncoder();
+	public RelativeEncoder encoder = elevatorA.getEncoder();
 
 	public ElevatorFeedforward feedForward = new ElevatorFeedforward(
 			Constants.Elevator.ELEVATOR_KS,
 			Constants.Elevator.ELEVATOR_KG,
 			Constants.Elevator.ELEVATOR_KV);
 
-	private ProfiledPIDController profiledController = new ProfiledPIDController(
-			Constants.Elevator.ELEVATOR_KP,
-			Constants.Elevator.ELEVATOR_KI,
-			Constants.Elevator.ELEVATOR_KD,
-			new TrapezoidProfile.Constraints(
-					Constants.Elevator.ELEVATOR_MAX_VEL,
-					Constants.Elevator.ELEVATOR_MAX_ACCEL));
 
 	private PIDController controller = new PIDController(
 			Constants.Elevator.ELEVATOR_KP,
 			Constants.Elevator.ELEVATOR_KI,
 			Constants.Elevator.ELEVATOR_KD);
 
-	SparkLimitSwitch forwardLimit = elevator.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
-	SparkLimitSwitch ReverseLimit = elevator.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
-
 	// neo rotations
 	public static double setpointElevator = 0;
 
 	public Elevator() {
 
-		elevator.setIdleMode(IdleMode.kBrake);
+		elevatorA.setIdleMode(IdleMode.kBrake);
 
-		elevator.setInverted(false);
+		elevatorA.setInverted(true);
+		elevatorB.setInverted(true);
 
-		elevator.enableSoftLimit(SoftLimitDirection.kForward, true);
-		elevator.enableSoftLimit(SoftLimitDirection.kReverse, true);
-		elevator.setSoftLimit(SoftLimitDirection.kForward, 50);
-		elevator.setSoftLimit(SoftLimitDirection.kReverse, 0);
-		// elevatorB.follow(elevator);
+		elevatorA.enableSoftLimit(SoftLimitDirection.kForward, true);
+		elevatorA.enableSoftLimit(SoftLimitDirection.kReverse, true);
+		elevatorA.setSoftLimit(SoftLimitDirection.kForward, 30);
+		elevatorA.setSoftLimit(SoftLimitDirection.kReverse, 0);
+		elevatorB.follow(elevatorA);
 
-		// elevatorA.burnFlash();
-		elevator.burnFlash();
-        // elevatorB.burnFlash();
+		elevatorA.burnFlash();
+        elevatorB.burnFlash();
 
-		// elevator.setStatusFramePeriod();
 
 		controller.setTolerance(3);
-		profiledController.setTolerance(3);
 	}
 
 	public void setState(ElevatorState state) {
@@ -90,23 +78,18 @@ public class Elevator extends SubsystemBase {
 	}
 
 	public void setElevatorOpenLoop(double percent) {
-		elevator.set(percent);
+		elevatorA.set(percent);
 	}
 
-	public void setElevatorClosedLoop(boolean isProfiled) {
+	public void setElevatorClosedLoop() {
 		double output = 0;
-		if (isProfiled) {
-			profiledController.setGoal(setpointElevator);
-			output = profiledController.calculate(encoder.getPosition()) +
-					feedForward.calculate(profiledController.getSetpoint().velocity);
-			elevator.set(output);
-		} else {
+		
 			output = controller.calculate(encoder.getPosition(), setpointElevator) + Constants.Elevator.ELEVATOR_KS;
-			// elevator.set(MathUtil.clamp(output, -.75, .85));
 			// elevator.set(MathUtil.clamp(output, -.2, .3));
+			
 
 		}
-	}
+	
 
 	public static double getSetpoint() {
 		return setpointElevator;
@@ -136,13 +119,13 @@ public class Elevator extends SubsystemBase {
 		switch (elevatorState) {
 			case IDLE:
 				setSetpoint(0);
-				setElevatorClosedLoop(false);
+				setElevatorClosedLoop();
 				break;
 			case MANUAL:
 				setElevatorOpenLoop(RobotContainer.operatorPad.getLeftY());
 				break;
 			case POSITION:
-				setElevatorClosedLoop(false);
+				setElevatorClosedLoop();
 				break;
 		}
 	}

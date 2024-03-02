@@ -36,22 +36,24 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-// import frc.robot.subsystems.Indexer;
-// import frc.robot.subsystems.Elevator;
-// import frc.robot.subsystems.Intake;
-// import frc.robot.subsystems.Vision;
-// import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
   private static double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
   private static double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   public static final  CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  // public static final Elevator elevator = new Elevator();
-  // public static final Intake intake = new Intake();
-  // public static final Vision vision = new Vision();
-  // public static final Indexer indexer = new Indexer();
-  // public static final Shooter shooter = new Shooter();
+  public static final Elevator elevator = new Elevator();
+  public static final Intake intake = new Intake();
+  public static final Vision vision = new Vision();
+  public static final Wrist wrist = new Wrist();
+  public static final Indexer indexer = new Indexer();
+  public static final Shooter shooter = new Shooter();
   private static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); 
@@ -127,6 +129,9 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-   return runAuto;
+   return autoChooser.getSelected();
+   }
+   public Command goToSpeaker(){
+    return runAuto;
    }
 }

@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.commands.ActuateIntake;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
@@ -20,14 +21,14 @@ public class Intake extends SubsystemBase {
     }
     public IntakeState intakeState = IntakeState.IDLE;
 
-    public CANSparkMax spinner = new CANSparkMax(13, CANSparkLowLevel.MotorType.kBrushless);
+    public CANSparkMax intake = new CANSparkMax(Constants.Ports.INTAKE, CANSparkLowLevel.MotorType.kBrushless);
 
     public static double speed = 0;
 
   public Intake() {
-    spinner.setIdleMode(IdleMode.kBrake);
-    spinner.setInverted(true);
-    spinner.burnFlash();
+    intake.setIdleMode(IdleMode.kBrake);
+    intake.setInverted(true);
+    intake.burnFlash();
   }
 
   public void setState(IntakeState state) {
@@ -39,7 +40,7 @@ public class Intake extends SubsystemBase {
 	}
 
 	public void setWheelSpeed(double speed) {
-		spinner.set(speed);
+		intake.set(speed);
 	}
 
   @Override
