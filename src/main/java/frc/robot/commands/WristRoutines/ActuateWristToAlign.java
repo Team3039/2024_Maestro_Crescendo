@@ -2,37 +2,29 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.WristRoutines;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Indexer.IndexerState;
-import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Wrist.WristState;
 
-public class ActuateIntake extends Command {
-  /** Creates a new SetIntakeToIntakeMode. */
-  public ActuateIntake() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.intake, RobotContainer.wrist, RobotContainer.indexer);
-  }
+public class ActuateWristToAlign extends Command {
+  /** Creates a new ActuateElevatorIdle. */
+  double tolerance = 0;
+  public ActuateWristToAlign(double tolerance) {
+    addRequirements(RobotContainer.wrist); 
+    this.tolerance = tolerance;
+   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intake.setState(IntakeState.INTAKING);
-    RobotContainer.indexer.setState(IndexerState.INDEXING);
     RobotContainer.wrist.setState(WristState.ALIGN);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if(RobotContainer.indexer.getNoteDetected()){
-      RobotContainer.intake.setState(IntakeState.IDLE);
-      RobotContainer.indexer.setState(IndexerState.IDLE);
-    }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -41,6 +33,6 @@ public class ActuateIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return RobotContainer.wrist.isAtSetpoint( tolerance);
   }
 }

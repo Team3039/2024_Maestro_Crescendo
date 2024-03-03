@@ -25,13 +25,14 @@ public class Elevator extends SubsystemBase {
 	public enum ElevatorState {
 		IDLE,
 		MANUAL,
-		POSITION
+		POSITION,
+		AMPING
 	}
 
-	public ElevatorState elevatorState = ElevatorState.IDLE;
+	public ElevatorState elevatorState = ElevatorState.MANUAL;
 
-	public CANSparkMax elevatorA = new CANSparkMax(15, MotorType.kBrushless);
-    public CANSparkMax elevatorB = new CANSparkMax(60, MotorType.kBrushless);
+	public CANSparkMax elevatorA = new CANSparkMax(Constants.Ports.ELEVATOR_A, MotorType.kBrushless);
+	public CANSparkMax elevatorB = new CANSparkMax(Constants.Ports.ELEVATOR_B, MotorType.kBrushless);
 
 	public RelativeEncoder encoder = elevatorA.getEncoder();
 
@@ -39,7 +40,6 @@ public class Elevator extends SubsystemBase {
 			Constants.Elevator.ELEVATOR_KS,
 			Constants.Elevator.ELEVATOR_KG,
 			Constants.Elevator.ELEVATOR_KV);
-
 
 	private PIDController controller = new PIDController(
 			Constants.Elevator.ELEVATOR_KP,
@@ -63,8 +63,7 @@ public class Elevator extends SubsystemBase {
 		elevatorB.follow(elevatorA);
 
 		elevatorA.burnFlash();
-        elevatorB.burnFlash();
-
+		elevatorB.burnFlash();
 
 		controller.setTolerance(3);
 	}
@@ -82,14 +81,11 @@ public class Elevator extends SubsystemBase {
 	}
 
 	public void setElevatorClosedLoop() {
+		@SuppressWarnings("unused")
 		double output = 0;
-		
-			output = controller.calculate(encoder.getPosition(), setpointElevator) + Constants.Elevator.ELEVATOR_KS;
-			// elevator.set(MathUtil.clamp(output, -.2, .3));
-			
-
-		}
-	
+		output = controller.calculate(encoder.getPosition(), setpointElevator) + Constants.Elevator.ELEVATOR_KS;
+		// elevator.set(MathUtil.clamp(output, -.2, .3));
+	}
 
 	public static double getSetpoint() {
 		return setpointElevator;
@@ -99,7 +95,7 @@ public class Elevator extends SubsystemBase {
 		setpointElevator = setpoint;
 	}
 
-	public boolean isAtSetpoint(boolean isProfiled, double tolerance) {
+	public boolean isAtSetpoint( double tolerance) {
 		return Math.abs((setpointElevator - encoder.getPosition())) <= tolerance;
 	}
 
@@ -127,6 +123,9 @@ public class Elevator extends SubsystemBase {
 			case POSITION:
 				setElevatorClosedLoop();
 				break;
+			case AMPING:
+				setSetpoint(30);
+				setElevatorClosedLoop();
 		}
 	}
 }

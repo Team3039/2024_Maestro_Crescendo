@@ -10,7 +10,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindThenFollowPathHolonomic;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -37,20 +39,17 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configNeutralMode(NeutralModeValue.Coast);
         configurePathPlanner();
-
     }
 
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configNeutralMode(NeutralModeValue.Coast);
         configurePathPlanner();
-
     }
+
  public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
-
-   
 
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
@@ -71,7 +70,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         PathConstraints constraints = new PathConstraints(
                 4.5, 3.0,
                 Units.degreesToRadians(540), Units.degreesToRadians(720));
-
+        HolonomicPathFollowerConfig holonomicPathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(1, 0, 0), 
+        new PIDConstants(1, 0, 0), TunerConstants.kSpeedAt12VoltsMps, driveBaseRadius, new ReplanningConfig());
+       
         @SuppressWarnings("unused")
         Command pathfindingCommand = AutoBuilder.pathfindToPose(
                 targetPose,
@@ -94,8 +95,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                         new ReplanningConfig()),
                 () -> false, // Change this if the path needs to be flipped on red vs blue
                 this); // Subsystem for requirements
+        //  final PathfindThenFollowPathHolonomic path = new PathfindThenFollowPathHolonomic(PathPlannerPath.fromPathFile("Red Trap Close"), constraints, () -> this.getState().Pose, 
+        // this::getCurrentRobotChassisSpeeds, (speeds) -> this.setControl(autoRequest.withSpeeds(speeds)), holonomicPathFollowerConfig, ()-> false, this);
     }
-
+    PathConstraints getPathConstraints(PathConstraints constraints){
+        return constraints;
+        }
+    
+    
+  
      public Command getAutoPath(String pathName) {
         return new PathPlannerAuto(pathName);
     }

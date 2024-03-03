@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.HashMap;
-
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -15,7 +12,6 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -27,49 +23,40 @@ import frc.robot.util.Vector2;
 
 public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
-  static WristState wristState = WristState.MANUAL;
+  public enum WristState {
+    MANUAL,
+    ALIGN,
+    POSITION,
+    AMP,
+  }
+
+ public static WristState wristState = WristState.MANUAL;
 
   CANSparkMax wrist = new CANSparkMax(Constants.Ports.WRIST, MotorType.kBrushless);
 
-  AbsoluteEncoder wristEncoder = wrist.getAbsoluteEncoder();
+  RelativeEncoder wristEncoder = wrist.getEncoder();
 
   SparkPIDController wristController = wrist.getPIDController();
 
-  
-  double setpoint = 0;
+  public static double setpointWrist = 0;
 
   boolean isAtSetpoint;
 
-  double setpointWrist = 0;
-  
-    
   public Wrist() {
     wrist.setInverted(false);
     wrist.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.Forward_Limit);
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
-    
+    // wristEncoder.setPosition(0);
 
-    wristEncoder.setZeroOffset(setpoint);
+    wristEncoder.setInverted(false);
     wristController.setP(Constants.Wrist.WRIST_KP);
     wristController.setI(Constants.Wrist.WRIST_KI);
     wristController.setD(Constants.Wrist.WRIST_KD);
-  
-
-
-
 
     wrist.burnFlash();
   }
 
-  public enum WristState{
-    MANUAL, 
-    IDLE, 
-    POSITION,
-    AMP,
-    INDEXING
-  }
-
-   public static WristState getState() {
+  public static WristState getState() {
     return wristState;
   }
 
@@ -77,39 +64,46 @@ public class Wrist extends SubsystemBase {
     wristState = state;
   }
 
-  public double getSetpoint(){
+  public double getSetpoint() {
     return setpointWrist;
   }
 
-  public void setSetpointWrist(double setpoint){
+  public void setSetpointWrist(double setpoint) {
     setpointWrist = setpoint;
   }
 
-  public void getWristPosition(){
+  public boolean isAtSetpoint(double tolerance) {
+    return Math.abs((setpointWrist - (wristEncoder.getPosition()))) <= tolerance;
   }
-  
-  
 
+  public void getWristPosition() {
+    wristEncoder.getPosition();
+  }
 
-  public void setWristPosition(double setpoint){
+  public void setWristPosition() {
     wristController.setFF(Constants.Wrist.K_FF);
-    wristController.setReference(setpoint, ControlType.kPosition);
+    wristController.setReference(setpointWrist, ControlType.kPosition);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    switch(wristState){
-     case MANUAL:
-      break;
-     case POSITION:
-      break;
-    case INDEXING:
-    break;
-    case AMP:
-      break;
-    case IDLE:
-      break;
+    switch (wristState) {
+      case MANUAL:
+        System.out.println("Wrist Position " + wristEncoder.getPosition());
+        wrist.set(RobotContainer.operatorPad.getRightY());
+        break;
+      case POSITION:
+        setWristPosition();
+        break;
+      case ALIGN:
+        setSetpointWrist(30);
+        setWristPosition();
+        break;
+      case AMP:
+        setSetpointWrist(-20);
+        setWristPosition();
+        break;
     }
   }
 }

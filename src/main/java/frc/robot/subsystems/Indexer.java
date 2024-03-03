@@ -11,20 +11,22 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Indexer extends SubsystemBase {
-  /** Creates a new Flywheel. */
   public enum IndexerState{
        IDLE, 
        SHOOTING,
-      INDEXING
+      INDEXING,
+      MANUAL
     }
-    public IndexerState indexerState = IndexerState.IDLE;
+    public IndexerState indexerState = IndexerState.MANUAL;
 
     public CANSparkMax indexer = new CANSparkMax(Constants.Ports.INDEXER, MotorType.kBrushless);
 
-    public DigitalInput beamBreak1;
+    public DigitalInput beamBreak;
 
+    public boolean hasNote;
 
     public static double speed = 0;
 
@@ -32,7 +34,7 @@ public class Indexer extends SubsystemBase {
     indexer.setIdleMode(IdleMode.kBrake);
 
     indexer.setInverted(false);
-    beamBreak1 = new DigitalInput(Constants.Ports.BEAMBREAK);
+    beamBreak = new DigitalInput(Constants.Ports.BEAM_BREAK);
 	
   }
 
@@ -49,12 +51,14 @@ public class Indexer extends SubsystemBase {
 	}
 
     public boolean getNoteDetected(){
-        return beamBreak1.get();
+        return beamBreak.get();
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    hasNote = getNoteDetected();
+
     switch (indexerState) {
       case IDLE:
         setWheelSpeed(0);
@@ -63,10 +67,15 @@ public class Indexer extends SubsystemBase {
         setWheelSpeed(.8);
         break;
       case INDEXING:
-      if(!getNoteDetected()){
+      if(getNoteDetected()){
        setWheelSpeed(.6);
       }
+      setState(IndexerState.IDLE);
         break;
+      case MANUAL:
+        if (RobotContainer.operatorPad.getPSButton()){
+          setWheelSpeed(0.3);
+        }
     }
   }
 }

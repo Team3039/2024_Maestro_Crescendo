@@ -3,6 +3,7 @@ package frc.robot.util;
 import java.io.Serializable;
 import java.util.TreeMap;
 
+@SuppressWarnings("unused")
 public class InterpolatingTreeMap<
         K extends InverseInterpolable<K> & Comparable<K>, V extends Interpolable<V>>
     extends TreeMap<K, V> implements Serializable {

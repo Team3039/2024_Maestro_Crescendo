@@ -1,75 +1,131 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.RelativeEncoder;
-// import com.revrobotics.CANSparkBase.IdleMode;
-// import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Wrist.WristState;
 
-// public class Climb extends SubsystemBase {
-//   /** Creates a new Climb. */
-//   double setpoint = 0;
-//   public enum ClimbState{
-//     IDLE,
-//     MIDCHAIN,
-//     MANUAL
-//   }
-//   ClimbState climbState = ClimbState.IDLE;
+public class Climb extends SubsystemBase {
+    /** Creates a new Climb. */
+    double setpointClimb = 0;
 
-//   CANSparkMax leftClimber = new CANSparkMax(0, MotorType.kBrushless);
-//   CANSparkMax rightClimber = new CANSparkMax(0, MotorType.kBrushless);
+    public enum ClimbState {
+        IDLE,
+        POSITION,
+        MANUAL,
+        TEST
+    }
 
-//     public RelativeEncoder encoderLeft = leftClimber.getEncoder();
-//     public RelativeEncoder encoderRight = leftClimber.getEncoder();
+    ClimbState climbState = ClimbState.MANUAL;
 
+    CANSparkMax leftClimber = new CANSparkMax(Constants.Ports.LEFT_CLIMB, MotorType.kBrushless);
+    CANSparkMax rightClimber = new CANSparkMax(Constants.Ports.RIGHT_CLIMB, MotorType.kBrushless);
 
-//   public Climb() {
+    SparkPIDController leftClimbController = leftClimber.getPIDController();
+    SparkPIDController rightClimbController = rightClimber.getPIDController();
 
+    public RelativeEncoder encoderLeft = leftClimber.getEncoder();
+    public RelativeEncoder encoderRight = rightClimber.getEncoder();
 
-//     leftClimber.setIdleMode(IdleMode.kCoast);
-//     rightClimber.setIdleMode(IdleMode.kCoast);
+    public Climb() {
+        leftClimber.restoreFactoryDefaults();
+        rightClimber.restoreFactoryDefaults();
 
-//     leftClimber.config_kP(0, 0.8);
-//     leftClimber.config_kI(0, 0);
-//     leftClimber.config_kD(0, 0);
+        leftClimber.setIdleMode(IdleMode.kCoast);
+        rightClimber.setIdleMode(IdleMode.kCoast);
 
-//     rightClimber.config_kP(0, 0.8);
-//     rightClimber.config_kI(0, 0);
-//     rightClimber.config_kD(0, 0);
+        leftClimbController.setP(Constants.Climb.CLIMB_KP);
+        leftClimbController.setI(Constants.Climb.CLIMB_KI);
+        leftClimbController.setD(Constants.Climb.CLIMB_KD);
 
-// 		rightClimber.follow(leftClimber, true);
+        rightClimbController.setP(Constants.Climb.CLIMB_KP);
+        rightClimbController.setI(Constants.Climb.CLIMB_KI);
+        rightClimbController.setD(Constants.Climb.CLIMB_KD);
 
-//     leftClimber.setSoftLimit(null, 0);
-//     leftClimber.setSoftLimit(null, 0);
-//     rightClimber.setSoftLimit(null, 0);
-//     rightClimber.setSoftLimit(null, 0);
+        rightClimber.follow(leftClimber, true);
 
+        leftClimber.setSoftLimit(SoftLimitDirection.kForward, Constants.Climb.FORWARD_SOFT_LIMIT);
+        leftClimber.setSoftLimit(SoftLimitDirection.kReverse, Constants.Climb.REVERSE_SOFT_LIMIT);
 
-//   }
+        rightClimber.setSoftLimit(SoftLimitDirection.kForward, Constants.Climb.FORWARD_SOFT_LIMIT);
+        rightClimber.setSoftLimit(SoftLimitDirection.kReverse, Constants.Climb.REVERSE_SOFT_LIMIT);
 
-//   public double getSetpoint(){
-//     return setpoint;
-//   }
+        encoderLeft.setInverted(false);
+        encoderRight.setInverted(false);
+    }
+    public ClimbState getState(){
+        return climbState;
+    }
 
-//   public double setSetpoint(double setpoint){
-   
-//   }
+    public void setState(ClimbState state){
+        climbState = state;
+    }
 
-//   @Override
-//   public void periodic() {
-//     // This method will be called once per scheduler run
-//     switch(climbState){
-//   case IDLE:
-//   break;
-//   case MIDCHAIN:
-//   break;
-//   case MANUAL:
-//   break;
-// }
-//   }
-// }
+    public double getSetpoint() {
+        return setpointClimb;
+    }
+
+    public void setSetpoint(double setpoint) {
+        setpointClimb = setpoint;
+    }
+
+    public double getLeftClimbPosition() {
+        return encoderLeft.getPosition();
+    }
+
+    public double getRightClimbPosition() {
+        return encoderRight.getPosition();
+    }
+
+    public void setLeftClimbPosition(double setpoint) {
+        leftClimbController.setFF(Constants.Climb.CLIMB_KFF);
+        leftClimbController.setReference(setpoint, ControlType.kPosition);
+    }
+
+    public void setRightClimbPosition(double setpoint) {
+        rightClimbController.setFF(Constants.Climb.CLIMB_KFF);
+        rightClimbController.setReference(setpoint, ControlType.kPosition);
+    }
+
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+        switch (climbState) {
+            case IDLE:
+                break;
+            case POSITION:
+
+                break;
+            case MANUAL:
+                if (RobotContainer.operatorPad.getL1Button()) {
+                    setLeftClimbPosition(getLeftClimbPosition() + 5);
+                }
+                if (RobotContainer.operatorPad.getR1Button()) {
+                    setLeftClimbPosition(getRightClimbPosition() + 5);
+                }
+                if (RobotContainer.operatorPad.getL2Button()) {
+                    setLeftClimbPosition(getLeftClimbPosition() - 5);
+                }
+                if (RobotContainer.operatorPad.getR2Button()) {
+                    setLeftClimbPosition(getRightClimbPosition() - 5);
+                }
+                break;
+            case TEST:
+                System.out.println(encoderLeft.getPosition());
+                System.out.println(encoderRight.getPosition());
+        }
+
+    }
+}

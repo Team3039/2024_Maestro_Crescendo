@@ -11,15 +11,17 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.commands.ActuateIntake;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public enum IntakeState{
        IDLE, 
        RELEASE,
-      INTAKING
+      INTAKING,
+      MANUAL
     }
-    public IntakeState intakeState = IntakeState.IDLE;
+    public IntakeState intakeState = IntakeState.MANUAL;
 
     public CANSparkMax intake = new CANSparkMax(Constants.Ports.INTAKE, CANSparkLowLevel.MotorType.kBrushless);
 
@@ -56,6 +58,10 @@ public class Intake extends SubsystemBase {
       case INTAKING:
        setWheelSpeed(.8);
         break;
+      case MANUAL:
+      if(RobotContainer.operatorPad.getTouchpad()){
+      setWheelSpeed(0.8);
+      }
     }
   }
 }
