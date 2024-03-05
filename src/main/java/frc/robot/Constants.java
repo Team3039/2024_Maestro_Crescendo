@@ -33,12 +33,12 @@ public class Constants {
 
 		public static final int INTAKE = 13;
 		public static final int INDEXER = 14;
-		public static final int BEAM_BREAK = 15;
+		public static final int BEAM_BREAK = 8;
 		public static final int WRIST = 16;
 		public static final int SHOOTER_LEFT = 17;
 		public static final int SHOOTER_RIGHT = 18;
 		public static final int ELEVATOR_A = 19;
-		public static final int ELEVATOR_B = 20;
+		// public static final int ELEVATOR_B = 20;
 		public static final int LEFT_CLIMB = 21;
 		public static final int RIGHT_CLIMB = 22;
 		public static final int CANdleID = 23;
@@ -132,8 +132,8 @@ public class Constants {
 		public static final double WRIST_KV = 0;
 
 		public static final double WRIST_GEAR_RATIO = 0;
-		public static final float Forward_Limit = 43;
-		public static final float Reverse_Limit = -23;
+		public static final float Forward_Limit = 53;
+		public static final float Reverse_Limit = -28;
 		public static final double K_P = 0;
 		public static final double K_I = 0;
 		public static final double K_D = 0;

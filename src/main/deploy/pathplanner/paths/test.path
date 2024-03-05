@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6441815740774344,
-        "y": 7.065858703145978
+        "x": 2.0,
+        "y": 2.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6441815740774297,
-        "y": 7.065858703145978
+        "x": 3.0,
+        "y": 2.0
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.401066802133604,
-        "y": 7.065858703145978
+        "x": 5.147792009869734,
+        "y": 2.0
       },
       "prevControl": {
-        "x": 11.949780470989515,
-        "y": 7.065858703145978
+        "x": 4.147792009869734,
+        "y": 2.0
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,18 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Print",
+      "waypointRelativePos": 0.5,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.2,
     "maxAcceleration": 3.0,

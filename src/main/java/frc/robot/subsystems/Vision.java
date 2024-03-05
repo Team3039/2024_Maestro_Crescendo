@@ -37,14 +37,14 @@ public class Vision extends SubsystemBase {
 
   VisionState visionState = VisionState.DRIVING;
 
-  public PhotonCamera shootCamera = new PhotonCamera("ShootCamera");
+  public PhotonCamera shootCamera = new PhotonCamera("ShootLeftCamera");
   public PhotonPoseEstimator photonPoseEstimatorshoot = new PhotonPoseEstimator(aprilTagFieldLayout,
       PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
       shootCamera,
       Constants.Vision.shootCameraToRobot);
   public PhotonPipelineResult resultShoot;
 
-  public PhotonCamera intakeCamera = new PhotonCamera("IntakeCamera");
+  public PhotonCamera intakeCamera = new PhotonCamera("ShootRightCamera");
 
   PhotonPoseEstimator photonPoseEstimatorIntake = new PhotonPoseEstimator(aprilTagFieldLayout,
       PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,

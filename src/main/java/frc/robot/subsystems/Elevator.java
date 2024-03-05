@@ -29,10 +29,10 @@ public class Elevator extends SubsystemBase {
 		AMPING
 	}
 
-	public ElevatorState elevatorState = ElevatorState.MANUAL;
+	public ElevatorState elevatorState = ElevatorState.IDLE;
 
 	public CANSparkMax elevatorA = new CANSparkMax(Constants.Ports.ELEVATOR_A, MotorType.kBrushless);
-	public CANSparkMax elevatorB = new CANSparkMax(Constants.Ports.ELEVATOR_B, MotorType.kBrushless);
+	// public CANSparkMax elevatorB = new CANSparkMax(Constants.Ports.ELEVATOR_B, MotorType.kBrushless);
 
 	public RelativeEncoder encoder = elevatorA.getEncoder();
 
@@ -54,16 +54,16 @@ public class Elevator extends SubsystemBase {
 		elevatorA.setIdleMode(IdleMode.kBrake);
 
 		elevatorA.setInverted(true);
-		elevatorB.setInverted(true);
+		// elevatorB.setInverted(true);
 
 		elevatorA.enableSoftLimit(SoftLimitDirection.kForward, true);
 		elevatorA.enableSoftLimit(SoftLimitDirection.kReverse, true);
 		elevatorA.setSoftLimit(SoftLimitDirection.kForward, 30);
 		elevatorA.setSoftLimit(SoftLimitDirection.kReverse, 0);
-		elevatorB.follow(elevatorA);
+		// elevatorB.follow(elevatorA);
 
-		elevatorA.burnFlash();
-		elevatorB.burnFlash();
+		// elevatorA.burnFlash();
+		// elevatorB.burnFlash();
 
 		controller.setTolerance(3);
 	}
@@ -95,7 +95,7 @@ public class Elevator extends SubsystemBase {
 		setpointElevator = setpoint;
 	}
 
-	public boolean isAtSetpoint( double tolerance) {
+	public boolean isAtSetpoint(double tolerance) {
 		return Math.abs((setpointElevator - encoder.getPosition())) <= tolerance;
 	}
 
@@ -109,7 +109,7 @@ public class Elevator extends SubsystemBase {
 		// SmartDashboard.putString("Elevator State", String.valueOf(getState()));
 
 		// SmartDashboard.putNumber("Elevator Output", elevator.get());
-		System.out.println(encoder.getPosition());
+		// System.out.println(encoder.getPosition());
 		// System.out.println(elevator.get());
 		// System.out.println(isAtSetpoint(false));
 		switch (elevatorState) {

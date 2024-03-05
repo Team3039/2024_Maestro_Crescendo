@@ -4,38 +4,23 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.function.Supplier;
 
-import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain.SwerveDriveState;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.auto.PPTrajectoryGenerator;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ElevatorRoutines.SetElevatorManualOverride;
 import frc.robot.commands.WristRoutines.SetWristManualOverride;
-// import frc.robot.autos.PPTrajectoryGenerator;
-// import frc.robot.commands.ActuateIntake;
 import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climb;
@@ -43,26 +28,27 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Vision;
+// import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-
   public static final Elevator elevator = new Elevator();
   public static final Intake intake = new Intake();
-  public static final Vision vision = new Vision();
+  // public static final Vision vision = new Vision();
   public static final Wrist wrist = new Wrist();
   public static final Indexer indexer = new Indexer();
   public static final Shooter shooter = new Shooter();
   public static final Climb climb = new Climb();
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+
   private static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1) // 10% Deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-  private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric()
-      .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+  // private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric()
+  //     .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1)
+  //     .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   /*
    * InterpolatedPS4 GamePad Treats Axis Inputs Exponentially Instead Of Linearly
@@ -115,6 +101,9 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   public Command runAuto = drivetrain.getAutoPath("Test");
+  // public Command goToCloseRedTrap = drivetrain.getAutoPath("Red Trap Close");
+  // public Command goToFarRedTrap = drivetrain.getAutoPath("Red Trap Far");
+  // public Command goToRedTrapCenter = drivetrain.getAutoPath("Red Trap Center");
 
   private final Telemetry logger = new Telemetry(Constants.Drive.MaxSpeed);
 
@@ -127,10 +116,10 @@ public class RobotContainer {
             .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate) // Drive counterclockwise with negative X
                                                                          // (left)
         ));
-    operatorR3.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
-                                                                                                                 // Drive
-        .withVelocityY(-driverPad.getLeftX() * Constants.Drive.MaxSpeed)
-        .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate)));
+    // operatorR3.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
+        //                                                                                                          // Drive
+        // .withVelocityY(-driverPad.getLeftX() * Constants.Drive.MaxSpeed)
+        // .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate)));
 
     driverX.whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driverPad.getLeftY(), -driverPad.getLeftX()))));
@@ -148,17 +137,16 @@ public class RobotContainer {
 
   public RobotContainer() {
     // NamedCommands.registerCommands(PPTrajectoryGenerator.eventMap);
+    NamedCommands.registerCommand("Print", new PrintCommand("testing the registered Commands"));
     configureBindings();
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
+  
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
 
-  public Command goToSpeaker() {
-    return runAuto;
-  }
+ 
 }

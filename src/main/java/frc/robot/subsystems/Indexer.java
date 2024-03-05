@@ -20,11 +20,11 @@ public class Indexer extends SubsystemBase {
       INDEXING,
       MANUAL
     }
-    public IndexerState indexerState = IndexerState.MANUAL;
+    public IndexerState indexerState = IndexerState.IDLE;
 
     public CANSparkMax indexer = new CANSparkMax(Constants.Ports.INDEXER, MotorType.kBrushless);
 
-    public DigitalInput beamBreak;
+    public DigitalInput beamBreak = new DigitalInput(Constants.Ports.BEAM_BREAK);
 
     public boolean hasNote;
 
@@ -34,7 +34,6 @@ public class Indexer extends SubsystemBase {
     indexer.setIdleMode(IdleMode.kBrake);
 
     indexer.setInverted(false);
-    beamBreak = new DigitalInput(Constants.Ports.BEAM_BREAK);
 	
   }
 
@@ -50,24 +49,26 @@ public class Indexer extends SubsystemBase {
 		indexer.set(speed);
 	}
 
-    public boolean getNoteDetected(){
-        return beamBreak.get();
-    }
+  public boolean getNoteDetected(){
+      return beamBreak.get();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    hasNote = getNoteDetected();
-
+    
+      // System.out.println("HasNote:" + beamBreak.get());
     switch (indexerState) {
       case IDLE:
+
+      // hasNote = getNoteDetected();
         setWheelSpeed(0);
       break;
       case SHOOTING:
         setWheelSpeed(.8);
         break;
       case INDEXING:
-      if(getNoteDetected()){
+      while(getNoteDetected()){
        setWheelSpeed(.6);
       }
       setState(IndexerState.IDLE);

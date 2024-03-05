@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
 	public TalonFX shooterRight = new TalonFX(Constants.Ports.SHOOTER_RIGHT);
 
-    public ShooterState shooterState = ShooterState.TEST;
+    public ShooterState shooterState = ShooterState.IDLE;
 
 	VelocityVoltage voltageLeft = new VelocityVoltage(0);
 	VelocityVoltage voltageRight = new VelocityVoltage(0);

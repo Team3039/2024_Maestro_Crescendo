@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -46,9 +47,9 @@ public class Wrist extends SubsystemBase {
     wrist.setInverted(false);
     wrist.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.Forward_Limit);
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
-    // wristEncoder.setPosition(0);
+    wristEncoder.setPosition(53.2);
 
-    wristEncoder.setInverted(false);
+
     wristController.setP(Constants.Wrist.WRIST_KP);
     wristController.setI(Constants.Wrist.WRIST_KI);
     wristController.setD(Constants.Wrist.WRIST_KD);
@@ -87,11 +88,13 @@ public class Wrist extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // System.out.println(RobotContainer.indexer.getNoteDetected());
     // This method will be called once per scheduler run
     switch (wristState) {
       case MANUAL:
-        System.out.println("Wrist Position " + wristEncoder.getPosition());
-        wrist.set(RobotContainer.operatorPad.getRightY());
+        // System.out.println("Wrist Position " + wristEncoder.getPosition());
+        SmartDashboard.putNumber("Wrist Speed", wrist.get());
+        wrist.set(RobotContainer.operatorPad.getRightY() *-1); // intuitive
         break;
       case POSITION:
         setWristPosition();

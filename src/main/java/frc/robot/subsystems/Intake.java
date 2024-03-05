@@ -60,7 +60,7 @@ public class Intake extends SubsystemBase {
         break;
       case MANUAL:
       if(RobotContainer.operatorPad.getTouchpad()){
-      setWheelSpeed(0.8);
+      setWheelSpeed(0.5);
       }
     }
   }

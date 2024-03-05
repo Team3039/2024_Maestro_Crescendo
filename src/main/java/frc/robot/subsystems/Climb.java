@@ -15,7 +15,6 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Wrist.WristState;
 
 public class Climb extends SubsystemBase {
     /** Creates a new Climb. */
@@ -54,7 +53,6 @@ public class Climb extends SubsystemBase {
         rightClimbController.setI(Constants.Climb.CLIMB_KI);
         rightClimbController.setD(Constants.Climb.CLIMB_KD);
 
-        rightClimber.follow(leftClimber, true);
 
         leftClimber.setSoftLimit(SoftLimitDirection.kForward, Constants.Climb.FORWARD_SOFT_LIMIT);
         leftClimber.setSoftLimit(SoftLimitDirection.kReverse, Constants.Climb.REVERSE_SOFT_LIMIT);
@@ -62,8 +60,6 @@ public class Climb extends SubsystemBase {
         rightClimber.setSoftLimit(SoftLimitDirection.kForward, Constants.Climb.FORWARD_SOFT_LIMIT);
         rightClimber.setSoftLimit(SoftLimitDirection.kReverse, Constants.Climb.REVERSE_SOFT_LIMIT);
 
-        encoderLeft.setInverted(false);
-        encoderRight.setInverted(false);
     }
     public ClimbState getState(){
         return climbState;
@@ -104,22 +100,27 @@ public class Climb extends SubsystemBase {
         // This method will be called once per scheduler run
         switch (climbState) {
             case IDLE:
+
                 break;
             case POSITION:
 
                 break;
             case MANUAL:
-                if (RobotContainer.operatorPad.getL1Button()) {
-                    setLeftClimbPosition(getLeftClimbPosition() + 5);
+                while (RobotContainer.operatorPad.getL1Button()) {
+                    leftClimber.set(.5);
+                    // setLeftClimbPosition(getLeftClimbPosition() + 5);
                 }
-                if (RobotContainer.operatorPad.getR1Button()) {
-                    setLeftClimbPosition(getRightClimbPosition() + 5);
+                while (RobotContainer.operatorPad.getR1Button()) {
+                    rightClimber.set(.5);
+                    // setLeftClimbPosition(getRightClimbPosition() + 5);
                 }
-                if (RobotContainer.operatorPad.getL2Button()) {
-                    setLeftClimbPosition(getLeftClimbPosition() - 5);
+                while (RobotContainer.operatorPad.getL2Button()) {
+                    leftClimber.set(-.5);
+                    // setLeftClimbPosition(getLeftClimbPosition() - 5);
                 }
-                if (RobotContainer.operatorPad.getR2Button()) {
-                    setLeftClimbPosition(getRightClimbPosition() - 5);
+                while (RobotContainer.operatorPad.getR2Button()) {
+                    rightClimber.set(-.5);
+                    // setLeftClimbPosition(getRightClimbPosition() - 5);
                 }
                 break;
             case TEST:
