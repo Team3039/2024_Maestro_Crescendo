@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -57,25 +59,21 @@ public class Indexer extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     
-      // System.out.println("HasNote:" + beamBreak.get());
+      SmartDashboard.putBoolean("hasNote", getNoteDetected());
+      SmartDashboard.putString("Indexer State", String.valueOf(getState()));
     switch (indexerState) {
       case IDLE:
-
-      // hasNote = getNoteDetected();
-        setWheelSpeed(0);
+        setWheelSpeed(0.0);
       break;
       case SHOOTING:
-        setWheelSpeed(.8);
+        setWheelSpeed(.9);
         break;
       case INDEXING:
-      while(getNoteDetected()){
        setWheelSpeed(.6);
-      }
-      setState(IndexerState.IDLE);
         break;
       case MANUAL:
         if (RobotContainer.operatorPad.getPSButton()){
-          setWheelSpeed(0.3);
+          setWheelSpeed(0.6);
         }
     }
   }

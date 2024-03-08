@@ -30,7 +30,6 @@ public class Constants {
 			public static final int BR_ENCODER_ID = 11;
 			public static final int PIGEON_ID = 12;
 		}
-
 		public static final int INTAKE = 13;
 		public static final int INDEXER = 14;
 		public static final int BEAM_BREAK = 8;
@@ -45,15 +44,15 @@ public class Constants {
 	}
 
 	public static final class Drive {
-		public static double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
-		public static double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
+		public static final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+		public static final double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
 
 		public static final double TRACK = Units.inchesToMeters(21.50);
 		// Radians
-		public static final double FL_ENCODER_OFFSET = 0.322265625;
-		public static final double FR_ENCODER_OFFSET = -0.0185546875;
-		public static final double BL_ENCODER_OFFSET = 0.19140625;
-		public static final double BR_ENCODER_OFFSET = -0.423583984375;
+		public static final double FL_ENCODER_OFFSET = 0.31689453125;
+		public static final double FR_ENCODER_OFFSET = 0.465576171875;
+		public static final double BL_ENCODER_OFFSET =  0.18603515625;
+		public static final double BR_ENCODER_OFFSET = -0.414794921875;
 
 		public static final double DRIVE_GEAR_RATIO = 6.122448979591837;
 		public static final double STEER_GEAR_RATIO = 12.8;
@@ -79,9 +78,9 @@ public class Constants {
 	}
 
 	public static final class Shooter {
-		public static final double SHOOTER_KP = 0.9;
-		public static final double SHOOTER_KI = 0.0;
-		public static final double SHOOTER_KD = 0.3;
+		public static final double SHOOTER_KP = 0.4;
+		public static final double SHOOTER_KI = 0.003;
+		public static final double SHOOTER_KD = 0.0;
 
 	}
 
@@ -113,31 +112,17 @@ public class Constants {
 
 	}
 
-	public static final class Climb {
-
-		public static final double CLIMB_KP = 0;
-		public static final double CLIMB_KI = 0;
-		public static final double CLIMB_KD = 0;
-		public static final float FORWARD_SOFT_LIMIT = 0;
-		public static final float REVERSE_SOFT_LIMIT = 0;
-		public static final double CLIMB_KFF = 0;
-	}
-
 	public static final class Wrist {
-		public static final double WRIST_KP = 0.000;
+		public static final double WRIST_KP = -.000000000000000000005;
 		public static final double WRIST_KI = 0;
 		public static final double WRIST_KD = 0;
 		public static final double WRIST_KS = 0.000;
 		public static final double WRIST_KG = 0.000;
 		public static final double WRIST_KV = 0;
 
-		public static final double WRIST_GEAR_RATIO = 0;
-		public static final float Forward_Limit = 53;
-		public static final float Reverse_Limit = -28;
-		public static final double K_P = 0;
-		public static final double K_I = 0;
-		public static final double K_D = 0;
-		public static final double K_FF = 0;
+		public static final double WRIST_GEAR_RATIO = 1.0 / 350.0;
+		public static final float Forward_Limit = 51;
+		public static final float Reverse_Limit = -26;
 		public static final double WRIST_TO_AMP = 0;
 	}
 

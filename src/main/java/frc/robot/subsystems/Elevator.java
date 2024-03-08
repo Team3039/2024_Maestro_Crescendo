@@ -29,7 +29,7 @@ public class Elevator extends SubsystemBase {
 		AMPING
 	}
 
-	public ElevatorState elevatorState = ElevatorState.IDLE;
+	public ElevatorState elevatorState = ElevatorState.MANUAL;
 
 	public CANSparkMax elevatorA = new CANSparkMax(Constants.Ports.ELEVATOR_A, MotorType.kBrushless);
 	// public CANSparkMax elevatorB = new CANSparkMax(Constants.Ports.ELEVATOR_B, MotorType.kBrushless);
@@ -56,8 +56,8 @@ public class Elevator extends SubsystemBase {
 		elevatorA.setInverted(true);
 		// elevatorB.setInverted(true);
 
-		elevatorA.enableSoftLimit(SoftLimitDirection.kForward, true);
-		elevatorA.enableSoftLimit(SoftLimitDirection.kReverse, true);
+		// elevatorA.enableSoftLimit(SoftLimitDirection.kForward, true);
+		// elevatorA.enableSoftLimit(SoftLimitDirection.kReverse, true);
 		elevatorA.setSoftLimit(SoftLimitDirection.kForward, 30);
 		elevatorA.setSoftLimit(SoftLimitDirection.kReverse, 0);
 		// elevatorB.follow(elevatorA);
@@ -106,19 +106,15 @@ public class Elevator extends SubsystemBase {
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
-		// SmartDashboard.putString("Elevator State", String.valueOf(getState()));
-
-		// SmartDashboard.putNumber("Elevator Output", elevator.get());
-		// System.out.println(encoder.getPosition());
-		// System.out.println(elevator.get());
-		// System.out.println(isAtSetpoint(false));
+		SmartDashboard.putString("Elevator State", String.valueOf(getState()));
+		SmartDashboard.putNumber("Elevator Output", elevatorA.get());
 		switch (elevatorState) {
 			case IDLE:
 				setSetpoint(0);
 				setElevatorClosedLoop();
 				break;
 			case MANUAL:
-				setElevatorOpenLoop(RobotContainer.operatorPad.getLeftY());
+				setElevatorOpenLoop(RobotContainer.operatorPad.getLeftY());//not intuitive
 				break;
 			case POSITION:
 				setElevatorClosedLoop();

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 12.845229023791383,
-        "y": 2.3801258713628544
+        "x": 14.070922586289619,
+        "y": 4.1046482092964185
       },
       "prevControl": null,
       "nextControl": {
-        "x": 12.431913752716394,
-        "y": 3.121242909152485
+        "x": 14.81203962407925,
+        "y": 3.776846442581774
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 12.417661501989672,
-        "y": 3.092738407699038
+        "x": 15.681426918409395,
+        "y": 4.418197725284339
       },
       "prevControl": {
-        "x": 12.431913752716396,
-        "y": 3.078486156972314
+        "x": 15.681426918409395,
+        "y": 4.418197725284339
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,20 +32,20 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.2,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 10.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.05460409907724,
+    "rotation": 54.86580694308435,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Red Climb",
+  "folder": "Red 3p",
   "previewStartingState": {
-    "rotation": 120.25643716352947,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

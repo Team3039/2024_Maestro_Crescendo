@@ -27,7 +27,7 @@ public class SetWristManualOverride extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.wrist.setState(WristState.ALIGN);
+    RobotContainer.wrist.setState(WristState.IDLE);
   }
 
   // Returns true when the command should end.

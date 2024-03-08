@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intake.setIdleMode(IdleMode.kBrake);
-    intake.setInverted(true);
+    intake.setInverted(false);
     intake.burnFlash();
   }
 
@@ -47,6 +47,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     // This method will be called once per scheduler run
     switch (intakeState) {
       case IDLE:
@@ -56,7 +57,7 @@ public class Intake extends SubsystemBase {
         setWheelSpeed(-.4);
         break;
       case INTAKING:
-       setWheelSpeed(.8);
+       setWheelSpeed(.6);
         break;
       case MANUAL:
       if(RobotContainer.operatorPad.getTouchpad()){

@@ -20,10 +20,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.ActuateIntake;
+import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer.IndexerState;
 import frc.robot.subsystems.Intake.IntakeState;
+// import frc.robot.subsystems.Orchestrator.OrchestratorState;
 import frc.robot.subsystems.Shooter.ShooterState;
+import frc.robot.subsystems.Wrist.WristState;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
@@ -36,7 +40,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Pathfinding.setPathfinder(new LocalADStar());
-    RobotContainer.drivetrain.configurePathPlanner();
+    // RobotContainer.drivetrain.configurePathPlanner();
    robotContainer = new RobotContainer();
      
     //  PortForwarder.add(1181, "photonvision.local", 1182);
@@ -49,13 +53,14 @@ public class Robot extends TimedRobot {
     RobotContainer.shooter.setState(ShooterState.IDLE);
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
+    RobotContainer.wrist.setState(WristState.MANUAL);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
-    // Pose3d llPose = RobotContainer.vision.photonPoseEstimatorshoot.getReferencePose();
-    // RobotContainer.drivetrain.addVisionMeasurement(llPose.toPose2d(), Timer.getFPGATimestamp());
+    // Pose3d photonPose = RobotContainer.vision.photonPoseEstimatorshoot.getReferencePose();
+    // RobotContainer.drivetrain.addVisionMeasurement(photonPose.toPose2d(), Timer.getFPGATimestamp());
   }
 
   @Override
@@ -64,6 +69,7 @@ public class Robot extends TimedRobot {
     RobotContainer.shooter.setState(ShooterState.IDLE);
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
+    // RobotContainer.orchestrator.setState(OrchestratorState.SILENT);
   }
 
   @Override
@@ -111,10 +117,24 @@ public class Robot extends TimedRobot {
     //  if (RobotContainer.driverPad.getTriangleButton()){
     //   RobotContainer.intake.setState(IntakeState.INTAKING);
     // };
-     if (Pathfinding.isNewPathAvailable()){
-      Pathfinding.setStartPosition(RobotContainer.drivetrain.getState().Pose.getTranslation());
-      Pathfinding.setGoalPosition(pose);
-    }
+    // RobotContainer.orchestrator.setState(OrchestratorState.MARIOTIME);
+    System.out.println(RobotContainer.driverPad.getRightX());
+
+    if (RobotContainer.driverPad.getCrossButton()){
+      // // RobotContainer.intake.setState(IntakeState.INTAKING);
+      // RobotContainer.indexer.setState(IndexerState.SHOOTING);
+      //  }
+      //  if(RobotContainer.indexer.getNoteDetected()){
+      //   // RobotContainer.intake.setState(IntakeState.IDLE);
+      //   RobotContainer.indexer.setState(IndexerState.IDLE);
+      } 
+    // if (RobotContainer.driverPad.getCircleButton()){
+    //   RobotContainer.indexer.setState(IndexerState.INDEXING);
+    // }
+    //  if (Pathfinding.isNewPathAvailable()){
+    //   Pathfinding.setStartPosition(RobotContainer.drivetrain.getState().Pose.getTranslation());
+    //   Pathfinding.setGoalPosition(pose);
+    // }
       // RobotContainer.drivetrain.redAmpFPH.onlyWhile(() -> RobotContainer.driverPad.getCircleButton());
       // RobotContainer.drivetrain.redTrapClose.onlyWhile(() -> RobotContainer.driverPad.getTriangleButton());
     

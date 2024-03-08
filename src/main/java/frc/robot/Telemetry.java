@@ -1,28 +1,23 @@
 package frc.robot;
 
-import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain.SwerveDriveState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import com.pathplanner.lib.util.PathPlannerLogging;
 
 public class Telemetry {
     private final double MaxSpeed;
-    private final StructArrayPublisher<SwerveModuleState> publisher;
 
     /**
      * Construct a telemetry object, with the specified max speed of the robot
@@ -31,23 +26,6 @@ public class Telemetry {
      */
     public Telemetry(double maxSpeed) {
         MaxSpeed = maxSpeed;
-        
-        // Start publishing an array of module states with the "/SwerveStates" key
-        publisher = NetworkTableInstance.getDefault()
-                .getStructArrayTopic("/SwerveStates", SwerveModuleState.struct).publish();
-        SignalLogger.start();
-
-        PathPlannerLogging.setLogActivePathCallback((poses) -> {
-            double[] arr = new double[poses.size() * 3];
-            int ndx = 0;
-            for (Pose2d onepose : poses) {
-                arr[ndx + 0] = onepose.getX();
-                arr[ndx + 1] = onepose.getY();
-                arr[ndx + 2] = onepose.getRotation().getDegrees();
-                ndx += 3;
-            }
-            trajPub.set(arr);
-        });
     }
 
     /* What to publish over networktables for telemetry */
@@ -56,7 +34,6 @@ public class Telemetry {
     /* Robot pose for field positioning */
     private final NetworkTable table = inst.getTable("Pose");
     private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
-    private final DoubleArrayPublisher trajPub = table.getDoubleArrayTopic("traj").publish();
     private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
 
     /* Robot speeds for general checking */
@@ -64,7 +41,7 @@ public class Telemetry {
     private final DoublePublisher velocityX = driveStats.getDoubleTopic("Velocity X").publish();
     private final DoublePublisher velocityY = driveStats.getDoubleTopic("Velocity Y").publish();
     private final DoublePublisher speed = driveStats.getDoubleTopic("Speed").publish();
-    private final DoublePublisher odomFreq = driveStats.getDoubleTopic("Odometry Frequency").publish();
+    private final DoublePublisher odomPeriod = driveStats.getDoubleTopic("Odometry Period").publish();
 
     /* Keep a reference of the last pose to calculate the speeds */
     private Pose2d m_lastPose = new Pose2d();
@@ -119,7 +96,7 @@ public class Telemetry {
         speed.set(velocities.getNorm());
         velocityX.set(velocities.getX());
         velocityY.set(velocities.getY());
-        odomFreq.set(1.0 / state.OdometryPeriod);
+        odomPeriod.set(state.OdometryPeriod);
 
         /* Telemeterize the module's states */
         for (int i = 0; i < 4; ++i) {
@@ -129,11 +106,5 @@ public class Telemetry {
 
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
-
-        // Periodically send a set of module states
-        publisher.set(state.ModuleStates);
-
-        SignalLogger.writeDoubleArray("odometry", new double[] {pose.getX(), pose.getY(), pose.getRotation().getDegrees()});
-        SignalLogger.writeDouble("odom period", state.OdometryPeriod, "seconds");
     }
 }

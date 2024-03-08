@@ -39,4 +39,33 @@ public class InterpolatedPS4Gamepad extends PS4Controller {
             return 0.0;
         return -(Math.sin(this.getRightX()) * .8);
     }
+
+    // public double getLeftX() {
+    //     if (Math.abs(this.getLeftX()) <= 0.05) {
+    //         return 0.0;
+    //     }
+    //     return super.getLeftX();
+    // }
+
+    // public double getRightX() {
+    //     if (Math.abs(this.getRightX()) <= 0.05) {
+    //         return 0.0;
+    //     }
+    //     return super.getRightX();
+    // }
+
+    // public double getLeftY() {
+    //     if (Math.abs(this.getLeftY()) <= 0.05) {
+    //         return 0.0;
+    //     }
+    //     return super.getLeftY();
+    // }
+
+    // public double getRightY() {
+    //     if (Math.abs(this.getRightY()) <= 0.05) {
+    //         return 0.0;
+    //     }
+    //     return super.getRightY();
+    // }
+
 }

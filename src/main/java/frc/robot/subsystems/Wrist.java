@@ -29,6 +29,7 @@ public class Wrist extends SubsystemBase {
     ALIGN,
     POSITION,
     AMP,
+    IDLE
   }
 
  public static WristState wristState = WristState.MANUAL;
@@ -47,9 +48,9 @@ public class Wrist extends SubsystemBase {
     wrist.setInverted(false);
     wrist.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.Forward_Limit);
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
-    wristEncoder.setPosition(53.2);
+    wristEncoder.setPosition(51.6);
 
-
+ 
     wristController.setP(Constants.Wrist.WRIST_KP);
     wristController.setI(Constants.Wrist.WRIST_KI);
     wristController.setD(Constants.Wrist.WRIST_KD);
@@ -82,19 +83,30 @@ public class Wrist extends SubsystemBase {
   }
 
   public void setWristPosition() {
-    wristController.setFF(Constants.Wrist.K_FF);
+    // wristController.setFF(Constants.Wrist.WRIST_KS);
     wristController.setReference(setpointWrist, ControlType.kPosition);
   }
+
+  public double ticksToDegrees(double ticks) {
+    double wristRotations = ticks * Constants.Wrist.WRIST_GEAR_RATIO;
+    double wristDegrees = wristRotations * 360;
+    return wristDegrees;
+  } 
+
 
   @Override
   public void periodic() {
     // System.out.println(RobotContainer.indexer.getNoteDetected());
-    // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Wrist Speed", wrist.get());
+    SmartDashboard.putString("WristState", String.valueOf(getState()));
+    SmartDashboard.putNumber("Wrist Position Encoder", wristEncoder.getPosition());
+    SmartDashboard.putNumber("Wrist Position Degrees", ticksToDegrees(wristEncoder.getPosition()));
+    SmartDashboard.putNumber("Setpoint Wrist", getSetpoint());
+
     switch (wristState) {
       case MANUAL:
-        // System.out.println("Wrist Position " + wristEncoder.getPosition());
-        SmartDashboard.putNumber("Wrist Speed", wrist.get());
-        wrist.set(RobotContainer.operatorPad.getRightY() *-1); // intuitive
+        wrist.set(RobotContainer.operatorPad.getRightY() * -1); // intuitive
         break;
       case POSITION:
         setWristPosition();
@@ -106,6 +118,13 @@ public class Wrist extends SubsystemBase {
       case AMP:
         setSetpointWrist(-20);
         setWristPosition();
+        break;
+      case IDLE:
+        setSetpointWrist(15);
+        setWristPosition();
+        break;
+      default:
+        wrist.set(0);
         break;
     }
   }

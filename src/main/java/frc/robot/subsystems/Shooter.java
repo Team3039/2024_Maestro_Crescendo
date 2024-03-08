@@ -19,16 +19,16 @@ public class Shooter extends SubsystemBase {
 		IDLE,
 		PASSIVE,
 		CLOSESHOT,
-        FARSHOT,
+		FARSHOT,
 		POSITION,
 		TEST
 
-  }
-	
+	}
+
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
 	public TalonFX shooterRight = new TalonFX(Constants.Ports.SHOOTER_RIGHT);
 
-    public ShooterState shooterState = ShooterState.IDLE;
+	public ShooterState shooterState = ShooterState.IDLE;
 
 	VelocityVoltage voltageLeft = new VelocityVoltage(0);
 	VelocityVoltage voltageRight = new VelocityVoltage(0);
@@ -38,13 +38,13 @@ public class Shooter extends SubsystemBase {
 		shooterRight.setNeutralMode(NeutralModeValue.Coast);
 
 		Slot0Configs configs = new Slot0Configs()
-        .withKP(Constants.Shooter.SHOOTER_KP)
-        .withKI(Constants.Shooter.SHOOTER_KI)
-        .withKD(Constants.Shooter.SHOOTER_KD);
+				.withKP(Constants.Shooter.SHOOTER_KP)
+				.withKI(Constants.Shooter.SHOOTER_KI)
+				.withKD(Constants.Shooter.SHOOTER_KD);
 
-        shooterLeft.getConfigurator().apply(configs);
-        shooterRight.getConfigurator().apply(configs);
-		
+		shooterLeft.getConfigurator().apply(configs);
+		shooterRight.getConfigurator().apply(configs);
+
 		shooterLeft.setInverted(true);
 		shooterRight.setInverted(false);
 
@@ -52,7 +52,7 @@ public class Shooter extends SubsystemBase {
 		shooterRight.getPosition().setUpdateFrequency(0);
 	}
 
-	public void setState (ShooterState state){
+	public void setState(ShooterState state) {
 		shooterState = state;
 	}
 
@@ -60,48 +60,49 @@ public class Shooter extends SubsystemBase {
 		return shooterState;
 	}
 
-	public void setWheelSpeed(double speedLeft, double speedRight) {
-		shooterLeft.set(speedLeft);
-		shooterRight.set(speedRight);
+	public void setWheelSpeed(double speed) {
+		shooterLeft.set(speed);
+		shooterRight.set(speed);
 	}
 
-	public void setShooterVelocity(double RPMLeft, double RPMRight){
-        shooterLeft.setControl(voltageLeft.withVelocity(RPMLeft));
-		shooterRight.setControl(voltageRight.withVelocity(RPMRight));
-    }
+	public void setShooterVelocity(double RPS) {
+		shooterLeft.setControl(voltageLeft.withVelocity(RPS));
+		shooterRight.setControl(voltageRight.withVelocity(RPS));
+	}
+	// public boolean isAtSetpoint(double RPS){
+	// if ()
+	// return false;
+	// }
 
 	@Override
 	public void periodic() {
 
+		SmartDashboard.putNumber("RPM Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
+		SmartDashboard.putNumber("RPM Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
 
-		SmartDashboard.putNumber("RPM Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble() );
-        SmartDashboard.putNumber("RPM Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
-	
 		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
-
-
-
 
 		switch (shooterState) {
 			case IDLE:
-			setShooterVelocity(0, 0);
-			break;
+				setShooterVelocity(50);
+				// setWheelSpeed(.5);
+				break;
 			case PASSIVE:
-			setShooterVelocity(40, 40);
+				setShooterVelocity(40);
 				break;
 			case POSITION:
-			break;
+				break;
 			case FARSHOT:
-				setWheelSpeed(-0.7,-0.7);
+				setWheelSpeed(-0.7);
 				break;
 			case CLOSESHOT:
-				setWheelSpeed(0.5, 0.5);
+				setWheelSpeed(0.6);
 				break;
-            case TEST:
-			if(RobotContainer.operatorPad.getL3Button()){ 
-				setWheelSpeed(20, 20);
-			}
-			break;
+			case TEST:
+				if (RobotContainer.operatorPad.getL3Button()) {
+					setWheelSpeed(0.3);
+				}
+				break;
 		}
 	}
 }

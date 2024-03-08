@@ -18,8 +18,8 @@ public class ActuateToAmp extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ActuateWristToSetpoint(Constants.Wrist.WRIST_TO_AMP, 3),
-      new ActuateElevatorToSetpoint(Constants.Elevator.ELEVATOR_TO_AMP, 5)
+      new ActuateElevatorToSetpoint(Constants.Elevator.ELEVATOR_TO_AMP, 5),
+      new ActuateWristToSetpoint(Constants.Wrist.WRIST_TO_AMP, 3)
     );
   }
 }
