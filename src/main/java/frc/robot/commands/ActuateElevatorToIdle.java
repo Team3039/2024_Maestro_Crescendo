@@ -6,44 +6,35 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Indexer.IndexerState;
-import frc.robot.subsystems.Intake.IntakeState;
-import frc.robot.subsystems.Shooter.ShooterState;
-import frc.robot.subsystems.Wrist.WristState;
-
-public class Shoot extends Command {
-  /** Creates a new SetIntakeToIntakeMode. */
-  public Shoot() {
+import frc.robot.subsystems.Elevator.ElevatorState;
+public class ActuateElevatorToIdle extends Command {
+  double elevatorTolerance = 0;
+  /** Creates a new ActuateToIdle. */
+  public ActuateElevatorToIdle(double elevatorTolerance) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter);
+addRequirements(RobotContainer.elevator);
+this.elevatorTolerance = elevatorTolerance;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    // RobotContainer.wrist.setState(WristState.ALIGN);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    RobotContainer.shooter.setState(ShooterState.CLOSESHOT);
-    // RobotContainer.indexer.setState(IndexerState.INDEXING);
-    }
-  
+    RobotContainer.elevator.setState(ElevatorState.IDLE);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.setState(ShooterState.IDLE);
-    // RobotContainer.indexer.setState(IndexerState.IDLE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return  RobotContainer.elevator.isAtSetpoint(2);
   }
 }

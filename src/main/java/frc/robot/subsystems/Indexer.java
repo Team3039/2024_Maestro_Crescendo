@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -20,13 +21,16 @@ public class Indexer extends SubsystemBase {
        IDLE, 
        SHOOTING,
       INDEXING,
-      MANUAL
+      MANUAL,
+      RELEASE
     }
     public IndexerState indexerState = IndexerState.IDLE;
 
     public CANSparkMax indexer = new CANSparkMax(Constants.Ports.INDEXER, MotorType.kBrushless);
 
     public DigitalInput beamBreak = new DigitalInput(Constants.Ports.BEAM_BREAK);
+
+   public static boolean hasIndexed = false;
 
     public boolean hasNote;
 
@@ -58,23 +62,39 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
       SmartDashboard.putBoolean("hasNote", getNoteDetected());
       SmartDashboard.putString("Indexer State", String.valueOf(getState()));
+      SmartDashboard.putBoolean("hasIndexed", hasIndexed);
     switch (indexerState) {
       case IDLE:
         setWheelSpeed(0.0);
+        hasIndexed = false;
+        Intake.hasIntaked = false;
       break;
       case SHOOTING:
-        setWheelSpeed(.9);
+        setWheelSpeed(.5);
         break;
       case INDEXING:
-       setWheelSpeed(.6);
+      if (beamBreak.get()){
+        hasIndexed = true;
+      }
+      if (getNoteDetected() || hasIndexed){
+        setWheelSpeed(0);
+      }
+      else{
+      setWheelSpeed(.6);
+      }
+
         break;
       case MANUAL:
         if (RobotContainer.operatorPad.getPSButton()){
           setWheelSpeed(0.6);
         }
+      break;
+      case RELEASE:
+
+      setWheelSpeed(-.5);
+      break;
     }
   }
 }

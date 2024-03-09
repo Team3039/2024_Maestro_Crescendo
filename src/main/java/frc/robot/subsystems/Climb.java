@@ -48,22 +48,22 @@ public class Climb extends SubsystemBase {
 
                 break;
             case MANUAL:
-                if (RobotContainer.operatorPad.getL1Button()) {
-                    leftClimber.set(.1);
+                if (RobotContainer.driverPad.getL1Button()) {
+                    leftClimber.set(.2); //up
                     // setLeftClimbPosition(getLeftClimbPosition() + 5);
                 }
-                else if(RobotContainer.operatorPad.getL2Button()){
-                    leftClimber.set(-.1);
+                else if(RobotContainer.driverPad.getL2Button()){
+                    leftClimber.set(-.2); //down
                 }
                else  {
                     leftClimber.set(0);
                     // setLeftClimbPosition(getRightClimbPosition() + 5);
                 } 
-                 if(RobotContainer.operatorPad.getR1Button()){
-                    rightClimber.set(.1);
+                 if(RobotContainer.driverPad.getR1Button()){
+                    rightClimber.set(.2); //up
                 }
-                else if (RobotContainer.operatorPad.getR2Button()) {
-                    rightClimber.set(-.1);
+                else if (RobotContainer.driverPad.getR2Button()) {
+                    rightClimber.set(-.2); //down
                     // setLeftClimbPosition(getLeftClimbPosition() - 5);
                 } else {
                     rightClimber.set(0);

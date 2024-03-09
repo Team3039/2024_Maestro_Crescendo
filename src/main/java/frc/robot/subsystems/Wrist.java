@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,19 +27,23 @@ public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
   public enum WristState {
     MANUAL,
-    ALIGN,
     POSITION,
     AMP,
-    IDLE
+    ALIGN,
+    CLOSESHOT,
+    INTERPOLATED
   }
 
- public static WristState wristState = WristState.MANUAL;
+ public static WristState wristState = WristState.ALIGN;
 
   CANSparkMax wrist = new CANSparkMax(Constants.Ports.WRIST, MotorType.kBrushless);
 
   RelativeEncoder wristEncoder = wrist.getEncoder();
 
-  SparkPIDController wristController = wrist.getPIDController();
+	private PIDController wristController = new PIDController(
+			Constants.Wrist.WRIST_KP,
+			Constants.Wrist.WRIST_KI,
+			Constants.Wrist.WRIST_KD);
 
   public static double setpointWrist = 0;
 
@@ -46,6 +51,9 @@ public class Wrist extends SubsystemBase {
 
   public Wrist() {
     wrist.setInverted(false);
+    wrist.enableSoftLimit(SoftLimitDirection.kForward, true);
+    wrist.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
     wrist.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.Forward_Limit);
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
     wristEncoder.setPosition(51.6);
@@ -75,7 +83,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public boolean isAtSetpoint(double tolerance) {
-    return Math.abs((setpointWrist - (wristEncoder.getPosition()))) <= tolerance;
+    return Math.abs((setpointWrist - (ticksToDegrees(wristEncoder.getPosition())))) <= tolerance;
   }
 
   public void getWristPosition() {
@@ -83,8 +91,9 @@ public class Wrist extends SubsystemBase {
   }
 
   public void setWristPosition() {
-    // wristController.setFF(Constants.Wrist.WRIST_KS);
-    wristController.setReference(setpointWrist, ControlType.kPosition);
+    double output = 0;
+    output = wristController.calculate(ticksToDegrees(wristEncoder.getPosition()), setpointWrist) + Constants.Wrist.WRIST_KS;
+    wrist.set(MathUtil.clamp(output, -.4, .4));
   }
 
   public double ticksToDegrees(double ticks) {
@@ -111,18 +120,20 @@ public class Wrist extends SubsystemBase {
       case POSITION:
         setWristPosition();
         break;
-      case ALIGN:
-        setSetpointWrist(30);
-        setWristPosition();
-        break;
       case AMP:
         setSetpointWrist(-20);
         setWristPosition();
         break;
-      case IDLE:
-        setSetpointWrist(15);
+      case ALIGN:
+        setSetpointWrist(ticksToDegrees(Constants.Wrist.WRIST_INTAKING));
         setWristPosition();
         break;
+      case CLOSESHOT:
+        setSetpointWrist(ticksToDegrees(52));
+        setWristPosition();
+        break;
+      case INTERPOLATED:
+        // RobotContainer.vision.getInterpolated();
       default:
         wrist.set(0);
         break;

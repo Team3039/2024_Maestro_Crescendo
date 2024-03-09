@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     RobotContainer.shooter.setState(ShooterState.IDLE);
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
-    RobotContainer.wrist.setState(WristState.MANUAL);
+    RobotContainer.wrist.setState(WristState.ALIGN);
   }
 
   @Override
@@ -105,7 +105,6 @@ public class Robot extends TimedRobot {
     if (autoCommand != null) {
 			autoCommand.cancel();
 		}
-    SignalLogger.start();
   }
   
 
@@ -118,16 +117,16 @@ public class Robot extends TimedRobot {
     //   RobotContainer.intake.setState(IntakeState.INTAKING);
     // };
     // RobotContainer.orchestrator.setState(OrchestratorState.MARIOTIME);
-    System.out.println(RobotContainer.driverPad.getRightX());
+    // System.out.println(RobotContainer.driverPad.getRightX());
 
-    if (RobotContainer.driverPad.getCrossButton()){
+    // if (RobotContainer.driverPad.getCrossButton()){
       // // RobotContainer.intake.setState(IntakeState.INTAKING);
       // RobotContainer.indexer.setState(IndexerState.SHOOTING);
       //  }
       //  if(RobotContainer.indexer.getNoteDetected()){
       //   // RobotContainer.intake.setState(IntakeState.IDLE);
       //   RobotContainer.indexer.setState(IndexerState.IDLE);
-      } 
+      // } 
     // if (RobotContainer.driverPad.getCircleButton()){
     //   RobotContainer.indexer.setState(IndexerState.INDEXING);
     // }

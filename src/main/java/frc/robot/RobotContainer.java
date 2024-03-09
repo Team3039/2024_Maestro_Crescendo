@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -6,8 +7,9 @@ package frc.robot;
 
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-// import com.pathplanner.lib.auto.AutoBuilder;
-// import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.EventMarker;
 import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,13 +17,23 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-// import frc.robot.auto.PPTrajectoryGenerator;
+import frc.robot.auto.StartIntakeAuto;
 import frc.robot.commands.ActuateIntake;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.ActuateRelease;
+import frc.robot.commands.ActuateToAlign;
+import frc.robot.commands.ActuateToAmp;
+import frc.robot.commands.ActuateToTrap;
+import frc.robot.commands.ActuateWristToForwardLimit;
+import frc.robot.commands.IndexerToShoot;
+import frc.robot.commands.ShootAMP;
+import frc.robot.commands.SpinUpSubwoofer;
 import frc.robot.commands.ElevatorRoutines.SetElevatorManualOverride;
+import frc.robot.commands.WristRoutines.ActuateWristToAlign;
+import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
 import frc.robot.commands.WristRoutines.SetWristManualOverride;
 import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
@@ -58,7 +70,7 @@ public class RobotContainer {
   //     .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   /*
-   * InterpolatedPS4 GamePad Treats Axis Inputs Exponentially Instead Of Linearly
+   * InterpolatedPS4GamePad Treats Axis Inputs Exponentially Instead Of Linearly
    */
   public static final InterpolatedPS4Gamepad driverPad = new InterpolatedPS4Gamepad(0); // Pilot Joystick
   public static final InterpolatedPS4Gamepad operatorPad = new InterpolatedPS4Gamepad(1); // Co-Pilot Joystick
@@ -119,10 +131,10 @@ public class RobotContainer {
   private void configureBindings() {
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
-            .withVelocityY(-driverPad.getLeftX() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-driverPad.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-driverPad.interpolatedRightXAxis() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
     // driverR1.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
     //                                                                                                              // Drive
@@ -135,31 +147,40 @@ public class RobotContainer {
     // // reset the field-centric heading on options press
     driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-    driverCircle.whileTrue(new ActuateIntake());
-    driverL1.whileTrue(new Shoot());
+    operatorCircle.onTrue(new ActuateToTrap());
+    operatorR1.whileTrue(new SpinUpSubwoofer());
+    operatorX.onTrue(new ActuateToAlign());
+    operatorR2.whileTrue(new ActuateRelease());
+    operatorShare.toggleOnTrue(new ActuateWristToForwardLimit());
+    operatorTriangle.whileTrue(new ActuateToAmp());
+    operatorL1.whileTrue(new IndexerToShoot());
+    operatorL2.whileTrue(new ActuateIntake());
+
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
     operatorStart.toggleOnTrue(new SetElevatorManualOverride());
     operatorStart.toggleOnTrue(new SetWristManualOverride());
-    // driverX.whileTrue(new Shooter().setState(ShooterState.TEST));
-
   }
-
   public RobotContainer() {
-    // NamedCommands.registerCommands(PPTrajectoryGenerator.eventMap);
-    // NamedCommands.registerCommand("Print", new ActuateIntake());
+    NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
+    NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
+    NamedCommands.registerCommand("print hello", Commands.print("hello"));
+    NamedCommands.registerCommand("Intake", new StartIntakeAuto());
+    NamedCommands.registerCommand("Side Speaker Note Shot", new ActuateWristToSetpoint(45, 2));
+    NamedCommands.registerCommand("Center Speaker Note Shot", new ActuateWristToSetpoint(48, 0));
+    // NamedCommands.registerCommand("Print", new PrintCommand("testing"));
+    NamedCommands.registerCommand("Align Wrist", new ActuateWristToAlign(1));
+
+
     configureBindings();
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
-    autoChooser = null;
-    
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected();
-    return null;
+    return autoChooser.getSelected();
   }
-
- 
 }

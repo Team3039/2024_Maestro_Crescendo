@@ -64,23 +64,25 @@ public class Constants {
 
 	public static final class Elevator {
 		// Elevator PID //
-		public static final double ELEVATOR_KP = 0.0;
+		public static final double ELEVATOR_KP = .06             ;
 		public static final double ELEVATOR_KI = 0.0;
 		public static final double ELEVATOR_KD = 0.0;
 
 		// Elevator FF //
-		public static final double ELEVATOR_KS = 0.0;
+		public static final double HIGH_ELEVATOR_KS = 0.086;
+		public static final double LOW_ELEVATOR_KS = 0.046;
 		public static final double ELEVATOR_KG = 0.0;
 		public static final double ELEVATOR_KV = 0.0;
 		public static final double ELEVATOR_MAX_VEL = 0;
 		public static final double ELEVATOR_MAX_ACCEL = 0;
-		public static final double ELEVATOR_TO_AMP = 0;
+		public static final double ELEVATOR_TO_AMP = 8;
 	}
 
 	public static final class Shooter {
-		public static final double SHOOTER_KP = 0.4;
-		public static final double SHOOTER_KI = 0.003;
-		public static final double SHOOTER_KD = 0.0;
+		public static final double SHOOTER_KP = 0.12;
+		public static final double SHOOTER_KI = 0.000;
+		public static final double SHOOTER_KD = 0.000;
+        public static final double SHOOTER_FF = 1.75;
 
 	}
 
@@ -113,17 +115,18 @@ public class Constants {
 	}
 
 	public static final class Wrist {
-		public static final double WRIST_KP = -.000000000000000000005;
+		public static final double WRIST_KP = .07;
 		public static final double WRIST_KI = 0;
-		public static final double WRIST_KD = 0;
+		public static final double WRIST_KD = 0.003;
 		public static final double WRIST_KS = 0.000;
 		public static final double WRIST_KG = 0.000;
 		public static final double WRIST_KV = 0;
 
 		public static final double WRIST_GEAR_RATIO = 1.0 / 350.0;
 		public static final float Forward_Limit = 51;
-		public static final float Reverse_Limit = -26;
-		public static final double WRIST_TO_AMP = 0;
+		public static final float Reverse_Limit = -27;
+		public static final double WRIST_TO_AMP = 52;
+        public static final double WRIST_INTAKING = 34;
 	}
 
 }

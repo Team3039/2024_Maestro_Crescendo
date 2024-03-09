@@ -23,6 +23,7 @@
 // import frc.robot.commands.ActuateIntake;
 // import frc.robot.commands.ActuateToAmp;
 // import frc.robot.commands.WristRoutines.ActuateWristToAlign;
+// import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
 // import frc.robot.subsystems.Drive;
 
 // /** Add your docs here. */
@@ -41,21 +42,12 @@
 //     public  PPTrajectoryGenerator() {
 //         // eventMap = new HashMap<>();
 //         // // eventMap.put("Claw Idle", new SetClawIdleMode());
-//         eventMap.put("Intake", new ActuateIntake());
-//         eventMap.put("Amp Elevate", new ActuateToAmp());
-//         eventMap.put("Align Wrist", new ActuateWristToAlign(0, 0));
-//         eventMap.put("Print", new PrintCommand("testing"));
+//         // eventMap.put("Amp Elevate", new ActuateToAmp());
+//         eventMap.put("Align Wrist", new ActuateWristToAlign(1));
 //         // eventMap.put("Elevator Idle", new SetElevatorIdleMode());
 //         // eventMap.put("Elevator Mid Grid", new SetElevatorPositionMode(Constants.Elevator.MID_GRID_SETPOINT));
 //         // eventMap.put("Elevator High Grid", new SetElevatorPositionMode(Constants.Elevator.HIGH_GRID_SETPOINT));
-//         // eventMap.put("Wrist Idle", new ActuateWristToAlign(0));
-//         // eventMap.put("Wrist Position", new SetWristPositionMode(0));
-
-//         ;
+        
 //     }
-
-//     // public static AutoBuilder getAutoBuilder() {
-//     //     return autoBuilder;
-//     // }  
 // }
 

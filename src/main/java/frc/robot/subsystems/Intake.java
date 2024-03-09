@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.commands.ActuateIntake;
 import frc.robot.Constants;
@@ -26,6 +27,8 @@ public class Intake extends SubsystemBase {
     public CANSparkMax intake = new CANSparkMax(Constants.Ports.INTAKE, CANSparkLowLevel.MotorType.kBrushless);
 
     public static double speed = 0;
+
+    public static boolean hasIntaked = false;
 
   public Intake() {
     intake.setIdleMode(IdleMode.kBrake);
@@ -47,17 +50,24 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+    SmartDashboard.putString("Intake State", String.valueOf(getState()));
     // This method will be called once per scheduler run
     switch (intakeState) {
       case IDLE:
         setWheelSpeed(0);
-      break;
+        hasIntaked = false;
+        break;
       case RELEASE:
-        setWheelSpeed(-.4);
+        setWheelSpeed(-.5);
         break;
       case INTAKING:
-       setWheelSpeed(.6);
+        if (Indexer.hasIndexed){
+          setWheelSpeed(0);
+          hasIntaked = true;
+        }
+        else{
+       setWheelSpeed(.3);
+        }
         break;
       case MANUAL:
       if(RobotContainer.operatorPad.getTouchpad()){

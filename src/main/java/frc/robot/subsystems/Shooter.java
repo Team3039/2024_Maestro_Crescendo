@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -19,9 +21,8 @@ public class Shooter extends SubsystemBase {
 		IDLE,
 		PASSIVE,
 		CLOSESHOT,
-		FARSHOT,
-		POSITION,
-		TEST
+		INTERPOLATED,
+		AMP
 
 	}
 
@@ -50,6 +51,7 @@ public class Shooter extends SubsystemBase {
 
 		shooterLeft.getPosition().setUpdateFrequency(0);
 		shooterRight.getPosition().setUpdateFrequency(0);
+		shooterRight.setControl(new StrictFollower(shooterLeft.getDeviceID()));
 	}
 
 	public void setState(ShooterState state) {
@@ -62,12 +64,12 @@ public class Shooter extends SubsystemBase {
 
 	public void setWheelSpeed(double speed) {
 		shooterLeft.set(speed);
-		shooterRight.set(speed);
 	}
 
 	public void setShooterVelocity(double RPS) {
-		shooterLeft.setControl(voltageLeft.withVelocity(RPS));
-		shooterRight.setControl(voltageRight.withVelocity(RPS));
+		shooterLeft.setControl(
+			voltageLeft.withVelocity(RPS).
+			withFeedForward(Constants.Shooter.SHOOTER_FF));
 	}
 	// public boolean isAtSetpoint(double RPS){
 	// if ()
@@ -77,31 +79,28 @@ public class Shooter extends SubsystemBase {
 	@Override
 	public void periodic() {
 
-		SmartDashboard.putNumber("RPM Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
-		SmartDashboard.putNumber("RPM Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
+		SmartDashboard.putNumber("RPS Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
+		SmartDashboard.putNumber("RPS Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
+		SmartDashboard.putNumber("Current Output Left Shooter", shooterRight.getTorqueCurrent().getValueAsDouble());
 
 		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
 		switch (shooterState) {
 			case IDLE:
-				setShooterVelocity(50);
-				// setWheelSpeed(.5);
+				// setShooterVelocity(0);
+				setWheelSpeed(0);
 				break;
 			case PASSIVE:
-				setShooterVelocity(40);
+				setShooterVelocity(10);
 				break;
-			case POSITION:
-				break;
-			case FARSHOT:
-				setWheelSpeed(-0.7);
+			case INTERPOLATED:
+				setShooterVelocity(60);
 				break;
 			case CLOSESHOT:
-				setWheelSpeed(0.6);
-				break;
-			case TEST:
-				if (RobotContainer.operatorPad.getL3Button()) {
-					setWheelSpeed(0.3);
-				}
+			setShooterVelocity(100);
+			break;
+			case AMP:
+				setShooterVelocity(28);
 				break;
 		}
 	}

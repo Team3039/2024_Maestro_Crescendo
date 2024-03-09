@@ -12,14 +12,14 @@ import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ActuateToAmp extends SequentialCommandGroup {
-  /** Creates a new ActuateToAmp. */
-  public ActuateToAmp() {
+public class ActuateToTrap extends SequentialCommandGroup {
+  /** Creates a new ActuateToTrap. */
+  public ActuateToTrap() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ActuateElevatorToSetpoint(Constants.Elevator.ELEVATOR_TO_AMP, 12),
-        new ActuateWristToSetpoint(Constants.Wrist.WRIST_TO_AMP, 2),
-        new ShootAMP());
+      
+      new ActuateElevatorToSetpoint(20, 5),
+      new ActuateWristToSetpoint(50, 1));
   }
 }
