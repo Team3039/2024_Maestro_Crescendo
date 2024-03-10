@@ -17,7 +17,7 @@ public class ActuateToAlign extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ActuateElevatorToIdle(5),
-      new ActuateWristToAlign(2)
+      new ActuateWristToAlign()
     );
   }
 }

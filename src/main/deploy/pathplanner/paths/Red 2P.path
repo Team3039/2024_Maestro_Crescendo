@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.526797053594109,
-        "y": 0.7553692885163543
+        "x": 15.116223375303894,
+        "y": 5.599912914111543
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.994778878446647,
-        "y": 0.7696215392430785
+        "x": 15.160201748974927,
+        "y": 5.599912914111543
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.287048796319816,
-        "y": 1.7102700872068404
+        "x": 13.75,
+        "y": 5.599912914111543
       },
       "prevControl": {
-        "x": 11.14106634823316,
-        "y": 0.6309883774101834
-      },
-      "nextControl": {
-        "x": 15.433031244406472,
-        "y": 2.7895517970034973
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 15.78119267349646,
-        "y": 4.318431970197273
-      },
-      "prevControl": {
-        "x": 15.78119267349646,
-        "y": 4.318431970197273
+        "x": 13.744963125558654,
+        "y": 5.599912914111543
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +30,18 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Ready Preload",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 3.0,
@@ -55,13 +50,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 61.82140989004067,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 1.6365770416167809,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

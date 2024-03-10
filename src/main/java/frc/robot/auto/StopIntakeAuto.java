@@ -26,8 +26,8 @@ public class StopIntakeAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.setState(IntakeState.INTAKING);
-    RobotContainer.indexer.setState(IndexerState.INDEXING);
+    RobotContainer.intake.setState(IntakeState.IDLE);
+    RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.wrist.setState(WristState.ALIGN);
   }
 

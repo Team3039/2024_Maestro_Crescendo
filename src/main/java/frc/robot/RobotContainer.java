@@ -21,7 +21,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.auto.IndexerStartShootAuto;
+import frc.robot.auto.IndexerStopShootAuto;
+import frc.robot.auto.SpinUpSubwooferAuto;
 import frc.robot.auto.StartIntakeAuto;
+import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
 import frc.robot.commands.ActuateToAlign;
@@ -166,11 +170,16 @@ public class RobotContainer {
     NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
     NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
     NamedCommands.registerCommand("print hello", Commands.print("hello"));
-    NamedCommands.registerCommand("Intake", new StartIntakeAuto());
+    NamedCommands.registerCommand("Start Intake", new StartIntakeAuto());
     NamedCommands.registerCommand("Side Speaker Note Shot", new ActuateWristToSetpoint(45, 2));
     NamedCommands.registerCommand("Center Speaker Note Shot", new ActuateWristToSetpoint(48, 0));
-    // NamedCommands.registerCommand("Print", new PrintCommand("testing"));
-    NamedCommands.registerCommand("Align Wrist", new ActuateWristToAlign(1));
+    NamedCommands.registerCommand("Align Wrist", new ActuateWristToAlign());
+    NamedCommands.registerCommand("Spin Up Close", new SpinUpSubwooferAuto());
+    NamedCommands.registerCommand("Indexer Start Shoot", new IndexerStartShootAuto());
+    NamedCommands.registerCommand("Indexer Stop Shoot", new IndexerStopShootAuto());
+    NamedCommands.registerCommand("Stop Intake", new StopIntakeAuto());
+
+
 
 
     configureBindings();

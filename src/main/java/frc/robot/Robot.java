@@ -40,20 +40,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Pathfinding.setPathfinder(new LocalADStar());
-    // RobotContainer.drivetrain.configurePathPlanner();
    robotContainer = new RobotContainer();
      
     //  PortForwarder.add(1181, "photonvision.local", 1182);
     //  PortForwarder.add(1183, "photonvision.local", 1184);
 
-
     RobotContainer.drivetrain.getDaqThread().setThreadPriority(99);
         SmartDashboard.putData("Auto Selector", autoChooser);
  
-    RobotContainer.shooter.setState(ShooterState.IDLE);
-    RobotContainer.indexer.setState(IndexerState.IDLE);
-    RobotContainer.intake.setState(IntakeState.IDLE);
-    RobotContainer.wrist.setState(WristState.ALIGN);
   }
 
   @Override
@@ -105,6 +99,10 @@ public class Robot extends TimedRobot {
     if (autoCommand != null) {
 			autoCommand.cancel();
 		}
+    RobotContainer.shooter.setState(ShooterState.IDLE);
+    RobotContainer.indexer.setState(IndexerState.IDLE);
+    RobotContainer.intake.setState(IntakeState.IDLE);
+    RobotContainer.wrist.setState(WristState.ALIGN);
   }
   
 

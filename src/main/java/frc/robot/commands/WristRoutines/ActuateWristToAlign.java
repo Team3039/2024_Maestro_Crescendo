@@ -10,10 +10,8 @@ import frc.robot.subsystems.Wrist.WristState;
 
 public class ActuateWristToAlign extends Command {
   /** Creates a new ActuateElevatorIdle. */
-  double toleranceWrist = 0;
-  public ActuateWristToAlign(double toleranceWrist) {
+  public ActuateWristToAlign() {
     addRequirements(RobotContainer.wrist); 
-    this.toleranceWrist = toleranceWrist;
    }
 
   // Called when the command is initially scheduled.
@@ -33,6 +31,6 @@ public class ActuateWristToAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.wrist.isAtSetpoint(toleranceWrist);
+    return true;
   }
 }

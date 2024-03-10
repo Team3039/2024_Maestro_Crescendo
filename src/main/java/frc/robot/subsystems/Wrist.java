@@ -34,7 +34,7 @@ public class Wrist extends SubsystemBase {
     INTERPOLATED
   }
 
- public static WristState wristState = WristState.ALIGN;
+ public static WristState wristState = WristState.CLOSESHOT;
 
   CANSparkMax wrist = new CANSparkMax(Constants.Ports.WRIST, MotorType.kBrushless);
 

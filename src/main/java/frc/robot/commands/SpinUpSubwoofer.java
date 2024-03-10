@@ -38,8 +38,6 @@ public class SpinUpSubwoofer extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.setState(ShooterState.IDLE);
-    RobotContainer.wrist.setState(WristState.ALIGN);
   }
 
   // Returns true when the command should end.
