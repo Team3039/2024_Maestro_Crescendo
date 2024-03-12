@@ -9,9 +9,12 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -41,26 +44,16 @@ public class Robot extends TimedRobot {
 
   CurrentLimitsConfigs configs = new CurrentLimitsConfigs().withStatorCurrentLimit(50);
   public Robot() {
-    // addPeriodic(() -> {
-    // }, 0.1);
-    // addPeriodic(()->{
-    //   if (RobotContainer.vision.resultLeftShooter != null){
-    //     Pose3d photonPose =
-    //   RobotContainer.vision.photonPoseEstimatorLeftShoot.getReferencePose();
-    //   RobotContainer.drivetrain.addVisionMeasurement(photonPose.toPose2d(),
-    //   Timer.getFPGATimestamp());}
-    //   else if(RobotContainer.vision.resultRightShooter != null){
-    //     Pose3d photonPose = RobotContainer.vision.photonPoseEstimatorRightShoot.getReferencePose();
-    //     RobotContainer.drivetrain.addVisionMeasurement(photonPose.toPose2d(), Timer.getFPGATimestamp());
-    //   }
-    // },.140);
 }
 
+Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(180));
 
   @Override
   public void robotInit() {
     // Pathfinding.setPathfinder(new LocalADStar());
+    
     robotContainer = new RobotContainer();
+    RobotContainer.drivetrain.seedFieldRelative(speakerPose);
 
     // PortForwarder.add(1181, "photonvision.local", 1182);
     // PortForwarder.add(1183, "photonvision.local", 1184);
@@ -75,6 +68,24 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    RobotContainer.vision.getCameraResult(RobotContainer.vision.shootLeftCamera, RobotContainer.vision.resultLeftShooter);
+    RobotContainer.vision.getCameraResult(RobotContainer.vision.shootRightCamera, RobotContainer.vision.resultRightShooter);
+    Translation3d rightMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootRightCamera);
+
+    if (rightMultiTagResult != null){
+      Pose2d poseRight = new Pose2d(rightMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
+    RobotContainer.drivetrain.addVisionMeasurement(poseRight, kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
+    System.out.println(poseRight);
+  }
+  Translation3d leftMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootLeftCamera);
+
+    if (leftMultiTagResult != null){
+      Pose2d poseLeft = new Pose2d(leftMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
+    RobotContainer.drivetrain.addVisionMeasurement(poseLeft, 
+    kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
+    // System.out.println(poseLeft);
+    }
    
   }
 
@@ -90,7 +101,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+   
 
+    System.out.println(RobotContainer.drivetrain.odometryIsValid());
   }
 
   @Override
@@ -131,40 +144,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    // Pose3d llPose =
-    // RobotContainer.vision.photonPoseEstimatorshoot.getReferencePose();
-    // RobotContainer.drivetrain.addVisionMeasurement(llPose.toPose2d(),
-    // kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
+    
 
-    // if (RobotContainer.driverPad.getTriangleButton()){
-    // RobotContainer.intake.setState(IntakeState.INTAKING);
-    // };
     // RobotContainer.orchestrator.setState(OrchestratorState.MARIOTIME);
     // System.out.println(RobotContainer.driverPad.getRightX());
 
-    // if (RobotContainer.driverPad.getCrossButton()){
-    // // RobotContainer.intake.setState(IntakeState.INTAKING);
-    // RobotContainer.indexer.setState(IndexerState.SHOOTING);
-    // }
-    // if(RobotContainer.indexer.getNoteDetected()){
-    // // RobotContainer.intake.setState(IntakeState.IDLE);
-    // RobotContainer.indexer.setState(IndexerState.IDLE);
-    // }
-    // if (RobotContainer.driverPad.getCircleButton()){
-    // RobotContainer.indexer.setState(IndexerState.INDEXING);
-    // }
-    // if (Pathfinding.isNewPathAvailable()){
-    // Pathfinding.setStartPosition(RobotContainer.drivetrain.getState().Pose.getTranslation());
-    // Pathfinding.setGoalPosition(pose);
-    // }
     // RobotContainer.drivetrain.redAmpFPH.onlyWhile(() ->
     // RobotContainer.driverPad.getCircleButton());
     // RobotContainer.drivetrain.redTrapClose.onlyWhile(() ->
     // RobotContainer.driverPad.getTriangleButton());
 
-    // if(RobotContainer.driverPad.getSquareButton()){
-    // RobotContainer.intake.setState(IntakeState.IDLE);
-    // }
 
   }
 

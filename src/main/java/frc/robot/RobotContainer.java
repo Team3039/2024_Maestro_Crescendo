@@ -34,6 +34,7 @@ import frc.robot.commands.ActuateToAmp;
 import frc.robot.commands.ActuateToClimb;
 import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
+import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.SpinUpSubwoofer;
 import frc.robot.commands.ElevatorRoutines.SetElevatorManualOverride;
@@ -67,7 +68,7 @@ public class RobotContainer {
   public static final Climb climb = new Climb();
   // public static final Orchestrator orchestrator = new Orchestrator();
 
-  private static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // 5% Deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
@@ -162,6 +163,7 @@ public class RobotContainer {
             .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-driverPad.interpolatedRightXAxis() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
+
     // driverR1.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
     //                                                                                                              // Drive
     //     .withVelocityY(-driverPad.getLeftX() * Constants.Drive.MaxSpeed)
@@ -172,6 +174,8 @@ public class RobotContainer {
 
     // // reset the field-centric heading on options press
     driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    driverCircle.whileTrue(new RotateToTarget());
+
 
     operatorCircle.onTrue(new ActuateToClimb());
     operatorR1.whileTrue(new SpinUpSubwoofer());
@@ -199,9 +203,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
     NamedCommands.registerCommand("print hello", Commands.print("hello"));
     NamedCommands.registerCommand("Start Intake", new StartIntakeAuto());
-    NamedCommands.registerCommand("Actuate Wrist Side Speaker Shoot", new ActuateWristToSetpoint(47, 2));
-    NamedCommands.registerCommand("Actuate Wrist Center Speaker Shoot", new ActuateWristToSetpoint(48, 0));
-    NamedCommands.registerCommand("null", new ActuateWristToSetpoint(40, 2));
+    NamedCommands.registerCommand("Actuate Wrist Far Side Speaker Shoot", new ActuateWristToSetpoint(47, 2));
+    NamedCommands.registerCommand("Actuate Wrist Center Speaker", new ActuateWristToSetpoint(48, 0));
+    NamedCommands.registerCommand("Actuate Wrist Far Side Stage", new ActuateWristToSetpoint(40, 2));
     NamedCommands.registerCommand("Align Wrist", new ActuateWristToAlign());
     NamedCommands.registerCommand("Spin Up Close", new SpinUpSubwooferAuto());
     NamedCommands.registerCommand("Indexer Start Shoot", new IndexerStartShootAuto());
