@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter.ShooterState;
 
 public class Indexer extends SubsystemBase {
   public enum IndexerState{
@@ -69,22 +70,26 @@ public class Indexer extends SubsystemBase {
       case IDLE:
         setWheelSpeed(0.0);
         hasIndexed = false;
-        Intake.hasIntaked = false;
       break;
       case SHOOTING:
-        setWheelSpeed(.5);
+      hasIndexed = false;
+      // if (RobotContainer.shooter.shooterState == ShooterState.AMP){
+      //   setWheelSpeed(.3);
+      // }
+      //  else{ 
+        setWheelSpeed(.8);
+      // }
         break;
       case INDEXING:
       if (beamBreak.get()){
         hasIndexed = true;
       }
-      if (getNoteDetected() || hasIndexed){
+      if (hasIndexed){
         setWheelSpeed(0);
       }
       else{
-      setWheelSpeed(.6);
+      setWheelSpeed(.5);
       }
-
         break;
       case MANUAL:
         if (RobotContainer.operatorPad.getPSButton()){
@@ -92,7 +97,7 @@ public class Indexer extends SubsystemBase {
         }
       break;
       case RELEASE:
-
+        hasIndexed = false;
       setWheelSpeed(-.5);
       break;
     }

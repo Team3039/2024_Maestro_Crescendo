@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.util;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

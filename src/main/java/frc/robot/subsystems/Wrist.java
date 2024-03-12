@@ -13,15 +13,16 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter.ShooterState;
-import frc.robot.util.InterpolatingDouble;
-import frc.robot.util.InterpolatingTreeMap;
-import frc.robot.util.MathUtils;
-import frc.robot.util.Vector2;
+import frc.util.InterpolatingDouble;
+import frc.util.InterpolatingTreeMap;
+import frc.util.MathUtils;
+import frc.util.Vector2;
 
 public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
@@ -31,19 +32,21 @@ public class Wrist extends SubsystemBase {
     AMP,
     ALIGN,
     CLOSESHOT,
+    TUNABLE,
     INTERPOLATED
+
   }
 
- public static WristState wristState = WristState.CLOSESHOT;
+  public static WristState wristState = WristState.CLOSESHOT;
 
   CANSparkMax wrist = new CANSparkMax(Constants.Ports.WRIST, MotorType.kBrushless);
 
   RelativeEncoder wristEncoder = wrist.getEncoder();
 
-	private PIDController wristController = new PIDController(
-			Constants.Wrist.WRIST_KP,
-			Constants.Wrist.WRIST_KI,
-			Constants.Wrist.WRIST_KD);
+  private PIDController wristController = new PIDController(
+      Constants.Wrist.WRIST_KP,
+      Constants.Wrist.WRIST_KI,
+      Constants.Wrist.WRIST_KD);
 
   public static double setpointWrist = 0;
 
@@ -58,7 +61,6 @@ public class Wrist extends SubsystemBase {
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
     wristEncoder.setPosition(51.6);
 
- 
     wristController.setP(Constants.Wrist.WRIST_KP);
     wristController.setI(Constants.Wrist.WRIST_KI);
     wristController.setD(Constants.Wrist.WRIST_KD);
@@ -92,7 +94,8 @@ public class Wrist extends SubsystemBase {
 
   public void setWristPosition() {
     double output = 0;
-    output = wristController.calculate(ticksToDegrees(wristEncoder.getPosition()), setpointWrist) + Constants.Wrist.WRIST_KS;
+    output = wristController.calculate(ticksToDegrees(wristEncoder.getPosition()), setpointWrist)
+        + Constants.Wrist.WRIST_KS;
     wrist.set(MathUtil.clamp(output, -.4, .4));
   }
 
@@ -100,17 +103,17 @@ public class Wrist extends SubsystemBase {
     double wristRotations = ticks * Constants.Wrist.WRIST_GEAR_RATIO;
     double wristDegrees = wristRotations * 360;
     return wristDegrees;
-  } 
-
+  }
 
   @Override
   public void periodic() {
     // System.out.println(RobotContainer.indexer.getNoteDetected());
 
-    SmartDashboard.putNumber("Wrist Speed", wrist.get());
+    // SmartDashboard.putNumber("Wrist Speed", wrist.get());
     SmartDashboard.putString("WristState", String.valueOf(getState()));
     SmartDashboard.putNumber("Wrist Position Encoder", wristEncoder.getPosition());
-    SmartDashboard.putNumber("Wrist Position Degrees", ticksToDegrees(wristEncoder.getPosition()));
+    // SmartDashboard.putNumber("Wrist Position Degrees",
+    // ticksToDegrees(wristEncoder.getPosition()));
     SmartDashboard.putNumber("Setpoint Wrist", getSetpoint());
 
     switch (wristState) {
@@ -132,10 +135,18 @@ public class Wrist extends SubsystemBase {
         setSetpointWrist(ticksToDegrees(52));
         setWristPosition();
         break;
+      case TUNABLE:
+      if(RobotContainer.testPad.getL1Button()){
+        setSetpointWrist(ticksToDegrees(setpointWrist + 2));
+        setWristPosition();
+      }
+      if(RobotContainer.testPad.getR1Button()){
+        setSetpointWrist(ticksToDegrees(setpointWrist - 2));
+        setWristPosition();
+      }
+        break;
       case INTERPOLATED:
-        // RobotContainer.vision.getInterpolated();
-      default:
-        wrist.set(0);
+        // setSetpointWrist(ticksToDegrees(RobotContainer.vision.setpointWrist));
         break;
     }
   }

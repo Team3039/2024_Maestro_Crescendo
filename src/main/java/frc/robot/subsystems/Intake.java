@@ -34,6 +34,7 @@ public class Intake extends SubsystemBase {
     intake.setIdleMode(IdleMode.kBrake);
     intake.setInverted(false);
     intake.burnFlash();
+    intake.setSmartCurrentLimit(500);
   }
 
   public void setState(IntakeState state) {
@@ -51,11 +52,11 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putString("Intake State", String.valueOf(getState()));
+    // SmartDashboard.putNumber("Intake Speed", intake.getOutputCurrent());
     // This method will be called once per scheduler run
     switch (intakeState) {
       case IDLE:
         setWheelSpeed(0);
-        hasIntaked = false;
         break;
       case RELEASE:
         setWheelSpeed(-.5);
@@ -63,10 +64,9 @@ public class Intake extends SubsystemBase {
       case INTAKING:
         if (Indexer.hasIndexed){
           setWheelSpeed(0);
-          hasIntaked = true;
         }
         else{
-       setWheelSpeed(.3);
+       setWheelSpeed(.4);
         }
         break;
       case MANUAL:

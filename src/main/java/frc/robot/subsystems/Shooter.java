@@ -83,7 +83,7 @@ public class Shooter extends SubsystemBase {
 		SmartDashboard.putNumber("RPS Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
 		SmartDashboard.putNumber("Current Output Left Shooter", shooterRight.getTorqueCurrent().getValueAsDouble());
 
-		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
+		// SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
 		switch (shooterState) {
 			case IDLE:
@@ -94,7 +94,7 @@ public class Shooter extends SubsystemBase {
 				setShooterVelocity(10);
 				break;
 			case INTERPOLATED:
-				setShooterVelocity(60);
+				// setShooterVelocity(RobotContainer.vision.setpointShooter);
 				break;
 			case CLOSESHOT:
 			setShooterVelocity(100);

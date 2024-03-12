@@ -42,7 +42,7 @@ public class Elevator extends SubsystemBase {
 
 	// neo rotations
 	public static double setpointElevator = 0;
-
+	
 	public Elevator() {
 
 		elevatorA.setIdleMode(IdleMode.kBrake);
@@ -107,11 +107,11 @@ public class Elevator extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Elevator Current Draw", elevatorA.getOutputCurrent());
-		SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
-		SmartDashboard.putString("Elevator State", String.valueOf(getState()));
-		SmartDashboard.putNumber("Elevator Output", elevatorA.get());
-		SmartDashboard.putNumber("Setpoint Elevator", getSetpoint());
+		// SmartDashboard.putNumber("Elevator Current Draw", elevatorA.getOutputCurrent());
+		// SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
+		// SmartDashboard.putString("Elevator State", String.valueOf(getState()));
+		// SmartDashboard.putNumber("Elevator Output", elevatorA.get());
+		// SmartDashboard.putNumber("Setpoint Elevator", getSetpoint());
 		switch (elevatorState) {
 			case IDLE:
 				setSetpoint(-.9);

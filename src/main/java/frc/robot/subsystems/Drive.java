@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -34,13 +36,14 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
-       configNeutralMode(NeutralModeValue.Brake);
+        configNeutralMode(NeutralModeValue.Brake);
+       
     }
 
     public Drive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configurePathPlanner();
-       configNeutralMode(NeutralModeValue.Brake);
+        configNeutralMode(NeutralModeValue.Brake);
     }
 
     private void configurePathPlanner() {
@@ -48,27 +51,29 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
         for (var moduleLocation : m_moduleLocations) {
             driveBaseRadius = Math.max(driveBaseRadius, moduleLocation.getNorm());
         }
-    final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-      new PIDConstants(1.0, 0, 0), // Translation constants 
-      new PIDConstants(1.0, 0, 0), // Rotation constants 
-      TunerConstants.kSpeedAt12VoltsMps, 
-      driveBaseRadius, // Drive base radius (distance from center to furthest module) 
-      new ReplanningConfig()
-    );
+        final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+                new PIDConstants(1.0, 0, 0), // Translation constants
+                new PIDConstants(1.0, 0, 0), // Rotation constants
+                TunerConstants.kSpeedAt12VoltsMps,
+                driveBaseRadius, // Drive base radius (distance from center to furthest module)
+                new ReplanningConfig());
 
         AutoBuilder.configureHolonomic(
-            ()->this.getState().Pose, // Supplier of current robot pose
-            this::seedFieldRelative,  // Consumer for seeding pose against auto
-            this::getCurrentRobotChassisSpeeds,
-            (speeds)->this.setControl(autoRequest.withSpeeds(speeds)), // Consumer of ChassisSpeeds to drive the robot
-            pathFollowerConfig,
-             () -> {var alliance = DriverStation.getAlliance();
+                () -> this.getState().Pose, // Supplier of current robot pose
+                this::seedFieldRelative, // Consumer for seeding pose against auto
+                this::getCurrentRobotChassisSpeeds,
+                (speeds) -> this.setControl(autoRequest.withSpeeds(speeds)), // Consumer of ChassisSpeeds to drive the
+                                                                             // robot
+                pathFollowerConfig,
+                () -> {
+                    var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
                         return alliance.get() == DriverStation.Alliance.Red;
                     }
                     return false;
-                }, // Change this if the path needs to be flipped on red vs blue, // Change this if the path needs to be flipped on red vs blue
-            this); // Subsystem for requirements
+                }, // Change this if the path needs to be flipped on red vs blue, // Change this if
+                   // the path needs to be flipped on red vs blue
+                this); // Subsystem for requirements
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
