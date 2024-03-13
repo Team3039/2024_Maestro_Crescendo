@@ -138,15 +138,15 @@ public class Wrist extends SubsystemBase {
       case TUNABLE:
       if(RobotContainer.testPad.getL1Button()){
         setSetpointWrist(ticksToDegrees(setpointWrist + 2));
-        setWristPosition();
       }
       if(RobotContainer.testPad.getR1Button()){
         setSetpointWrist(ticksToDegrees(setpointWrist - 2));
-        setWristPosition();
       }
+      setWristPosition();
         break;
       case INTERPOLATED:
-        // setSetpointWrist(ticksToDegrees(RobotContainer.vision.setpointWrist));
+        setSetpointWrist(ticksToDegrees(RobotContainer.vision.setpointWrist));
+        setWristPosition();
         break;
     }
   }

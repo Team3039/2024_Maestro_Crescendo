@@ -32,6 +32,7 @@ import frc.robot.commands.ActuateRelease;
 import frc.robot.commands.ActuateToAlign;
 import frc.robot.commands.ActuateToAmp;
 import frc.robot.commands.ActuateToClimb;
+import frc.robot.commands.ActuateToShootInterpolated;
 import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
 import frc.robot.commands.RotateToTarget;
@@ -58,7 +59,6 @@ import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
   public static final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
-  public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public static final Elevator elevator = new Elevator();
   public static final Intake intake = new Intake();
   public static final Vision vision = new Vision();
@@ -66,15 +66,19 @@ public class RobotContainer {
   public static final Indexer indexer = new Indexer();
   public static final Shooter shooter = new Shooter();
   public static final Climb climb = new Climb();
+  public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
+
   // public static final Orchestrator orchestrator = new Orchestrator();
 
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // 5% Deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  
 
-  // private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric()
-  //     .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1)
-  //     .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+  private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric()
+      .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1)
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   /*
    * InterpolatedPS4GamePad Treats Axis Inputs Exponentially Instead Of Linearly
@@ -157,27 +161,27 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    drivetrain.setDefaultCommand( 
+      // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-driverPad.interpolatedRightXAxis() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withRotationalRate(Vision.getRotationToSpeaker()) // Drive counterclockwise with negative X (left)
         ));
 
-    // driverR1.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
-    //                                                                                                              // Drive
-    //     .withVelocityY(-driverPad.getLeftX() * Constants.Drive.MaxSpeed)
-    //     .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate)));
+    driverTriangle.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
+                                                                                                                 // Drive
+        .withVelocityY(driverPad.getLeftX() * Constants.Drive.MaxSpeed)
+        .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate)));
 
     // driverX.whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driverPad.getLeftY(), -driverPad.getLeftX()))));
 
     // // reset the field-centric heading on options press
     driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
-    driverCircle.whileTrue(new RotateToTarget());
 
 
-    operatorCircle.onTrue(new ActuateToClimb());
+    operatorPadButton.onTrue(new ActuateToClimb());
     operatorR1.whileTrue(new SpinUpSubwoofer());
     operatorX.onTrue(new ActuateToAlign());
     operatorR2.whileTrue(new ActuateRelease());
@@ -185,11 +189,15 @@ public class RobotContainer {
     operatorTriangle.whileTrue(new ActuateToAmp());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
-    operatorPadButton.whileTrue(new ShootAMP());
+    operatorCircle.whileTrue(new ShootAMP());
+    operatorSquare.whileTrue(new ActuateToShootInterpolated(2));
 
     testStart.onTrue(new ActuateWristToTunable());
     testCircle.whileTrue(new ActuateShooterToCloseShot());
     testL2.whileTrue(new ActuateIntake());
+    testX.whileTrue(new IndexerToShoot());
+    testR2.whileTrue(new ActuateToShootInterpolated(2));
+
 
 
 

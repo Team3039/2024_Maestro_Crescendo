@@ -91,10 +91,10 @@ public class Shooter extends SubsystemBase {
 				setWheelSpeed(0);
 				break;
 			case PASSIVE:
-				setShooterVelocity(10);
+				setShooterVelocity(20);
 				break;
 			case INTERPOLATED:
-				// setShooterVelocity(RobotContainer.vision.setpointShooter);
+				setShooterVelocity(RobotContainer.vision.setpointShooter);
 				break;
 			case CLOSESHOT:
 			setShooterVelocity(100);

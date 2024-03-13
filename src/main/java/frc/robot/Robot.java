@@ -69,23 +69,23 @@ Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(180));
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    RobotContainer.vision.getCameraResult(RobotContainer.vision.shootLeftCamera, RobotContainer.vision.resultLeftShooter);
-    RobotContainer.vision.getCameraResult(RobotContainer.vision.shootRightCamera, RobotContainer.vision.resultRightShooter);
-    Translation3d rightMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootRightCamera);
+  //   RobotContainer.vision.getCameraResult(RobotContainer.vision.shootLeftCamera, RobotContainer.vision.resultLeftShooter);
+  //   RobotContainer.vision.getCameraResult(RobotContainer.vision.shootRightCamera, RobotContainer.vision.resultRightShooter);
+  //   Translation3d rightMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootRightCamera);
 
-    if (rightMultiTagResult != null){
-      Pose2d poseRight = new Pose2d(rightMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
-    RobotContainer.drivetrain.addVisionMeasurement(poseRight, kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
-    System.out.println(poseRight);
-  }
-  Translation3d leftMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootLeftCamera);
+  //   if (rightMultiTagResult != null){
+  //     Pose2d poseRight = new Pose2d(rightMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
+  //   RobotContainer.drivetrain.addVisionMeasurement(poseRight, kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
+  //   System.out.println(poseRight);
+  // }
+  // Translation3d leftMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootLeftCamera);
 
-    if (leftMultiTagResult != null){
-      Pose2d poseLeft = new Pose2d(leftMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
-    RobotContainer.drivetrain.addVisionMeasurement(poseLeft, 
-    kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
-    // System.out.println(poseLeft);
-    }
+  //   if (leftMultiTagResult != null){
+  //     Pose2d poseLeft = new Pose2d(leftMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
+  //   RobotContainer.drivetrain.addVisionMeasurement(poseLeft, 
+  //   kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
+  //   // System.out.println(poseLeft);
+  //   }
    
   }
 
@@ -103,7 +103,7 @@ Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(180));
   public void disabledPeriodic() {
    
 
-    System.out.println(RobotContainer.drivetrain.odometryIsValid());
+    // System.out.println(RobotContainer.drivetrain.odometryIsValid());
   }
 
   @Override

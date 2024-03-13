@@ -18,13 +18,11 @@ public class RotateToTarget extends Command {
   /** Creates a new RotateToTarget. */
   public double error;
   double targetYaw;
-  PIDController errorReducer = new PIDController(3, 0, 0);
 
   public RotateToTarget() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.drivetrain);
-    RobotContainer.drivetrain.getState().Pose.getRotation();
-    targetYaw = Vision.getRotationToSpeaker();
+  targetYaw = 0;
     
   }
   
@@ -39,15 +37,12 @@ public class RotateToTarget extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currentRotation = RobotContainer.drivetrain.getState().Pose.getRotation().getDegrees();
-    error = targetYaw - currentRotation;
 
     RobotContainer.drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-RobotContainer.driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-RobotContainer.driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(errorReducer.calculate(currentRotation, targetYaw)) // Drive counterclockwise with negative X (left)
+            .withRotationalRate(2) // Drive counterclockwise with negative X (left)
         );
-
   }
 
   // Called once the command ends or is interrupted.
