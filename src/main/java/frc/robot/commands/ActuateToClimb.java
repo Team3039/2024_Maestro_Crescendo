@@ -19,7 +19,7 @@ public class ActuateToClimb extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       
-      new ActuateElevatorToSetpoint(21, 10),
-      new ActuateWristToSetpoint(-10, 1));
+      new ActuateElevatorToSetpoint(15, 9),
+      new ActuateWristToSetpoint(0, 2));
   }
 }

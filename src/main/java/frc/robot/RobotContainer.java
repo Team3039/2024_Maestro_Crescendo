@@ -185,11 +185,11 @@ public class RobotContainer {
     operatorR1.whileTrue(new SpinUpSubwoofer());
     operatorX.onTrue(new ActuateToAlign());
     operatorR2.whileTrue(new ActuateRelease());
-    operatorShare.toggleOnTrue(new ActuateWristToForwardLimit());
+    // operatorShare.toggleOnTrue(new ActuateWristToForwardLimit());
     operatorTriangle.whileTrue(new ActuateToAmp());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
-    operatorCircle.whileTrue(new ShootAMP());
+    // operatorCircle.whileTrue(new ShootAMP());
     operatorSquare.whileTrue(new ActuateToShootInterpolated(2));
 
     testStart.onTrue(new ActuateWristToTunable());

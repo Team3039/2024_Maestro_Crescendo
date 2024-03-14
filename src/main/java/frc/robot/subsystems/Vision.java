@@ -116,7 +116,7 @@ public class Vision extends SubsystemBase {
         shootingMap = new InterpolatingTreeMap<InterpolatingDouble, Vector2>();
 
         // InterpolatingDouble (Double.valueOf(distanceFromTarget), Vector 2(shooterRPS, wristAngle))
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.493)), new Vector2(90, 38.227));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.493)), new Vector2(100, 38.227));
         shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.937)), new Vector2(100, 37.725));
         shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.538)), new Vector2(100, 37.857));
         shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.642)), new Vector2(100, 37.315));
@@ -132,7 +132,7 @@ public class Vision extends SubsystemBase {
 
         shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.956)), new Vector2(100, 28.591));
         shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.211)), new Vector2(100, 27.647));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.396)), new Vector2(100, 25.568));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.396)), new Vector2(100, 26.568));
 
 
         
