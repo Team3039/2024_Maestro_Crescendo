@@ -87,11 +87,11 @@ public class Constants {
 	}
 
 	public static final class Vision {
-		public static final Transform3d shootCameraToRobot = new Transform3d(
-				new Translation3d(Units.inchesToMeters(8.8), Units.inchesToMeters(11.2), Units.inchesToMeters(6.8)),
-				new Rotation3d(Units.degreesToRadians(5), Units.degreesToRadians(65), 0));
+		// public static final Transform3d shootCameraToRobot = new Transform3d(
+		// 		new Translation3d(Units.inchesToMeters(8.8), Units.inchesToMeters(11.2), Units.inchesToMeters(6.8)),
+		// 		new Rotation3d(Units.degreesToRadians(5), Units.degreesToRadians(65), 0));
 
-		public static final Matrix<N3, N1> kDefaultStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
+		// public static final Matrix<N3, N1> kDefaultStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
 
 		// public static final double X_P = 2.7;
 		// public static final double X_I = 0.0;
