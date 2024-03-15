@@ -145,7 +145,7 @@ public class Wrist extends SubsystemBase {
       setWristPosition();
         break;
       case INTERPOLATED:
-      if (Math.abs(RobotContainer.vision.setpointWrist - setpointWrist) > .5){
+      if (Math.abs(RobotContainer.vision.setpointWrist - setpointWrist) > .5 ){
         setSetpointWrist(ticksToDegrees(RobotContainer.vision.setpointWrist));
       }
         setWristPosition();

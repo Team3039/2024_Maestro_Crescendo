@@ -49,13 +49,13 @@ public class Climb extends SubsystemBase {
                 break;
             case MANUAL:
                 if(RobotContainer.driverPad.getL2Button()){
-                    leftClimber.set(-.3); //down
+                    leftClimber.set(-.1); //down
                 }
                else  {
                     leftClimber.set(0);
                 } 
                 if (RobotContainer.driverPad.getR2Button()) {
-                    rightClimber.set(-.3); //down
+                    rightClimber.set(-.1); //down
                 } else {
                     rightClimber.set(0);
                 }

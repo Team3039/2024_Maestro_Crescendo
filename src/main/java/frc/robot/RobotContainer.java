@@ -35,6 +35,7 @@ import frc.robot.commands.ActuateToClimb;
 import frc.robot.commands.ActuateToShootInterpolated;
 import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
+import frc.robot.commands.IntakeSource;
 import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.SpinUpSubwoofer;
@@ -169,16 +170,17 @@ public class RobotContainer {
             .withRotationalRate(Vision.getRotationToSpeaker()) // Drive counterclockwise with negative X (left)
         ));
 
-    driverTriangle.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
-                                                                                                                 // Drive
-        .withVelocityY(driverPad.getLeftX() * Constants.Drive.MaxSpeed)
-        .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate)));
+    // driverTriangle.toggleOnTrue(drivetrain.applyRequest(() -> drives.withVelocityX(-driverPad.getLeftY() * Constants.Drive.MaxSpeed) // Robot-Centric
+    //                                                                                                              // Drive
+    //     .withVelocityY(driverPad.getLeftX() * Constants.Drive.MaxSpeed)
+    //     .withRotationalRate(-driverPad.getRightX() * Constants.Drive.MaxAngularRate)));
 
     // driverX.whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driverPad.getLeftY(), -driverPad.getLeftX()))));
 
     // // reset the field-centric heading on options press
     driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    driverPadButton.onTrue(new ActuateToClimb());
 
 
     operatorPadButton.onTrue(new ActuateToClimb());
@@ -190,8 +192,9 @@ public class RobotContainer {
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
     // operatorCircle.whileTrue(new ShootAMP());
-    operatorSquare.whileTrue(new ActuateToShootInterpolated(2));
-
+    operatorCircle.whileTrue(new ActuateToShootInterpolated(2));
+    operatorSquare.whileTrue(new IntakeSource());
+    
     testStart.onTrue(new ActuateWristToTunable());
     testCircle.whileTrue(new ActuateShooterToCloseShot());
     testL2.whileTrue(new ActuateIntake());

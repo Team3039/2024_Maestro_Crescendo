@@ -44,8 +44,10 @@ Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(180));
     robotContainer = new RobotContainer();
     RobotContainer.drivetrain.seedFieldRelative(speakerPose);
 
-    PortForwarder.add(1181, "photonvision.local", 1182);
-    PortForwarder.add(1183, "photonvision.local", 1184);
+    PortForwarder.add(1181, "10.30.39.11", 1182);
+    PortForwarder.add(1183, "10.30.39.11", 1184);
+    PortForwarder.add(1187, "10.30.39.11", 1188);
+
     RobotContainer.drivetrain.getDaqThread().setThreadPriority(99);
     SmartDashboard.putData("Auto Selector", autoChooser);
     for (int module = 0; module < 3; module++) {

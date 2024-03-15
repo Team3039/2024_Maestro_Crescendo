@@ -23,7 +23,8 @@ public class Indexer extends SubsystemBase {
        SHOOTING,
       INDEXING,
       MANUAL,
-      RELEASE
+      RELEASE,
+      SOURCING
     }
     public IndexerState indexerState = IndexerState.IDLE;
 
@@ -100,6 +101,10 @@ public class Indexer extends SubsystemBase {
         hasIndexed = false;
       setWheelSpeed(-.5);
       break;
+      case SOURCING:
+        setWheelSpeed(-.4);
+        hasIndexed = false;
+        break;
     }
   }
 }

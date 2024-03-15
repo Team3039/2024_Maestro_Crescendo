@@ -66,7 +66,7 @@ public class Intake extends SubsystemBase {
           setWheelSpeed(0);
         }
         else{
-       setWheelSpeed(.4);
+       setWheelSpeed(.5);
         }
         break;
       case MANUAL:

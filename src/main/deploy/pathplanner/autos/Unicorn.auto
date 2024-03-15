@@ -18,7 +18,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.9
                 }
               },
               {
@@ -82,12 +82,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -102,9 +96,15 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.8
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
-                        "name": "Start Intake"
+                        "name": "Actuate Wrist Close"
                       }
                     }
                   ]
@@ -118,15 +118,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Actuate Wrist Close"
-                }
-              },
-              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.8
                 }
               },
               {
@@ -191,9 +185,27 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
                         "name": "Start Intake"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.8
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Actuate Wrist Close"
                       }
                     }
                   ]
@@ -207,24 +219,18 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Actuate Wrist Close"
+                  "waitTime": 0.4
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 1.0
+                  "name": "Indexer Start Shoot"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Indexer Start Shoot"
           }
         },
         {
@@ -274,31 +280,18 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.8
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
-                        "name": "Start Intake"
+                        "name": "Actuate Wrist Close"
                       }
                     }
                   ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Actuate Wrist Close"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
                 }
               }
             ]

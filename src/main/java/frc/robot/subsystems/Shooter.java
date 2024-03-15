@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.StrictFollower;
@@ -22,12 +23,14 @@ public class Shooter extends SubsystemBase {
 		PASSIVE,
 		CLOSESHOT,
 		INTERPOLATED,
-		AMP
+		AMP,
+		SOURCE
 
 	}
 
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
 	public TalonFX shooterRight = new TalonFX(Constants.Ports.SHOOTER_RIGHT);
+	
 
 	public ShooterState shooterState = ShooterState.IDLE;
 
@@ -35,6 +38,8 @@ public class Shooter extends SubsystemBase {
 	VelocityVoltage voltageRight = new VelocityVoltage(0);
 
 	public Shooter() {
+	CurrentLimitsConfigs currentLimit = new CurrentLimitsConfigs().withStatorCurrentLimit(70);
+
 		shooterLeft.setNeutralMode(NeutralModeValue.Coast);
 		shooterRight.setNeutralMode(NeutralModeValue.Coast);
 
@@ -44,7 +49,9 @@ public class Shooter extends SubsystemBase {
 				.withKD(Constants.Shooter.SHOOTER_KD);
 
 		shooterLeft.getConfigurator().apply(configs);
+		shooterLeft.getConfigurator().apply(currentLimit);
 		shooterRight.getConfigurator().apply(configs);
+		shooterRight.getConfigurator().apply(currentLimit);
 
 		shooterLeft.setInverted(true);
 		shooterRight.setInverted(false);
@@ -101,6 +108,9 @@ public class Shooter extends SubsystemBase {
 			break;
 			case AMP:
 				setShooterVelocity(28);
+				break;
+			case SOURCE:
+				setShooterVelocity(-3);
 				break;
 		}
 	}

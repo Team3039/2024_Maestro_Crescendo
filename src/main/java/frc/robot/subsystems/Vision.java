@@ -116,23 +116,23 @@ public class Vision extends SubsystemBase {
         shootingMap = new InterpolatingTreeMap<InterpolatingDouble, Vector2>();
 
         // InterpolatingDouble (Double.valueOf(distanceFromTarget), Vector 2(shooterRPS, wristAngle))
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.493)), new Vector2(100, 38.227));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.937)), new Vector2(100, 37.725));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.538)), new Vector2(100, 37.857));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.642)), new Vector2(100, 37.315));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.794)), new Vector2(100, 37.633));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.880)), new Vector2(100, 37.956));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.930)), new Vector2(100, 34.671));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.493)), new Vector2(100, 45.227));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-73.937)), new Vector2(100, 44.725));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.538)), new Vector2(100, 43.857));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.642)), new Vector2(100, 42.315));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.794)), new Vector2(100, 41.633));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.880)), new Vector2(100, 40.956));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-74.930)), new Vector2(100, 39.671));
 
 
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.276)), new Vector2(100, 33.955));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.410)), new Vector2(100, 32.925));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.518)), new Vector2(100, 31.098));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.623)), new Vector2(100, 30.857));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.276)), new Vector2(100, 38.955));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.410)), new Vector2(100, 37.925));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.518)), new Vector2(100, 37.098));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.623)), new Vector2(100, 35.857));
 
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.956)), new Vector2(100, 28.591));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.211)), new Vector2(100, 27.647));
-        shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.396)), new Vector2(100, 26.568));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-75.956)), new Vector2(100, 35.591));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.211)), new Vector2(100, 34.647));
+        shootingMap.put(new InterpolatingDouble(Double.valueOf(-76.396)), new Vector2(100, 33.568));
 
 
         
