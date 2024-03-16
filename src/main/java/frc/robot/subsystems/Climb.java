@@ -51,7 +51,7 @@ public class Climb extends SubsystemBase {
                 if(RobotContainer.driverPad.getL2Button()){
                     leftClimber.set(-.1); //down
                 }
-               else  {
+               else  { 
                     leftClimber.set(0);
                 } 
                 if (RobotContainer.driverPad.getR2Button()) {
@@ -59,8 +59,19 @@ public class Climb extends SubsystemBase {
                 } else {
                     rightClimber.set(0);
                 }
-                break;
-        }
+        //         if(RobotContainer.testPad.getL2Button()){
+        //             leftClimber.set(-.1); //down
+        //             RobotContainer.elevator.elevatorA.set(1);
+        //             rightClimber.set(-.1);
+        //         }
+        //        else  {
+        //             leftClimber.set(0);
+        //             rightClimber.set(0);
+        // }
+
+        break;
+
 
     }
+}
 }

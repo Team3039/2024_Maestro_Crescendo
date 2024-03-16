@@ -248,6 +248,7 @@ public class Vision extends SubsystemBase {
             rotation = -RobotContainer.driverPad.getRightX() * Constants.Drive.MaxAngularRate;
         }
         return rotation;
+        
     }
 
     @Override

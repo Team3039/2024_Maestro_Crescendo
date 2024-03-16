@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.71,
-  "robotLength": 0.80645,
+  "robotWidth": 0.889,
+  "robotLength": 0.9525,
   "holonomicMode": true,
   "pathFolders": [
     "Blue Climb",

@@ -59,7 +59,7 @@ public class Wrist extends SubsystemBase {
 
     wrist.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.Forward_Limit);
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
-    wristEncoder.setPosition(51.6);
+    wristEncoder.setPosition(53);
 
     wristController.setP(Constants.Wrist.WRIST_KP);
     wristController.setI(Constants.Wrist.WRIST_KI);
@@ -132,7 +132,7 @@ public class Wrist extends SubsystemBase {
         setWristPosition();
         break;
       case CLOSESHOT:
-        setSetpointWrist(ticksToDegrees(52));
+        setSetpointWrist(ticksToDegrees(53));
         setWristPosition();
         break;
       case TUNABLE:
