@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
   public Robot() {
 }
 
-Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(180));
+Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(0));
 
   @Override
   public void robotInit() {
@@ -131,6 +131,7 @@ Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(180));
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
     RobotContainer.wrist.setState(WristState.ALIGN);
+    RobotContainer.drivetrain.getPigeon2().setYaw(0);
   }
 
   @Override

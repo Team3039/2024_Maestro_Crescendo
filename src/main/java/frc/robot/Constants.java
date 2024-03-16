@@ -75,7 +75,7 @@ public class Constants {
 		public static final double ELEVATOR_KV = 0.0;
 		public static final double ELEVATOR_MAX_VEL = 0;
 		public static final double ELEVATOR_MAX_ACCEL = 0;
-		public static final double ELEVATOR_TO_AMP = 12;
+		public static final double ELEVATOR_TO_AMP = 10;
 		public static final double ELEVATOR_TO_SOURCE = 5;
 
 	}
@@ -125,10 +125,10 @@ public class Constants {
 		public static final double WRIST_KV = 0;
 
 		public static final double WRIST_GEAR_RATIO = 1.0 / 350.0;
-		public static final float Forward_Limit = 51;
+		public static final float Forward_Limit = 53;
 		public static final float Reverse_Limit = -27;
-		public static final double WRIST_TO_AMP = 52;
-        public static final double WRIST_INTAKING = 30;
+		public static final double WRIST_TO_AMP = 53;
+        public static final double WRIST_INTAKING = 33.5;
 		public static final double WRIST_TO_SOURCE = 36;
 	}
 

@@ -180,7 +180,7 @@ public class RobotContainer {
 
     // // reset the field-centric heading on options press
     driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
-    driverPadButton.onTrue(new ActuateToClimb());
+    // driverPadButton.onTrue(new ActuateToClimb());
 
 
     operatorPadButton.onTrue(new ActuateToClimb());
@@ -191,8 +191,9 @@ public class RobotContainer {
     operatorTriangle.whileTrue(new ActuateToAmp());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
-    // operatorCircle.whileTrue(new ShootAMP());
+    operatorShare.whileTrue(new ShootAMP());
     operatorCircle.whileTrue(new ActuateToShootInterpolated(2));
+    
     operatorSquare.whileTrue(new IntakeSource());
     
     testStart.onTrue(new ActuateWristToTunable());
