@@ -7,19 +7,15 @@ package frc.robot;
 
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.EventMarker;
-import com.ctre.phoenix.music.Orchestra;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import edu.wpi.first.math.geometry.Rotation2d;
+
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.auto.ActuateWristToCloseShotAuto;
 import frc.robot.auto.IndexerStartShootAuto;
@@ -29,17 +25,16 @@ import frc.robot.auto.StartIntakeAuto;
 import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
-import frc.robot.commands.ActuateToAlign;
-import frc.robot.commands.ActuateToAmp;
-import frc.robot.commands.ActuateToClimb;
+// import frc.robot.commands.ActuateToAlign;
+// import frc.robot.commands.ActuateToAmp;
+// import frc.robot.commands.ActuateToClimb;
 import frc.robot.commands.ActuateToShootInterpolated;
-import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
-import frc.robot.commands.IntakeSource;
-import frc.robot.commands.RotateToTarget;
+// import frc.robot.commands.IntakeSource;
+// import frc.robot.commands.RotateToTarget;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.SpinUpSubwoofer;
-import frc.robot.commands.ElevatorRoutines.SetElevatorManualOverride;
+// import frc.robot.commands.ElevatorRoutines.SetElevatorManualOverride;
 import frc.robot.commands.ShooterRoutines.ActuateShooterToCloseShot;
 import frc.robot.commands.WristRoutines.ActuateWristToAlign;
 import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
@@ -47,26 +42,25 @@ import frc.robot.commands.WristRoutines.ActuateWristToTunable;
 import frc.robot.commands.WristRoutines.SetWristManualOverride;
 import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Climb;
+// import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Elevator;
+// import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 // import frc.robot.subsystems.Orchestrator;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
-import frc.robot.subsystems.Shooter.ShooterState;
-import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
   public static final double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
-  public static final Elevator elevator = new Elevator();
+  // public static final Elevator elevator = new Elevator();
   public static final Intake intake = new Intake();
   public static final Vision vision = new Vision();
   public static final Wrist wrist = new Wrist();
   public static final Indexer indexer = new Indexer();
   public static final Shooter shooter = new Shooter();
-  public static final Climb climb = new Climb();
+  // public static final Climb climb = new Climb();
   public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   // public static final Orchestrator orchestrator = new Orchestrator();
@@ -77,9 +71,9 @@ public class RobotContainer {
   
 
 
-  private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric()
-      .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  // private static final SwerveRequest.RobotCentric drives = new SwerveRequest.RobotCentric()
+  //     .withDeadband(Constants.Drive.MaxSpeed * 0.1).withRotationalDeadband(Constants.Drive.MaxAngularRate * 0.1)
+  //     .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   /*
    * InterpolatedPS4GamePad Treats Axis Inputs Exponentially Instead Of Linearly
@@ -87,7 +81,7 @@ public class RobotContainer {
   public static final InterpolatedPS4Gamepad driverPad = new InterpolatedPS4Gamepad(0); // Pilot Joystick
   public static final InterpolatedPS4Gamepad operatorPad = new InterpolatedPS4Gamepad(1); // Co-Pilot Joystick
   public static final InterpolatedPS4Gamepad testPad = new InterpolatedPS4Gamepad(2); // Testing Joystick
-
+ 
   /* Driver Buttons */
   private final JoystickButton driverX = new JoystickButton(driverPad, PS4Controller.Button.kCross.value);
   private final JoystickButton driverSquare = new JoystickButton(driverPad, PS4Controller.Button.kSquare.value);
@@ -183,18 +177,18 @@ public class RobotContainer {
     // driverPadButton.onTrue(new ActuateToClimb());
 
 
-    operatorPadButton.onTrue(new ActuateToClimb());
+    // operatorPadButton.onTrue(new ActuateToClimb());
     operatorR1.whileTrue(new SpinUpSubwoofer());
-    operatorX.onTrue(new ActuateToAlign());
+    // operatorX.onTrue(new ActuateToAlign());
     operatorR2.whileTrue(new ActuateRelease());
     // operatorShare.toggleOnTrue(new ActuateWristToForwardLimit());
-    operatorTriangle.whileTrue(new ActuateToAmp());
+    // operatorTriangle.whileTrue(new ActuateToAmp());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
     operatorShare.whileTrue(new ShootAMP());
     operatorCircle.whileTrue(new ActuateToShootInterpolated(2));
     
-    operatorSquare.whileTrue(new IntakeSource());
+    // operatorSquare.whileTrue(new IntakeSource());
     
     testStart.onTrue(new ActuateWristToTunable());
     testCircle.whileTrue(new ActuateShooterToCloseShot());
@@ -207,7 +201,7 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    operatorStart.toggleOnTrue(new SetElevatorManualOverride());
+    // operatorStart.toggleOnTrue(new SetElevatorManualOverride());
     operatorStart.toggleOnTrue(new SetWristManualOverride());
   }
   public RobotContainer() {

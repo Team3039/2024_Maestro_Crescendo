@@ -1,12 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.generated.TunerConstants;
 
@@ -36,7 +29,7 @@ public class Constants {
 		public static final int WRIST = 16;
 		public static final int SHOOTER_LEFT = 17;
 		public static final int SHOOTER_RIGHT = 18;
-		public static final int ELEVATOR_A = 19;
+		// public static final int ELEVATOR_A = 19;
 		// public static final int ELEVATOR_B = 20;
 		public static final int LEFT_CLIMB = 21;
 		public static final int RIGHT_CLIMB = 22;
@@ -62,23 +55,23 @@ public class Constants {
 		public static final double SLIP_CURRENT = 300.0; // Amps
 	}
 
-	public static final class Elevator {
-		// Elevator PID //
-		public static final double ELEVATOR_KP = .06             ;
-		public static final double ELEVATOR_KI = 0.0;
-		public static final double ELEVATOR_KD = 0.0;
+	// public static final class Elevator {
+	// 	// Elevator PID //
+	// 	public static final double ELEVATOR_KP = .06             ;
+	// 	public static final double ELEVATOR_KI = 0.0;
+	// 	public static final double ELEVATOR_KD = 0.0;
 
-		// Elevator FF //
-		public static final double HIGH_ELEVATOR_KS = 0.086;
-		public static final double LOW_ELEVATOR_KS = 0.046;
-		public static final double ELEVATOR_KG = 0.0;
-		public static final double ELEVATOR_KV = 0.0;
-		public static final double ELEVATOR_MAX_VEL = 0;
-		public static final double ELEVATOR_MAX_ACCEL = 0;
-		public static final double ELEVATOR_TO_AMP = 10;
-		public static final double ELEVATOR_TO_SOURCE = 5;
+	// 	// Elevator FF //
+	// 	public static final double HIGH_ELEVATOR_KS = 0.086;
+	// 	public static final double LOW_ELEVATOR_KS = 0.046;
+	// 	public static final double ELEVATOR_KG = 0.0;
+	// 	public static final double ELEVATOR_KV = 0.0;
+	// 	public static final double ELEVATOR_MAX_VEL = 0;
+	// 	public static final double ELEVATOR_MAX_ACCEL = 0;
+	// 	public static final double ELEVATOR_TO_AMP = 10;
+	// 	public static final double ELEVATOR_TO_SOURCE = 5;
 
-	}
+	// }
 
 	public static final class Shooter {
 		public static final double SHOOTER_KP = 0.12;
