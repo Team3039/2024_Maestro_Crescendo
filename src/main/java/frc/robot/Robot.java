@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import frc.robot.subsystems.Elevator.ElevatorState;
 import frc.robot.subsystems.Indexer.IndexerState;
 import frc.robot.subsystems.Intake.IntakeState;
 // import frc.robot.subsystems.Orchestrator.OrchestratorState;
@@ -35,14 +34,14 @@ public class Robot extends TimedRobot {
   public Robot() {
 }
 
-Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(0));
+// Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(0));
 
   @Override
   public void robotInit() {
     // Pathfinding.setPathfinder(new LocalADStar());
     
     robotContainer = new RobotContainer();
-    RobotContainer.drivetrain.seedFieldRelative(speakerPose);
+    // RobotContainer.drivetrain.seedFieldRelative(speakerPose);
 
     PortForwarder.add(1181, "10.30.39.11", 1182);
     PortForwarder.add(1183, "10.30.39.11", 1184);
@@ -86,14 +85,11 @@ Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(0));
     RobotContainer.shooter.setState(ShooterState.IDLE);
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
-    // RobotContainer.elevator.setState(ElevatorState.IDLE);
     // RobotContainer.orchestrator.setState(OrchestratorState.SILENT);
   }
 
   @Override
   public void disabledPeriodic() {
-   
-
     // System.out.println(RobotContainer.drivetrain.odometryIsValid());
   }
 
@@ -139,7 +135,6 @@ Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(0));
     
 
     // RobotContainer.orchestrator.setState(OrchestratorState.MARIOTIME);
-    // System.out.println(RobotContainer.driverPad.getRightX());
 
     // RobotContainer.drivetrain.redAmpFPH.onlyWhile(() ->
     // RobotContainer.driverPad.getCircleButton());

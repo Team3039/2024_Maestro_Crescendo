@@ -1,5 +1,10 @@
 package frc.robot;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.generated.TunerConstants;
 
@@ -25,15 +30,13 @@ public class Constants {
 		}
 		public static final int INTAKE = 13;
 		public static final int INDEXER = 14;
-		public static final int BEAM_BREAK = 8;
+		public static final int BEAM_BREAK = 15;
 		public static final int WRIST = 16;
 		public static final int SHOOTER_LEFT = 17;
 		public static final int SHOOTER_RIGHT = 18;
-		// public static final int ELEVATOR_A = 19;
-		// public static final int ELEVATOR_B = 20;
-		public static final int LEFT_CLIMB = 21;
-		public static final int RIGHT_CLIMB = 22;
-		public static final int CANdleID = 23;
+		public static final int CLIMB = 19;
+		public static final int CANdleID = 20;
+		public static final int AMPER = 21;
 	}
 
 	public static final class Drive {
@@ -55,24 +58,6 @@ public class Constants {
 		public static final double SLIP_CURRENT = 300.0; // Amps
 	}
 
-	// public static final class Elevator {
-	// 	// Elevator PID //
-	// 	public static final double ELEVATOR_KP = .06             ;
-	// 	public static final double ELEVATOR_KI = 0.0;
-	// 	public static final double ELEVATOR_KD = 0.0;
-
-	// 	// Elevator FF //
-	// 	public static final double HIGH_ELEVATOR_KS = 0.086;
-	// 	public static final double LOW_ELEVATOR_KS = 0.046;
-	// 	public static final double ELEVATOR_KG = 0.0;
-	// 	public static final double ELEVATOR_KV = 0.0;
-	// 	public static final double ELEVATOR_MAX_VEL = 0;
-	// 	public static final double ELEVATOR_MAX_ACCEL = 0;
-	// 	public static final double ELEVATOR_TO_AMP = 10;
-	// 	public static final double ELEVATOR_TO_SOURCE = 5;
-
-	// }
-
 	public static final class Shooter {
 		public static final double SHOOTER_KP = 0.12;
 		public static final double SHOOTER_KI = 0.000;
@@ -86,7 +71,7 @@ public class Constants {
 		// 		new Translation3d(Units.inchesToMeters(8.8), Units.inchesToMeters(11.2), Units.inchesToMeters(6.8)),
 		// 		new Rotation3d(Units.degreesToRadians(5), Units.degreesToRadians(65), 0));
 
-		// public static final Matrix<N3, N1> kDefaultStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
+		public static final Matrix<N3, N1> kDefaultStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
 
 		// public static final double X_P = 2.7;
 		// public static final double X_I = 0.0;
@@ -106,6 +91,7 @@ public class Constants {
 
 		public static final double FIELD_LENGTH_METERS = 16.54175;
 		public static final double FIELD_WIDTH_METERS = 8.0137;
+        public static final Transform3d shootCameraToRobot = null;
 
 	}
 
@@ -125,4 +111,13 @@ public class Constants {
 		public static final double WRIST_TO_SOURCE = 36;
 	}
 
+	public static final class Climb{
+
+		public static final double CLIMB_KS = 0;
+        public static final double CLIMB_KP = 0;
+        public static final double CLIMB_KI = 0;
+        public static final double CLIMB_KD = 0;
+        public static final double CLIMB_HEIGHT = 15;
+
+	}
 }

@@ -13,10 +13,14 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
+// import frc.robot.subsystems.Vision;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -32,6 +36,15 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
         configNeutralMode(NeutralModeValue.Brake);
+
+        RobotContainer.vision.photonPoseEstimatorShoot.update();
+        addVisionMeasurement(
+        RobotContainer.vision.photonPoseEstimatorShoot.update().get().estimatedPose.toPose2d(),
+        Timer.getFPGATimestamp(), 
+        VecBuilder.fill(
+        4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                100));
        
     }
 
@@ -39,6 +52,14 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
         super(driveTrainConstants, modules);
         configurePathPlanner();
         configNeutralMode(NeutralModeValue.Brake);
+        RobotContainer.vision.photonPoseEstimatorShoot.update();
+        addVisionMeasurement(
+            RobotContainer.vision.photonPoseEstimatorShoot.update().get().estimatedPose.toPose2d(),
+            Timer.getFPGATimestamp(), 
+            VecBuilder.fill(
+            4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                    4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                    100));
     }
 
     private void configurePathPlanner() {

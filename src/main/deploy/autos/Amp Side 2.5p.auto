@@ -2,44 +2,44 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8525708479988394,
-      "y": 4.529772488116405
+      "x": 0.7878249089831516,
+      "y": 6.684305590833405
     },
-    "rotation": 120.0
+    "rotation": -120.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Spin Up Close"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spin Up Close"
+                }
+              },
               {
                 "type": "wait",
                 "data": {
                   "waitTime": 1.0
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Indexer Start Shoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Indexer Start Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
@@ -49,7 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Far Side 3p 1"
+                  "pathName": "Amp Side 1"
                 }
               },
               {
@@ -57,15 +57,9 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
-                      "data": {
-                        "name": "Indexer Stop Shoot"
-                      }
-                    },
-                    {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.25
+                        "waitTime": 2.8
                       }
                     },
                     {
@@ -87,7 +81,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Far Side 3p 2"
+                  "pathName": "Amp Side 2"
                 }
               },
               {
@@ -105,12 +99,6 @@
                       "data": {
                         "name": "Actuate Wrist Close"
                       }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
                     }
                   ]
                 }
@@ -119,22 +107,15 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Indexer Start Shoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "Indexer Start Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.4
           }
         },
         {
@@ -144,7 +125,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Far Side 3p 3"
+                  "pathName": "Amp Side 3"
                 }
               },
               {
@@ -167,50 +148,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Far Side 3p 4"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 2.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Actuate Wrist Close"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Indexer Start Shoot"
           }
         }
       ]

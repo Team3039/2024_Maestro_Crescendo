@@ -1,77 +1,133 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import com.ctre.phoenix6.hardware.TalonFX;
-// import com.ctre.phoenix6.signals.NeutralModeValue;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import frc.robot.Constants;
-// import frc.robot.RobotContainer;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
-// public class Climb extends SubsystemBase {
-//     /** Creates a new Climb. */
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
-//     public enum ClimbState {
-//         IDLE,
-//         POSITION,
-//         MANUAL
-//     }
+public class Climb extends SubsystemBase {
 
-//     ClimbState climbState = ClimbState.MANUAL;
+	public enum ClimbState {
+		IDLE,
+		MANUAL,
+		POSITION,
+		CLIMB_UP,
+	}
 
-//     TalonFX leftClimber = new TalonFX(Constants.Ports.LEFT_CLIMB);
-//     TalonFX rightClimber = new TalonFX(Constants.Ports.RIGHT_CLIMB);
+	public ClimbState climbState = ClimbState.IDLE;
 
-//     public Climb() {
-//         leftClimber.setNeutralMode(NeutralModeValue.Brake);
-//         rightClimber.setNeutralMode(NeutralModeValue.Brake);
-//     }
+	public CANSparkMax climbA = new CANSparkMax(Constants.Ports.CLIMB, MotorType.kBrushless);
+	// public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B, MotorType.kBrushless);
 
-//     public ClimbState getState() {
-//         return climbState;
-//     }
+	public RelativeEncoder encoder = climbA.getEncoder();
 
-//     public void setState(ClimbState state) {
-//         climbState = state;
-//     }
+	private PIDController controller = new PIDController(
+			Constants.Climb.CLIMB_KP,
+			Constants.Climb.CLIMB_KI,
+			Constants.Climb.CLIMB_KD);
 
-//     @Override
-//     public void periodic() {
-//         // This method will be called once per scheduler run
-//         switch (climbState) {
-//             case IDLE:
+	// neo rotations
+	public static double setpointClimb = 0;
+	
+	public Climb() {
 
-//                 break;
-//             case POSITION:
+		climbA.setIdleMode(IdleMode.kBrake);
 
-//                 break;
-//             case MANUAL:
-//                 if(RobotContainer.driverPad.getL2Button()){
-//                     leftClimber.set(-.1); //down
-//                 }
-//                else  { 
-//                     leftClimber.set(0);
-//                 } 
-//                 if (RobotContainer.driverPad.getR2Button()) {
-//                     rightClimber.set(-.1); //down
-//                 } else {
-//                     rightClimber.set(0);
-//                 }
-//         //         if(RobotContainer.testPad.getL2Button()){
-//         //             leftClimber.set(-.1); //down
-//         //             RobotContainer.elevator.elevatorA.set(1);
-//         //             rightClimber.set(-.1);
-//         //         }
-//         //        else  {
-//         //             leftClimber.set(0);
-//         //             rightClimber.set(0);
-//         // }
+		climbA.setInverted(false);
+		// climbB.setInverted(true);
 
-//         break;
+		climbA.enableSoftLimit(SoftLimitDirection.kForward, true);
+		climbA.enableSoftLimit(SoftLimitDirection.kReverse, true);
+		climbA.setSoftLimit(SoftLimitDirection.kForward, 22);
+		climbA.setSoftLimit(SoftLimitDirection.kReverse, 0);
+		// climbB.follow(climbA);
 
+		climbA.burnFlash();
+		// climbB.burnFlash();
 
-//     }
-// }
-// }
+		controller.setTolerance(3);
+	}
+
+	public void setState(ClimbState state) {
+		climbState = state;
+	}
+
+	public ClimbState getState() {
+		return climbState;
+	}
+
+	public void setClimbOpenLoop(double percent) {
+		climbA.set(percent);
+	}
+
+	public void setClimbClosedLoop() {
+		@SuppressWarnings("unused")
+		double output = 0;
+	
+	output = controller.calculate(encoder.getPosition(), setpointClimb) + Constants.Climb.CLIMB_KS;
+		climbA.set(MathUtil.clamp(output, -.2, .7));
+	}
+
+	public static double getSetpoint() {
+		return setpointClimb;
+	}
+
+	public static void setSetpoint(double setpoint) {
+		setpointClimb = setpoint;
+	}
+
+	public boolean isAtSetpoint(double tolerance) {
+		return Math.abs((setpointClimb - encoder.getPosition())) <= tolerance;
+	}
+
+	public double getPosition() {
+		return encoder.getPosition();
+	}
+
+	@Override
+	public void periodic() {
+		// SmartDashboard.putNumber("Climb Current Draw", climbA.getOutputCurrent());
+		// SmartDashboard.putNumber("Climb Encoder", encoder.getPosition());
+		// SmartDashboard.putString("Climb State", String.valueOf(getState()));
+		// SmartDashboard.putNumber("Climb Output", climbA.get());
+		// SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
+		switch (climbState) {
+			case IDLE:
+				// setSetpoint(-.9);
+				// setClimbClosedLoop();
+                if (encoder.getPosition() > 0.5){
+                    setClimbOpenLoop(-20);
+                    }
+                    else{
+                        setClimbOpenLoop(0);
+                    }
+				break;
+			case MANUAL:
+				setClimbOpenLoop(-1 * RobotContainer.operatorPad.getLeftY());//intuitive
+				break;
+			case POSITION:
+				setClimbClosedLoop();
+				break;
+			case CLIMB_UP:
+                if (encoder.getPosition() < Constants.Climb.CLIMB_HEIGHT){
+                setClimbOpenLoop(20);
+                }
+                else{
+                    setClimbOpenLoop(0);
+                }
+				break;
+		}
+	}
+}

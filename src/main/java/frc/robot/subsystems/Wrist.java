@@ -83,6 +83,9 @@ public class Wrist extends SubsystemBase {
   public void getWristPosition() {
     wristEncoder.getPosition();
   }
+  public double getCalculatedPosition() {
+    return degreesToTicks(Math.toDegrees(Math.atan(Vision.speakerHeight / Vision.getDistanceToSpeaker()))); 
+  }
 
   public void setWristPosition() {
     double output = 0;
@@ -93,9 +96,13 @@ public class Wrist extends SubsystemBase {
 
   public double ticksToDegrees(double ticks) {
     double wristRotations = ticks * Constants.Wrist.WRIST_GEAR_RATIO;
-    double wristDegrees = wristRotations * 360;
+    double wristDegrees = wristRotations * 360.0;
     return wristDegrees;
   }
+  public double degreesToTicks(double degrees) {
+   return degrees / (Constants.Wrist.WRIST_GEAR_RATIO * 360.0);
+  }
+ 
 
   @Override
   public void periodic() {
@@ -137,11 +144,10 @@ public class Wrist extends SubsystemBase {
       setWristPosition();
         break;
       case INTERPOLATED:
-      if (Math.abs(RobotContainer.vision.setpointWrist - setpointWrist) > .5 ){
-        setSetpointWrist(ticksToDegrees(RobotContainer.vision.setpointWrist));
-      }
-        setWristPosition();
+      getCalculatedPosition();
         break;
     }
   }
+
+ 
 }

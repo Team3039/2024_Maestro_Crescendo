@@ -11,13 +11,15 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class Shooter extends SubsystemBase {
-
+Timer timer = new Timer();
+public static double targetVelocity;
 	public enum ShooterState {
 		IDLE,
 		PASSIVE,
@@ -25,11 +27,12 @@ public class Shooter extends SubsystemBase {
 		INTERPOLATED,
 		AMP,
 		SOURCE
-
 	}
 
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
 	public TalonFX shooterRight = new TalonFX(Constants.Ports.SHOOTER_RIGHT);
+
+	public Servo amper = new Servo(Constants.Ports.AMPER);
 	
 
 	public ShooterState shooterState = ShooterState.IDLE;
@@ -85,31 +88,43 @@ public class Shooter extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		timer.start();
 
-		SmartDashboard.putNumber("RPS Left Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
-		SmartDashboard.putNumber("RPS Right Shooter", shooterRight.getRotorVelocity().getValueAsDouble());
+		SmartDashboard.putNumber("RPS Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
+		SmartDashboard.putBoolean("Shooter At Setpoint", shooterLeft.getRotorVelocity().getValueAsDouble() >= targetVelocity);
+
 		SmartDashboard.putNumber("Current Output Left Shooter", shooterRight.getTorqueCurrent().getValueAsDouble());
 
-		// SmartDashboard.putString("Shooter State", String.valueOf(getState()));
+		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
 		switch (shooterState) {
 			case IDLE:
+				targetVelocity = 5;
+				timer.reset();
 				// setShooterVelocity(0);
 				setWheelSpeed(0);
+				if(timer.get() > 1.50){
+					amper.set(0.0);
+				}
 				break;
 			case PASSIVE:
+				targetVelocity = 10;
 				setShooterVelocity(20);
 				break;
 			case INTERPOLATED:
-				setShooterVelocity(RobotContainer.vision.setpointShooter);
+				// setShooterVelocity(RobotContainer.vision.setpointShooter);
 				break;
 			case CLOSESHOT:
+				targetVelocity = 60;
 			setShooterVelocity(100);
 			break;
 			case AMP:
+				targetVelocity = 15;
 				setShooterVelocity(28);
+				amper.setPosition(1.0);
 				break;
 			case SOURCE:
+				targetVelocity = -4;
 				setShooterVelocity(-3);
 				break;
 		}
