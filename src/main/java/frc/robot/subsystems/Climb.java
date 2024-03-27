@@ -29,7 +29,7 @@ public class Climb extends SubsystemBase {
 	public ClimbState climbState = ClimbState.IDLE;
 
 	public CANSparkMax climbA = new CANSparkMax(Constants.Ports.CLIMB, MotorType.kBrushless);
-	// public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B, MotorType.kBrushless);
+	public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B, MotorType.kBrushless);
 
 	public RelativeEncoder encoder = climbA.getEncoder();
 
@@ -46,16 +46,16 @@ public class Climb extends SubsystemBase {
 		climbA.setIdleMode(IdleMode.kBrake);
 
 		climbA.setInverted(false);
-		// climbB.setInverted(true);
+		climbB.setInverted(true);
 
 		climbA.enableSoftLimit(SoftLimitDirection.kForward, true);
 		climbA.enableSoftLimit(SoftLimitDirection.kReverse, true);
 		climbA.setSoftLimit(SoftLimitDirection.kForward, 22);
 		climbA.setSoftLimit(SoftLimitDirection.kReverse, 0);
-		// climbB.follow(climbA);
+		climbB.follow(climbA);
 
 		climbA.burnFlash();
-		// climbB.burnFlash();
+		climbB.burnFlash();
 
 		controller.setTolerance(3);
 	}
@@ -105,7 +105,6 @@ public class Climb extends SubsystemBase {
 		// SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
 		switch (climbState) {
 			case IDLE:
-				// setSetpoint(-.9);
 				// setClimbClosedLoop();
                 if (encoder.getPosition() > 0.5){
                     setClimbOpenLoop(-20);

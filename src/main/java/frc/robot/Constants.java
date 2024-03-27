@@ -37,6 +37,7 @@ public class Constants {
 		public static final int CLIMB = 19;
 		public static final int CANdleID = 20;
 		public static final int AMPER = 21;
+        public static final int CLIMB_B = 0;
 	}
 
 	public static final class Drive {

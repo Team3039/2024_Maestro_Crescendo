@@ -25,7 +25,7 @@ public class Wrist extends SubsystemBase {
     ALIGN,
     CLOSESHOT,
     TUNABLE,
-    INTERPOLATED
+    ESTIMATED
 
   }
 
@@ -84,7 +84,7 @@ public class Wrist extends SubsystemBase {
     wristEncoder.getPosition();
   }
   public double getCalculatedPosition() {
-    return degreesToTicks(Math.toDegrees(Math.atan(Vision.speakerHeight / Vision.getDistanceToSpeaker()))); 
+    return Math.toDegrees(Math.atan(Vision.speakerHeight / Vision.getDistanceToSpeaker())); 
   }
 
   public void setWristPosition() {
@@ -99,8 +99,8 @@ public class Wrist extends SubsystemBase {
     double wristDegrees = wristRotations * 360.0;
     return wristDegrees;
   }
-  public double degreesToTicks(double degrees) {
-   return degrees / (Constants.Wrist.WRIST_GEAR_RATIO * 360.0);
+  public double degreesToTicks(double wristDegrees) {
+   return wristDegrees / (Constants.Wrist.WRIST_GEAR_RATIO * 360.0);
   }
  
 
@@ -136,15 +136,16 @@ public class Wrist extends SubsystemBase {
         break;
       case TUNABLE:
       if(RobotContainer.testPad.getL1Button()){
-        setSetpointWrist(ticksToDegrees(setpointWrist + 2));
+        setSetpointWrist(ticksToDegrees(setpointWrist + .2));
       }
       if(RobotContainer.testPad.getR1Button()){
-        setSetpointWrist(ticksToDegrees(setpointWrist - 2));
+        setSetpointWrist(ticksToDegrees(setpointWrist - .2));
       }
       setWristPosition();
         break;
-      case INTERPOLATED:
-      getCalculatedPosition();
+      case ESTIMATED:
+      setSetpointWrist(getCalculatedPosition());
+      setWristPosition();;
         break;
     }
   }

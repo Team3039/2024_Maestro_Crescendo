@@ -59,15 +59,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-  //   RobotContainer.vision.getCameraResult(RobotContainer.vision.shootLeftCamera, RobotContainer.vision.resultLeftShooter);
-  //   RobotContainer.vision.getCameraResult(RobotContainer.vision.shootRightCamera, RobotContainer.vision.resultRightShooter);
-  //   Translation3d rightMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootRightCamera);
-
-  //   if (rightMultiTagResult != null){
-  //     Pose2d poseRight = new Pose2d(rightMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
-  //   RobotContainer.drivetrain.addVisionMeasurement(poseRight, kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
-  //   System.out.println(poseRight);
-  // }
   // Translation3d leftMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootLeftCamera);
 
   //   if (leftMultiTagResult != null){

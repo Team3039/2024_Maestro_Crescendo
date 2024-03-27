@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -64,12 +65,13 @@ public class Vision extends SubsystemBase {
     public static PIDController targetAlignment = new PIDController(.06, 0, 0.0035);
 
     public PhotonCamera shootingCamera = new PhotonCamera("Shooter Cam");
+    PhotonPipelineResult resultShoot;
 
     public PhotonPoseEstimator photonPoseEstimatorShoot = new PhotonPoseEstimator(aprilTagFieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             shootingCamera,
             Constants.Vision.shootCameraToRobot);
-
+    
     /** Creates a new Vision. */
     public Vision() {
         shootingCamera.setDriverMode(false);
@@ -148,10 +150,9 @@ public class Vision extends SubsystemBase {
             rotation = -RobotContainer.driverPad.getRightX() * Constants.Drive.MaxAngularRate;
         }
         return rotation;
-
     }
+   
 
-    
     @Override
     public void periodic() {
         if (DriverStation.getAlliance().isPresent()) {
@@ -161,9 +162,9 @@ public class Vision extends SubsystemBase {
                 desiredAllianceID = 4;
             }
         }
-        // resultLeftShooter = shootLeftCamera.getLatestResult();
+        resultShoot = shootingCamera.getLatestResult();
         PhotonPipelineResult shootingResult = shootingCamera.getLatestResult();
-
+        
         RobotContainer.drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(
                 4 * Math.pow(getDistanceToSpeaker(), 2),
                 4 * Math.pow(getDistanceToSpeaker(), 2),
@@ -173,39 +174,23 @@ public class Vision extends SubsystemBase {
            photonPoseEstimatorShoot.update();
         }
 
-       
         SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
-
         SmartDashboard.putNumber("Estimated Distance To Robot By Drivetrain", getDistanceToSpeaker());
-
         SmartDashboard.putString("Current Robot Pose", RobotContainer.drivetrain.getState().Pose.toString());
-    
         SmartDashboard.putNumber("Rotation", getRotationToSpeaker());
 
-        // resultShoot = shootCamera.getLatestResult();
-
         // This method will be called once per scheduler
-
-        // System.out.println(shootCamera.getPipelineIndex());
-        // System.out.println(shootCamera.getName());
-        // System.out.println(shootCamera.getLatestResult().hasTargets());
-
         switch (visionState) {
-
             case DRIVING:
-                // if (resultShoot.getMultiTagResult().estimatedPose.isPresent) {
-                // Transform3d fieldToCamera = resultShoot.getMultiTagResult().estimatedPose.best;
-                // System.out.println(fieldToCamera);
-                // }
-               
+                if (resultShoot.getMultiTagResult().estimatedPose.isPresent) {
+                Transform3d fieldToCamera = resultShoot.getMultiTagResult().estimatedPose.best;
+                System.out.println(fieldToCamera);
+                }
                 break;
-
             case INTAKING:
                 break;
-
             case SHOOTING:
                 break;
-
         }
     }
 }

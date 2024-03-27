@@ -8,6 +8,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.auto.ActuateToShootCalculatedAuto;
 import frc.robot.auto.ActuateWristToCloseShotAuto;
 import frc.robot.auto.IndexerStartShootAuto;
 import frc.robot.auto.IndexerStopShootAuto;
@@ -25,13 +27,14 @@ import frc.robot.auto.StartIntakeAuto;
 import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
-import frc.robot.commands.ActuateToShootInterpolated;
+import frc.robot.commands.ActuateToShootCalculated;
 import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.SpinUpSubwoofer;
 import frc.robot.commands.ClimbRoutines.ActuateClimbToIdle;
 import frc.robot.commands.ClimbRoutines.ActuateToClimb;
+import frc.robot.commands.ClimbRoutines.SetClimbManualOverride;
 import frc.robot.commands.ShooterRoutines.ActuateShooterToCloseShot;
 import frc.robot.commands.WristRoutines.ActuateWristToAlign;
 import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
@@ -44,7 +47,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-// import frc.robot.subsystems.Orchestrator;
+import frc.robot.subsystems.Orchestrator;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
 
@@ -57,8 +60,7 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Climb climb = new Climb();
   public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-
-  // public static final Orchestrator orchestrator = new Orchestrator();
+  public static final Orchestrator orchestrator = new Orchestrator();
 
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // 5% Deadband
@@ -131,8 +133,8 @@ public class RobotContainer {
 
   public static final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   public static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  public static final SwerveRequest.FieldCentricFacingAngle facingAngle = new FieldCentricFacingAngle();
 
-  
 
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
@@ -155,47 +157,44 @@ public class RobotContainer {
               // -driverPad.interpolatedRightXAxis() * MaxAngularRate
               Vision.getRotationToSpeaker()
             ) // Drive counterclockwise with negative X (left)
-        ));
+        )
+        // drivetrain.applyRequest(() -> drive.withVelocityX(-testPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive forward with
+        //                                                                                    // negative Y (forward)
+        //     .withVelocityY(-testPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
+        //     .withRotationalRate(
+        //       // -testPad.interpolatedRightXAxis() * MaxAngularRate
+        //       Vision.getRotationToSpeaker()
+        //     ) // Drive counterclockwise with negative X (left)
+        // )
+        );
 
-
-
-  
-
-    // // reset the field-centric heading on options press
-    driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));    // // reset the field-centric heading on options press
     driverTriangle.onTrue(new ActuateToClimb());
     driverX.onTrue(new ActuateClimbToIdle());
-
 
     operatorR1.whileTrue(new SpinUpSubwoofer());
     operatorR2.whileTrue(new ActuateRelease());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
     operatorShare.whileTrue(new ShootAMP());
-    operatorCircle.whileTrue(new ActuateToShootInterpolated(2));
+    operatorCircle.whileTrue(new ActuateToShootCalculated(.5));
+    operatorStart.toggleOnTrue(new SetClimbManualOverride());
+    operatorStart.toggleOnTrue(new SetWristManualOverride());
     
-    
+    //Pad For Development and Testing With One Controller
     testStart.onTrue(new ActuateWristToTunable());
     testSquare.whileTrue(new IndexerToShoot());
-
     testCircle.whileTrue(new ActuateShooterToCloseShot());
     testL2.whileTrue(new ActuateIntake());
     testX.whileTrue(new IndexerToShoot());
-    testR2.whileTrue(new ActuateToShootInterpolated(2));
+    testR2.whileTrue(new ActuateToShootCalculated(.5));
     testTriangle.whileTrue(new ActuateRelease());
     testOptions.toggleOnTrue(new ActuateWristToForwardLimit());
 
-
-
-
-
-
     drivetrain.registerTelemetry(logger::telemeterize);
-
-    // operatorStart.toggleOnTrue(new SetElevatorManualOverride());
-    operatorStart.toggleOnTrue(new SetWristManualOverride());
   }
   public RobotContainer() {
+
     NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
     NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
     NamedCommands.registerCommand("print hello", Commands.print("hello"));
@@ -209,7 +208,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Indexer Stop Shoot", new IndexerStopShootAuto());
     NamedCommands.registerCommand("Stop Intake", new StopIntakeAuto());
     NamedCommands.registerCommand("Actuate Wrist Close", new ActuateWristToCloseShotAuto());
-
+    NamedCommands.registerCommand("Actuate To Shoot Calculated", new ActuateToShootCalculatedAuto(.5));
 
 
 
