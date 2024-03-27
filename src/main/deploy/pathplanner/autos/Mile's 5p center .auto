@@ -1,0 +1,218 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3656518741608918,
+      "y": 5.541275082550166
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spin Up Close"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.9
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Indexer Start Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 1"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Actuate To Shoot Calculated"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Indexer Start Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 3"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Actuate To Shoot Calculated"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Indexer Start Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 5"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Actuate To Shoot Calculated"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Indexer Start Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 6"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Actuate To Shoot Calculated"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Indexer Start Shoot"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

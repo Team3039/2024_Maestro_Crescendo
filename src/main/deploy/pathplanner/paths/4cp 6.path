@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.4,
-        "y": 4.8
+        "x": 2.904894952647049,
+        "y": 5.55593454044051
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.012700025400051,
-        "y": 3.782140135708843
+        "x": 2.0847797251150064,
+        "y": 4.560720232551576
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4cp5 end"
     },
     {
       "anchor": {
-        "x": 8.240937624732393,
-        "y": 4.046010377735041
+        "x": 2.5123472469167165,
+        "y": 4.232918465836931
       },
       "prevControl": {
-        "x": 6.950905330382089,
-        "y": 3.899415798831598
+        "x": 2.0847797251150064,
+        "y": 4.560720232551576
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 162.25143574219175,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -38,14 +44,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.25,
-    "rotation": -156.03751102542185,
+    "velocity": 0.1,
+    "rotation": 168.111341960372,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Far Side Optimized",
+  "folder": "5p Center Optimus",
   "previewStartingState": {
-    "rotation": 147.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

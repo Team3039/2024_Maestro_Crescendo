@@ -1,0 +1,74 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.9195544105373927,
+        "y": 5.541275082550166
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.356181283791139,
+        "y": 4.705685982800538
+      },
+      "isLocked": false,
+      "linkedName": "4cp endpoint"
+    },
+    {
+      "anchor": {
+        "x": 5.70485140970282,
+        "y": 4.236583330309518
+      },
+      "prevControl": {
+        "x": 4.8399433941725025,
+        "y": 4.324540077651584
+      },
+      "nextControl": {
+        "x": 6.813349429310843,
+        "y": 4.12385471814599
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.050364672157917,
+        "y": 4.133967125077108
+      },
+      "prevControl": {
+        "x": 7.801153888022063,
+        "y": 5.057512972168803
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "4cp2 end"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 153.5738862737184,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.9,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 2.0,
+    "rotation": 156.57130719125468,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "5p Center Optimus",
+  "previewStartingState": {
+    "rotation": 179.24284789415503,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
