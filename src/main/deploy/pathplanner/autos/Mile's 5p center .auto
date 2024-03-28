@@ -192,6 +192,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "4cp 7"
+          }
+        },
+        {
           "type": "sequential",
           "data": {
             "commands": [

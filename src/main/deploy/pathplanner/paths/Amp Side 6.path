@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.2,
-        "y": 4.9
+        "x": 4.19411283267011,
+        "y": 5.00254000508001
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.144635146413151,
-        "y": 3.708842846257122
+        "x": 6.138747979083261,
+        "y": 3.8113828513371315
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "fresavakado"
     },
     {
       "anchor": {

@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.85,
-        "y": 6.6
+        "x": 2.5123472469167165,
+        "y": 4.232918465836931
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9122013943522838,
-        "y": 6.806471035400712
+        "x": 1.9422572178477695,
+        "y": 4.860017497812773
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "balls"
     },
     {
       "anchor": {
-        "x": 2.8,
-        "y": 6.95
+        "x": 2.8829057658115325,
+        "y": 5.54412553269551
       },
       "prevControl": {
-        "x": 1.8586953665208825,
-        "y": 6.767028914351562
+        "x": 2.8829057658115325,
+        "y": 5.529873281968787
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.25,
-      "rotationDegrees": -170.9491918737176,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -44,14 +38,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.1,
-    "rotation": -168.07372814522,
+    "velocity": 0,
+    "rotation": 178.49256424122515,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Side",
+  "folder": "5p Center Optimus",
   "previewStartingState": {
-    "rotation": -120.0,
+    "rotation": 165.74996730219647,
     "velocity": 0
   },
   "useDefaultConstraints": true

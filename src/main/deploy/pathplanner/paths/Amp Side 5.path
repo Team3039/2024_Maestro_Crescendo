@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 4.208365083396834,
-        "y": 5.073801258713629
+        "x": 4.19411283267011,
+        "y": 5.00254000508001
       },
       "prevControl": {
-        "x": 5.491067648801965,
-        "y": 2.935963649705077
+        "x": 5.476815398075241,
+        "y": 2.864702396071458
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "fresavakado"
     }
   ],
   "rotationTargets": [],
