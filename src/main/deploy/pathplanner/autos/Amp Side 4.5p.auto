@@ -57,12 +57,6 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.8
-                      }
-                    },
-                    {
                       "type": "named",
                       "data": {
                         "name": "Start Intake"
@@ -133,12 +127,6 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
                       "type": "named",
                       "data": {
                         "name": "Start Intake"
@@ -204,7 +192,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.8
+                        "waitTime": 0.5
                       }
                     },
                     {
@@ -257,9 +245,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Amp Side 6"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp Side 6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
           }
         }
       ]

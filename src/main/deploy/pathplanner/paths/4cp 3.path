@@ -8,11 +8,27 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.082840451395188,
-        "y": 3.767480677818499
+        "x": 8.06502413004826,
+        "y": 3.5036104357923006
       },
       "isLocked": false,
       "linkedName": "4cp2 end"
+    },
+    {
+      "anchor": {
+        "x": 6.203272977974527,
+        "y": 3.840777967270221
+      },
+      "prevControl": {
+        "x": 7.405057942597297,
+        "y": 3.130632306356768
+      },
+      "nextControl": {
+        "x": 5.880764904386951,
+        "y": 4.031350919844697
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,8 +36,8 @@
         "y": 5.52661562465982
       },
       "prevControl": {
-        "x": 6.687035088355891,
-        "y": 3.3716753147792016
+        "x": 2.8686535150848087,
+        "y": 5.487116529788615
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +46,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.85,
-      "rotationDegrees": 129.45146168192844,
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": 138.76788182255265,
       "rotateFast": false
     }
   ],
@@ -51,7 +67,7 @@
   "reversed": false,
   "folder": "5p Center Optimus",
   "previewStartingState": {
-    "rotation": -178.93908830973578,
+    "rotation": 178.6028189727036,
     "velocity": 2.0
   },
   "useDefaultConstraints": true
