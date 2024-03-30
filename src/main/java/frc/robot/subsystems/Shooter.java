@@ -10,21 +10,30 @@ import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.wpilibj.Servo;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Shooter extends SubsystemBase {
-Timer timer = new Timer();
-public static double targetVelocity;
+	Timer timer = new Timer();
+
+	public static double targetVelocity;
+	public static double setpointAmp = 0;
+	boolean isAtSetpoint;
+
 	public enum ShooterState {
 		IDLE,
 		PASSIVE,
 		CLOSESHOT,
-		INTERPOLATED,
+		MANUAL,
 		AMP,
 		SOURCE
 	}
@@ -32,8 +41,13 @@ public static double targetVelocity;
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
 	public TalonFX shooterRight = new TalonFX(Constants.Ports.SHOOTER_RIGHT);
 
-	public Servo amper = new Servo(Constants.Ports.AMPER);
-	
+	public CANSparkMax amper = new CANSparkMax(Constants.Ports.AMPER, MotorType.kBrushless);
+	RelativeEncoder ampEncoder = amper.getEncoder();
+
+	private PIDController ampController = new PIDController(
+			Constants.Shooter.AMP_KP,
+			Constants.Shooter.AMP_KI,
+			Constants.Shooter.AMP_KD);
 
 	public ShooterState shooterState = ShooterState.IDLE;
 
@@ -41,7 +55,18 @@ public static double targetVelocity;
 	VelocityVoltage voltageRight = new VelocityVoltage(0);
 
 	public Shooter() {
-	CurrentLimitsConfigs currentLimit = new CurrentLimitsConfigs().withStatorCurrentLimit(70);
+		CurrentLimitsConfigs currentLimit = new CurrentLimitsConfigs().withStatorCurrentLimit(70);
+
+		amper.setInverted(true);
+		amper.enableSoftLimit(SoftLimitDirection.kForward, true);
+		amper.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+		amper.setSoftLimit(SoftLimitDirection.kForward, Constants.Shooter.AMP_FORWARD_LIMIT);
+		amper.setSoftLimit(SoftLimitDirection.kReverse, Constants.Shooter.AMP_REVERSE_LIMIT);
+
+		ampController.setP(Constants.Shooter.AMP_KP);
+		ampController.setI(Constants.Shooter.AMP_KI);
+		ampController.setD(Constants.Shooter.AMP_KD);
 
 		shooterLeft.setNeutralMode(NeutralModeValue.Coast);
 		shooterRight.setNeutralMode(NeutralModeValue.Coast);
@@ -62,6 +87,9 @@ public static double targetVelocity;
 		shooterLeft.getPosition().setUpdateFrequency(0);
 		shooterRight.getPosition().setUpdateFrequency(0);
 		shooterRight.setControl(new StrictFollower(shooterLeft.getDeviceID()));
+
+		amper.burnFlash();
+
 	}
 
 	public void setState(ShooterState state) {
@@ -71,6 +99,25 @@ public static double targetVelocity;
 	public ShooterState getState() {
 		return shooterState;
 	}
+	public double ticksToDegrees(double ticks) {
+		double ampRotations = ticks * Constants.Shooter.AMP_GEAR_RATIO;
+		double ampDegrees = ampRotations * 360.0;
+		return ampDegrees;
+	  }
+
+	public double getSetpointAmp() {
+		return setpointAmp;
+	}
+
+	public void setSetpointAmp(double setpoint) {
+		setpointAmp = setpoint;
+	}
+	
+	 public void setAmpPosition() {
+    double output = 0;
+    output = ampController.calculate(ticksToDegrees(ampEncoder.getPosition()), setpointAmp);
+    amper.set(MathUtil.clamp(output, -.4, .4));
+  }
 
 	public void setWheelSpeed(double speed) {
 		shooterLeft.set(speed);
@@ -78,9 +125,9 @@ public static double targetVelocity;
 
 	public void setShooterVelocity(double RPS) {
 		shooterLeft.setControl(
-			voltageLeft.withVelocity(RPS).
-			withFeedForward(Constants.Shooter.SHOOTER_FF));
+				voltageLeft.withVelocity(RPS).withFeedForward(Constants.Shooter.SHOOTER_FF));
 	}
+
 	// public boolean isAtSetpoint(double RPS){
 	// if ()
 	// return false;
@@ -89,43 +136,51 @@ public static double targetVelocity;
 	@Override
 	public void periodic() {
 		timer.start();
-
+		// System.out.println(ampEncoder.getPosition());
 		SmartDashboard.putNumber("RPS Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
-		SmartDashboard.putBoolean("Shooter At Setpoint", shooterLeft.getRotorVelocity().getValueAsDouble() >= targetVelocity);
+		SmartDashboard.putBoolean("Shooter At Setpoint",
+				shooterLeft.getRotorVelocity().getValueAsDouble() >= targetVelocity);
 
 		SmartDashboard.putNumber("Current Output Left Shooter", shooterRight.getTorqueCurrent().getValueAsDouble());
 
 		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
+		SmartDashboard.putNumber("Amp Position", ampEncoder.getPosition());
+		SmartDashboard.putNumber("Amp Setpoint", getSetpointAmp());
+
 		switch (shooterState) {
 			case IDLE:
+				setSetpointAmp(3);
+				setAmpPosition();
 				targetVelocity = 5;
 				timer.reset();
-				// setShooterVelocity(0);
+				setShooterVelocity(0);
 				setWheelSpeed(0);
-				if(timer.get() > 1.50){
-					amper.set(0.0);
+				if(timer.get() > 1.50 && ampEncoder.getPosition() > 3){
+				amper.set(-0.2);
 				}
 				break;
 			case PASSIVE:
 				targetVelocity = 10;
 				setShooterVelocity(20);
 				break;
-			case INTERPOLATED:
-				// setShooterVelocity(RobotContainer.vision.setpointShooter);
-				break;
 			case CLOSESHOT:
 				targetVelocity = 60;
-			setShooterVelocity(100);
-			break;
+				setShooterVelocity(100);
+				break;
 			case AMP:
 				targetVelocity = 15;
 				setShooterVelocity(28);
-				amper.setPosition(1.0);
+				if (ampEncoder.getPosition() < 15) {
+					amper.set(.2);
+				}
 				break;
 			case SOURCE:
 				targetVelocity = -4;
 				setShooterVelocity(-3);
+				break;
+			case MANUAL:
+				amper.set(RobotContainer.testPad.getRightX() * .5);
 				break;
 		}
 	}

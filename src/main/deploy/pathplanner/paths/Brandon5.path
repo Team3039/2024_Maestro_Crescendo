@@ -1,0 +1,76 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.1,
+        "y": 7.45
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.94459160346892,
+        "y": 7.315069487281832
+      },
+      "isLocked": false,
+      "linkedName": "Brandon4"
+    },
+    {
+      "anchor": {
+        "x": 4.4,
+        "y": 6.15
+      },
+      "prevControl": {
+        "x": 4.663870242026199,
+        "y": 6.237956747342066
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Brandon5"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot 5p",
+      "waypointRelativePos": 0.8,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Actuate To Shoot Calculated"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Indexer Start Shoot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.9,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -170.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "5.5p Center",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

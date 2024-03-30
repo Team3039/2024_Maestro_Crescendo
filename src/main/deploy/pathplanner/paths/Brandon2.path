@@ -1,0 +1,105 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.53840850538844,
+        "y": 4.265902246090207
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.333176094923619,
+        "y": 4.866940019594326
+      },
+      "isLocked": false,
+      "linkedName": "Brandon1"
+    },
+    {
+      "anchor": {
+        "x": 2.53840850538844,
+        "y": 5.629231829892232
+      },
+      "prevControl": {
+        "x": 1.8637359846148271,
+        "y": 5.341977212525855
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Brandon2"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 0.65,
+      "constraints": {
+        "maxVelocity": 0.6,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Shoot 2p",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Actuate To Shoot Calculated"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Indexer Start Shoot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.85,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Start Intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.9,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -174.09385888622955,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "5.5p Center",
+  "previewStartingState": {
+    "rotation": 160.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

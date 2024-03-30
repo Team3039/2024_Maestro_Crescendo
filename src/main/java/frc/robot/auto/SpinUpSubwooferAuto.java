@@ -6,8 +6,6 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Indexer.IndexerState;
-import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Wrist.WristState;
 

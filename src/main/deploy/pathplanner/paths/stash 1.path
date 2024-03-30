@@ -3,45 +3,33 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3070140425995143,
-        "y": 5.541275082550166
+        "x": 0.7308159060762569,
+        "y": 4.375440973104168
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3070140425995165,
-        "y": 5.541275082550166
+        "x": 1.4149239409589933,
+        "y": 2.323116868455958
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9195544105373927,
-        "y": 5.541275082550166
+        "x": 7.9994637767053325,
+        "y": 0.7838737899698015
       },
       "prevControl": {
-        "x": 1.9195544105373927,
-        "y": 5.541275082550166
+        "x": 6.9994637767053325,
+        "y": 0.7838737899698017
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4cp endpoint"
+      "linkedName": "stash1"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.6,
-      "maxWaypointRelativePos": 0.75,
-      "constraints": {
-        "maxVelocity": 0.2,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.9,
@@ -55,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5p Center Optimus",
+  "folder": "stash game",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 119.74488129694224,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -6,14 +6,13 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Wrist.WristState;
 public class ActuateToShootCalculatedAuto extends Command {
   double wristTolerance = 0;
   /** Creates a new ActuateToIdle. */
   public ActuateToShootCalculatedAuto(double wristTolerance) {
     // Use addRequirements() here to declare subsystem dependencies.
-addRequirements(RobotContainer.wrist, RobotContainer.shooter);
+addRequirements(RobotContainer.wrist);
 this.wristTolerance = wristTolerance;
   }
 

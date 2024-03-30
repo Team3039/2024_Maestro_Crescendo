@@ -29,7 +29,7 @@ public class Climb extends SubsystemBase {
 	public ClimbState climbState = ClimbState.IDLE;
 
 	public CANSparkMax climbA = new CANSparkMax(Constants.Ports.CLIMB, MotorType.kBrushless);
-	public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B, MotorType.kBrushless);
+	// public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B, MotorType.kBrushless);
 
 	public RelativeEncoder encoder = climbA.getEncoder();
 
@@ -45,17 +45,17 @@ public class Climb extends SubsystemBase {
 
 		climbA.setIdleMode(IdleMode.kBrake);
 
-		climbA.setInverted(false);
-		climbB.setInverted(true);
+		climbA.setInverted(true);
+		// climbB.setInverted(true);
 
-		climbA.enableSoftLimit(SoftLimitDirection.kForward, true);
+		climbA.enableSoftLimit(SoftLimitDirection.kForward, false);
 		climbA.enableSoftLimit(SoftLimitDirection.kReverse, true);
 		climbA.setSoftLimit(SoftLimitDirection.kForward, 22);
 		climbA.setSoftLimit(SoftLimitDirection.kReverse, 0);
-		climbB.follow(climbA);
+		// climbB.follow(climbA);
 
 		climbA.burnFlash();
-		climbB.burnFlash();
+		// climbB.burnFlash();
 
 		controller.setTolerance(3);
 	}
@@ -95,13 +95,15 @@ public class Climb extends SubsystemBase {
 	public double getPosition() {
 		return encoder.getPosition();
 	}
+	 
+  
 
 	@Override
 	public void periodic() {
 		// SmartDashboard.putNumber("Climb Current Draw", climbA.getOutputCurrent());
-		// SmartDashboard.putNumber("Climb Encoder", encoder.getPosition());
+		SmartDashboard.putNumber("Climb Encoder", encoder.getPosition());
 		// SmartDashboard.putString("Climb State", String.valueOf(getState()));
-		// SmartDashboard.putNumber("Climb Output", climbA.get());
+		SmartDashboard.putNumber("Climb Output", climbA.get());
 		// SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
 		switch (climbState) {
 			case IDLE:
@@ -114,7 +116,7 @@ public class Climb extends SubsystemBase {
                     }
 				break;
 			case MANUAL:
-				setClimbOpenLoop(-1 * RobotContainer.operatorPad.getLeftY());//intuitive
+				setClimbOpenLoop(-1 * RobotContainer.operatorPad.getLeftY());//intuite
 				break;
 			case POSITION:
 				setClimbClosedLoop();

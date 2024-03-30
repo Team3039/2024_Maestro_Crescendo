@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.842689018711372,
+        "y": 2.4371348742697485
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.63124770693986,
+        "y": 2.351621369909406
+      },
+      "isLocked": false,
+      "linkedName": "stash2"
+    },
+    {
+      "anchor": {
+        "x": 7.842689018711372,
+        "y": 4.133152710749866
+      },
+      "prevControl": {
+        "x": 6.842689018711372,
+        "y": 4.133152710749866
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "stash3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.9,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -176.0090869015702,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "stash game",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

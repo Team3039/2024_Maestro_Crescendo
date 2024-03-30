@@ -1,10 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.generated.TunerConstants;
 
@@ -37,7 +32,7 @@ public class Constants {
 		public static final int CLIMB = 19;
 		public static final int CANdleID = 20;
 		public static final int AMPER = 21;
-        public static final int CLIMB_B = 0;
+        // public static final int CLIMB_B = 0;
 	}
 
 	public static final class Drive {
@@ -64,36 +59,18 @@ public class Constants {
 		public static final double SHOOTER_KI = 0.000;
 		public static final double SHOOTER_KD = 0.000;
         public static final double SHOOTER_FF = 1.75;
+        public static final double AMP_KP = 0;
+        public static final double AMP_KI = 0;
+        public static final double AMP_KD = 0;
+		public static final float AMP_FORWARD_LIMIT = 0;
+        public static final float AMP_REVERSE_LIMIT = 0;
+		public static final double AMP_GEAR_RATIO = 0.1;
 
 	}
 
 	public static final class Vision {
-		// public static final Transform3d shootCameraToRobot = new Transform3d(
-		// 		new Translation3d(Units.inchesToMeters(8.8), Units.inchesToMeters(11.2), Units.inchesToMeters(6.8)),
-		// 		new Rotation3d(Units.degreesToRadians(5), Units.degreesToRadians(65), 0));
-
-		public static final Matrix<N3, N1> kDefaultStdDevs = VecBuilder.fill(0.2, 0.2, 0.2);
-
-		// public static final double X_P = 2.7;
-		// public static final double X_I = 0.0;
-		// public static final double X_D = 0;
-
-		// public static final double Y_P = 2.7;
-		// public static final double Y_I = 0.0;
-		// public static final double Y_D = 0;
-
-		// public static final double THETA_P = 2;
-		// public static final double THETA_I = 0.0;
-		// public static final double THETA_D = 0;
-
-		// public static final double X_TOLLERENCE = 0.01;
-		// public static final double Y_TOLLERENCE = 0.02;
-		// public static final double THETA_TOLLERENCE = 0.02;
-
 		public static final double FIELD_LENGTH_METERS = 16.54175;
 		public static final double FIELD_WIDTH_METERS = 8.0137;
-        public static final Transform3d shootCameraToRobot = null;
-
 	}
 
 	public static final class Wrist {
@@ -113,12 +90,10 @@ public class Constants {
 	}
 
 	public static final class Climb{
-
 		public static final double CLIMB_KS = 0;
         public static final double CLIMB_KP = 0;
         public static final double CLIMB_KI = 0;
         public static final double CLIMB_KD = 0;
         public static final double CLIMB_HEIGHT = 15;
-
 	}
 }

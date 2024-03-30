@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -31,17 +29,15 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   CurrentLimitsConfigs configs = new CurrentLimitsConfigs().withStatorCurrentLimit(50);
+
   public Robot() {
 }
-
-// Pose2d speakerPose = new Pose2d(15.3, 5.50, Rotation2d.fromDegrees(0));
 
   @Override
   public void robotInit() {
     // Pathfinding.setPathfinder(new LocalADStar());
     
     robotContainer = new RobotContainer();
-    // RobotContainer.drivetrain.seedFieldRelative(speakerPose);
 
     PortForwarder.add(1181, "10.30.39.11", 1182);
     PortForwarder.add(1183, "10.30.39.11", 1184);
@@ -58,16 +54,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
-  // Translation3d leftMultiTagResult = RobotContainer.vision.getMultiTagResult(RobotContainer.vision.shootLeftCamera);
-
-  //   if (leftMultiTagResult != null){
-  //     Pose2d poseLeft = new Pose2d(leftMultiTagResult.toTranslation2d(), Rotation2d.fromDegrees(0));
-  //   RobotContainer.drivetrain.addVisionMeasurement(poseLeft, 
-  //   kDefaultPeriod, Constants.Vision.kDefaultStdDevs);
-  //   // System.out.println(poseLeft);
-  //   }
-   
   }
 
   @Override
@@ -81,7 +67,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    // System.out.println(RobotContainer.drivetrain.odometryIsValid());
   }
 
   @Override
@@ -118,21 +103,15 @@ public class Robot extends TimedRobot {
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
     RobotContainer.wrist.setState(WristState.ALIGN);
-    RobotContainer.drivetrain.getPigeon2().setYaw(0);
   }
 
   @Override
   public void teleopPeriodic() {
-    
-
     // RobotContainer.orchestrator.setState(OrchestratorState.MARIOTIME);
 
     // RobotContainer.drivetrain.redAmpFPH.onlyWhile(() ->
     // RobotContainer.driverPad.getCircleButton());
     // RobotContainer.drivetrain.redTrapClose.onlyWhile(() ->
-    // RobotContainer.driverPad.getTriangleButton());
-
-
   }
 
   @Override

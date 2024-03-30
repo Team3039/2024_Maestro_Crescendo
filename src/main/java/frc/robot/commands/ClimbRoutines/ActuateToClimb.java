@@ -7,8 +7,6 @@ package frc.robot.commands.ClimbRoutines;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb.ClimbState;
-import frc.robot.subsystems.Shooter.ShooterState;
-import frc.robot.subsystems.Wrist.WristState;
 public class ActuateToClimb extends Command {
   /** Creates a new ActuateToIdle. */
   public ActuateToClimb() {

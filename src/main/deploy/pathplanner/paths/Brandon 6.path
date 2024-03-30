@@ -1,0 +1,82 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.4,
+        "y": 6.15
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.7341703254835075,
+        "y": 7.227112739939765
+      },
+      "isLocked": false,
+      "linkedName": "Brandon5"
+    },
+    {
+      "anchor": {
+        "x": 8.050364672157917,
+        "y": 5.89310207191843
+      },
+      "prevControl": {
+        "x": 8.584836169672343,
+        "y": 5.858594288617149
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0,
+      "constraints": {
+        "maxVelocity": 4.9,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 25.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Start Intake",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Start Intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.9,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 145.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "5.5p Center",
+  "previewStartingState": {
+    "rotation": -170.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

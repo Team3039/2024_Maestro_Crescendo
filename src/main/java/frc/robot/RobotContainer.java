@@ -5,7 +5,6 @@
 
 package frc.robot;
 
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
@@ -19,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.auto.ActuateToShootCalculatedAuto;
+import frc.robot.auto.ActuateToShootFastAuto;
 import frc.robot.auto.ActuateWristToCloseShotAuto;
 import frc.robot.auto.IndexerStartShootAuto;
 import frc.robot.auto.IndexerStopShootAuto;
@@ -36,6 +36,7 @@ import frc.robot.commands.ClimbRoutines.ActuateClimbToIdle;
 import frc.robot.commands.ClimbRoutines.ActuateToClimb;
 import frc.robot.commands.ClimbRoutines.SetClimbManualOverride;
 import frc.robot.commands.ShooterRoutines.ActuateShooterToCloseShot;
+import frc.robot.commands.ShooterRoutines.SetShooterManualOverride;
 import frc.robot.commands.WristRoutines.ActuateWristToAlign;
 import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
 import frc.robot.commands.WristRoutines.ActuateWristToTunable;
@@ -47,7 +48,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Orchestrator;
+// import frc.robot.subsystems.Orchestrator;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
 
@@ -60,12 +61,11 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Climb climb = new Climb();
   public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  public static final Orchestrator orchestrator = new Orchestrator();
+  // public static final Orchestrator orchestrator = new Orchestrator();
 
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // 5% Deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-  
 
   /*
    * InterpolatedPS4GamePad Treats Axis Inputs Exponentially Instead Of Linearly
@@ -73,7 +73,7 @@ public class RobotContainer {
   public static final InterpolatedPS4Gamepad driverPad = new InterpolatedPS4Gamepad(0); // Pilot Joystick
   public static final InterpolatedPS4Gamepad operatorPad = new InterpolatedPS4Gamepad(1); // Co-Pilot Joystick
   public static final InterpolatedPS4Gamepad testPad = new InterpolatedPS4Gamepad(2); // Testing Joystick
- 
+
   /* Driver Buttons */
   private final JoystickButton driverX = new JoystickButton(driverPad, PS4Controller.Button.kCross.value);
   private final JoystickButton driverSquare = new JoystickButton(driverPad, PS4Controller.Button.kSquare.value);
@@ -106,35 +106,35 @@ public class RobotContainer {
   private final JoystickButton operatorR2 = new JoystickButton(operatorPad, PS4Controller.Button.kR2.value);
   private final JoystickButton operatorR3 = new JoystickButton(operatorPad, PS4Controller.Button.kR3.value);
 
-  private final JoystickButton operatorPadButton = new JoystickButton(operatorPad, PS4Controller.Button.kTouchpad.value);
+  private final JoystickButton operatorPadButton = new JoystickButton(operatorPad,
+      PS4Controller.Button.kTouchpad.value);
   private final JoystickButton operatorStart = new JoystickButton(operatorPad, PS4Controller.Button.kPS.value);
 
   private final JoystickButton operatorShare = new JoystickButton(operatorPad, PS4Controller.Button.kShare.value);
   private final JoystickButton operatorOptions = new JoystickButton(operatorPad, PS4Controller.Button.kOptions.value);
 
-    /* Operator Buttons */
-    private final JoystickButton testX = new JoystickButton(testPad, PS4Controller.Button.kCross.value);
-    private final JoystickButton testSquare = new JoystickButton(testPad, PS4Controller.Button.kSquare.value);
-    private final JoystickButton testTriangle = new JoystickButton(testPad, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton testCircle = new JoystickButton(testPad, PS4Controller.Button.kCircle.value);
-  
-    private final JoystickButton testL1 = new JoystickButton(testPad, PS4Controller.Button.kL1.value);
-    private final JoystickButton testR1 = new JoystickButton(testPad, PS4Controller.Button.kR1.value);
-  
-    private final JoystickButton testL2 = new JoystickButton(testPad, PS4Controller.Button.kL2.value);
-    private final JoystickButton testR2 = new JoystickButton(testPad, PS4Controller.Button.kR2.value);
-    private final JoystickButton testR3 = new JoystickButton(testPad, PS4Controller.Button.kR3.value);
-  
-    private final JoystickButton testPadButton = new JoystickButton(testPad, PS4Controller.Button.kTouchpad.value);
-    private final JoystickButton testStart = new JoystickButton(testPad, PS4Controller.Button.kPS.value);
-  
-    private final JoystickButton testShare = new JoystickButton(testPad, PS4Controller.Button.kShare.value);
-    private final JoystickButton testOptions = new JoystickButton(testPad, PS4Controller.Button.kOptions.value);
+  /* Operator Buttons */
+  private final JoystickButton testX = new JoystickButton(testPad, PS4Controller.Button.kCross.value);
+  private final JoystickButton testSquare = new JoystickButton(testPad, PS4Controller.Button.kSquare.value);
+  private final JoystickButton testTriangle = new JoystickButton(testPad, PS4Controller.Button.kTriangle.value);
+  private final JoystickButton testCircle = new JoystickButton(testPad, PS4Controller.Button.kCircle.value);
+
+  private final JoystickButton testL1 = new JoystickButton(testPad, PS4Controller.Button.kL1.value);
+  private final JoystickButton testR1 = new JoystickButton(testPad, PS4Controller.Button.kR1.value);
+
+  private final JoystickButton testL2 = new JoystickButton(testPad, PS4Controller.Button.kL2.value);
+  private final JoystickButton testR2 = new JoystickButton(testPad, PS4Controller.Button.kR2.value);
+  private final JoystickButton testR3 = new JoystickButton(testPad, PS4Controller.Button.kR3.value);
+
+  private final JoystickButton testPadButton = new JoystickButton(testPad, PS4Controller.Button.kTouchpad.value);
+  private final JoystickButton testStart = new JoystickButton(testPad, PS4Controller.Button.kPS.value);
+
+  private final JoystickButton testShare = new JoystickButton(testPad, PS4Controller.Button.kShare.value);
+  private final JoystickButton testOptions = new JoystickButton(testPad, PS4Controller.Button.kOptions.value);
 
   public static final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   public static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   public static final SwerveRequest.FieldCentricFacingAngle facingAngle = new FieldCentricFacingAngle();
-
 
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
@@ -148,40 +148,47 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    drivetrain.setDefaultCommand( 
-      // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
-            .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
+    drivetrain.setDefaultCommand(
+        // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive
+                                                                                                                         // forward
+                                                                                                                         // with
+            // negative Y (forward)
+            .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X
+                                                                                          // (left)
             .withRotationalRate(
-              // -driverPad.interpolatedRightXAxis() * MaxAngularRate
-              Vision.getRotationToSpeaker()
-            ) // Drive counterclockwise with negative X (left)
+                // -driverPad.interpolatedRightXAxis() * MaxAngularRate
+                Vision.getRotationToSpeaker()) // Drive counterclockwise with negative X (left)
         )
-        // drivetrain.applyRequest(() -> drive.withVelocityX(-testPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive forward with
-        //                                                                                    // negative Y (forward)
-        //     .withVelocityY(-testPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X (left)
-        //     .withRotationalRate(
-        //       // -testPad.interpolatedRightXAxis() * MaxAngularRate
-        //       Vision.getRotationToSpeaker()
-        //     ) // Drive counterclockwise with negative X (left)
-        // )
-        );
+    // drivetrain.applyRequest(() ->
+    // drive.withVelocityX(-testPad.interpolatedLeftYAxis() *
+    // Constants.Drive.MaxSpeed) // Drive forward with
+    // // negative Y (forward)
+    // .withVelocityY(-testPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed)
+    // // Drive left with negative X (left)
+    // .withRotationalRate(
+    // // -testPad.interpolatedRightXAxis() * MaxAngularRate
+    // Vision.getRotationToSpeaker()
+    // ) // Drive counterclockwise with negative X (left)
+    // )
+    );
 
-    driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));    // // reset the field-centric heading on options press
+    // this is the co piolt
+    driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative())); // // reset the field-centric
+                                                                                    // heading on options press
     driverTriangle.onTrue(new ActuateToClimb());
     driverX.onTrue(new ActuateClimbToIdle());
+    driverCircle.whileTrue(new ActuateToShootCalculated(.5));
 
     operatorR1.whileTrue(new SpinUpSubwoofer());
     operatorR2.whileTrue(new ActuateRelease());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
     operatorShare.whileTrue(new ShootAMP());
-    operatorCircle.whileTrue(new ActuateToShootCalculated(.5));
     operatorStart.toggleOnTrue(new SetClimbManualOverride());
     operatorStart.toggleOnTrue(new SetWristManualOverride());
-    
-    //Pad For Development and Testing With One Controller
+
+    // Pad For Development and Testing With One Controller
     testStart.onTrue(new ActuateWristToTunable());
     testSquare.whileTrue(new IndexerToShoot());
     testCircle.whileTrue(new ActuateShooterToCloseShot());
@@ -190,9 +197,13 @@ public class RobotContainer {
     testR2.whileTrue(new ActuateToShootCalculated(.5));
     testTriangle.whileTrue(new ActuateRelease());
     testOptions.toggleOnTrue(new ActuateWristToForwardLimit());
+    testStart.toggleOnTrue(new SetClimbManualOverride());
+    testStart.toggleOnTrue(new SetWristManualOverride());
+    testStart.toggleOnTrue(new SetShooterManualOverride());
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
+
   public RobotContainer() {
 
     NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
@@ -209,9 +220,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Intake", new StopIntakeAuto());
     NamedCommands.registerCommand("Actuate Wrist Close", new ActuateWristToCloseShotAuto());
     NamedCommands.registerCommand("Actuate To Shoot Calculated", new ActuateToShootCalculatedAuto(.5));
-
-
-
+    NamedCommands.registerCommand("Actuate To Shoot Fast", new ActuateToShootFastAuto());
 
     configureBindings();
 

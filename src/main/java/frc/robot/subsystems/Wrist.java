@@ -51,7 +51,7 @@ public class Wrist extends SubsystemBase {
 
     wrist.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.Forward_Limit);
     wrist.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.Reverse_Limit);
-    wristEncoder.setPosition(53);
+    wristEncoder.setPosition(55.6);
 
     wristController.setP(Constants.Wrist.WRIST_KP);
     wristController.setI(Constants.Wrist.WRIST_KI);
@@ -84,7 +84,7 @@ public class Wrist extends SubsystemBase {
     wristEncoder.getPosition();
   }
   public double getCalculatedPosition() {
-    return Math.toDegrees(Math.atan(Vision.speakerHeight / Vision.getDistanceToSpeaker())); 
+    return degreesToTicks(Math.toDegrees(Math.atan(Vision.speakerHeight / Vision.getDistanceToSpeaker()))); 
   }
 
   public void setWristPosition() {

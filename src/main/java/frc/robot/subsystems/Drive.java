@@ -13,14 +13,15 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-// import frc.robot.subsystems.Vision;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -30,36 +31,19 @@ import frc.robot.generated.TunerConstants;
  */
 public class Drive extends SwerveDrivetrain implements Subsystem {
     private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
+    private Vision vision = new Vision();
 
     public Drive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
         configNeutralMode(NeutralModeValue.Brake);
-
-        RobotContainer.vision.photonPoseEstimatorShoot.update();
-        addVisionMeasurement(
-        RobotContainer.vision.photonPoseEstimatorShoot.update().get().estimatedPose.toPose2d(),
-        Timer.getFPGATimestamp(), 
-        VecBuilder.fill(
-        4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
-                4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
-                100));
-       
     }
 
     public Drive(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configurePathPlanner();
         configNeutralMode(NeutralModeValue.Brake);
-        RobotContainer.vision.photonPoseEstimatorShoot.update();
-        addVisionMeasurement(
-            RobotContainer.vision.photonPoseEstimatorShoot.update().get().estimatedPose.toPose2d(),
-            Timer.getFPGATimestamp(), 
-            VecBuilder.fill(
-            4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
-                    4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
-                    100));
     }
 
     private void configurePathPlanner() {
@@ -103,4 +87,32 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
     public ChassisSpeeds getCurrentRobotChassisSpeeds() {
         return m_kinematics.toChassisSpeeds(getState().ModuleStates);
     }
+
+    @Override
+    public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds,
+            Matrix<N3, N1> visionMeasurementStdDevs) {
+        super.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+    }
+
+    @Override
+    public void setVisionMeasurementStdDevs(Matrix<N3, N1> visionMeasurementStdDevs) {
+        super.setVisionMeasurementStdDevs(visionMeasurementStdDevs);
+    }
+
+    public void periodic() {
+        setVisionMeasurementStdDevs(VecBuilder.fill(
+                4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                100));
+        if (vision.photonPoseEstimatorShoot.update().isPresent()) {
+
+            addVisionMeasurement(vision.photonPoseEstimatorShoot.update().get().estimatedPose.toPose2d(),
+                    vision.photonPoseEstimatorShoot.update().get().timestampSeconds);
+        }
+        // if(vision.photonPoseEstimatorShoot2.update().isPresent()){
+
+        // addVisionMeasurement(vision.photonPoseEstimatorShoot2.update().get().estimatedPose.toPose2d(),
+        // vision.photonPoseEstimatorShoot2.update().get().timestampSeconds);
+        // }
+    };
 }
