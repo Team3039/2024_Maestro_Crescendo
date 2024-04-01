@@ -51,9 +51,22 @@
         "data": {
           "commands": [
             {
-              "type": "named",
+              "type": "parallel",
               "data": {
-                "name": "Actuate To Shoot Calculated"
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Actuate To Shoot Calculated"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Rotate To Speaker"
+                    }
+                  }
+                ]
               }
             },
             {

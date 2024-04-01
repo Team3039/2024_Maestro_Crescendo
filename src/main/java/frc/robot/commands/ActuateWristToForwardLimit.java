@@ -16,7 +16,6 @@ public class ActuateWristToForwardLimit extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-  
-      new ActuateWristToSetpoint(52, 0));
+      new ActuateWristToSetpoint(55.5, 0));
   }
 }

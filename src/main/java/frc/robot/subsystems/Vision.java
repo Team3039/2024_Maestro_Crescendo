@@ -25,14 +25,13 @@ import frc.robot.RobotContainer;
 public class Vision extends SubsystemBase {
 
     public static AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    static Pose3d blueSpeakerTag = aprilTagFieldLayout.getTagPose(7).get();
-    static Pose3d redSpeakerTag = aprilTagFieldLayout.getTagPose(4).get();
-    static Pose3d desiredSpeakerTag;
+    public static final Pose3d SpeakerCenterBlue = new Pose3d(0.2167, 5.549, 2.12, new Rotation3d());
+    public static final Pose3d SpeakerCenterRed = new Pose3d(16.3, 5.549, 2.12, new Rotation3d());
+    static Pose3d desiredSpeakerPose;
 
     public enum VisionState {
         DRIVING,
-        INTAKING,
-        SHOOTING
+        ROTATING
     }
 
     VisionState visionState = VisionState.DRIVING;
@@ -40,10 +39,11 @@ public class Vision extends SubsystemBase {
     double setpointWrist;
     double setpointShooter;
     static double distance = 0;
-    public static double speakerHeight = 2.10;
+    public static double speakerHeight = 2.02; //tune this value
     static double targetYaw;
 
     public static double rotation = 0;
+    public static boolean shouldRotateToSpeaker = false;
     int indexID;
     double desiredAllianceID;
 
@@ -83,80 +83,75 @@ public class Vision extends SubsystemBase {
     }
     
     public boolean isAtRotationSetpoint(){
+
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Blue) {
-                desiredSpeakerTag = blueSpeakerTag;
+                desiredSpeakerPose = SpeakerCenterBlue;
             } else {
-                desiredSpeakerTag = redSpeakerTag;
+                desiredSpeakerPose = SpeakerCenterRed;
             }
         }
-        return Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerTag.getY()) 
-       / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerTag.getX())) -
+
+        return Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY()) 
+       / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) -
         RobotContainer.drivetrain.getState().Pose.getRotation().getRadians()) < .1;
     }
 
     public static double getDistanceToSpeaker() {
+
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Blue) {
-                desiredSpeakerTag = blueSpeakerTag;
+                desiredSpeakerPose = SpeakerCenterBlue;
             } else {
-                desiredSpeakerTag = redSpeakerTag;
+                desiredSpeakerPose = SpeakerCenterRed;
             }
         }
-        double SpeakerX = desiredSpeakerTag.getX();
+
+        double SpeakerX = desiredSpeakerPose.getX();
 
         double distanceXToSpeaker = SpeakerX - RobotContainer.drivetrain.getState().Pose.getX();
 
-        double SpeakerY = desiredSpeakerTag.getY();
+        double SpeakerY = desiredSpeakerPose.getY();
 
         double distanceYToSpeaker = SpeakerY - RobotContainer.drivetrain.getState().Pose.getY();
 
         distance = Math.hypot(distanceXToSpeaker, distanceYToSpeaker);
         return distance;
-   
     }
 
-    public static double 
-    getRotationToSpeaker() {
+    public static double getRotationToSpeaker() {
+
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Blue) {
-                desiredSpeakerTag = blueSpeakerTag;
+                desiredSpeakerPose = SpeakerCenterBlue;
             } else {
-                desiredSpeakerTag = redSpeakerTag;
+                desiredSpeakerPose = SpeakerCenterRed;
             }
         }
-        targetYaw = Math.atan((RobotContainer.drivetrain.getState().Pose.getY() -
-                desiredSpeakerTag.getY()) /
-                (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerTag.getX()));
 
-        if (RobotContainer.driverPad.getCircleButton() == true) {
+        targetYaw = Math.atan((RobotContainer.drivetrain.getState().Pose.getY() -
+                desiredSpeakerPose.getY()) /
+                (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX()));
+
+        if (shouldRotateToSpeaker) {
             System.out.println(targetYaw);
             System.out.println(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians());
-            rotation = 1.5 * targetAlignment
+            rotation = .5 * targetAlignment
                     .calculate(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians(), targetYaw);
         } else {
             rotation = -RobotContainer.driverPad.getRightX() * Constants.Drive.MaxAngularRate;
         }
         return rotation;
- 
     }
 
     @Override
     public void periodic() {
         System.out.println(isAtRotationSetpoint());
-
-        if (DriverStation.getAlliance().isPresent()) {
-            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-                desiredAllianceID = 7;
-            } else {
-                desiredAllianceID = 4;
-            }
-        }
         
-           photonPoseEstimatorShoot.update();
+         photonPoseEstimatorShoot.update();
         //    photonPoseEstimatorShoot2.update();
 
         SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
@@ -167,10 +162,10 @@ public class Vision extends SubsystemBase {
         // This method will be called once per scheduler
         switch (visionState) {
             case DRIVING:
+                shouldRotateToSpeaker = false;
                 break;
-            case INTAKING:
-                break;
-            case SHOOTING:
+            case ROTATING:
+            shouldRotateToSpeaker = true;
                 break;
         }
     }

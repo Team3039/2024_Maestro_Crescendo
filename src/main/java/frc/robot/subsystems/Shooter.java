@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -128,18 +129,16 @@ public class Shooter extends SubsystemBase {
 				voltageLeft.withVelocity(RPS).withFeedForward(Constants.Shooter.SHOOTER_FF));
 	}
 
-	// public boolean isAtSetpoint(double RPS){
-	// if ()
-	// return false;
-	// }
+	public boolean isAtVelocitySetpoint(){
+	return targetVelocity < shooterLeft.getRotorVelocity().getValueAsDouble();
+	}
 
 	@Override
 	public void periodic() {
 		timer.start();
 		// System.out.println(ampEncoder.getPosition());
 		SmartDashboard.putNumber("RPS Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
-		SmartDashboard.putBoolean("Shooter At Setpoint",
-				shooterLeft.getRotorVelocity().getValueAsDouble() >= targetVelocity);
+		SmartDashboard.putBoolean("Shooter At Setpoint", shooterLeft.getRotorVelocity().getValueAsDouble() >= targetVelocity);
 
 		SmartDashboard.putNumber("Current Output Left Shooter", shooterRight.getTorqueCurrent().getValueAsDouble());
 
@@ -148,17 +147,17 @@ public class Shooter extends SubsystemBase {
 		SmartDashboard.putNumber("Amp Position", ampEncoder.getPosition());
 		SmartDashboard.putNumber("Amp Setpoint", getSetpointAmp());
 
+		// if (RobotState.isTeleop() && RobotState.isEnabled() && Vision.getDistanceToSpeaker() < 8){
+		// 	shooterState = ShooterState.PASSIVE;
+		// }
+
 		switch (shooterState) {
 			case IDLE:
-				setSetpointAmp(3);
+				setSetpointAmp(0);
 				setAmpPosition();
-				targetVelocity = 5;
-				timer.reset();
+				targetVelocity = 1;
 				setShooterVelocity(0);
 				setWheelSpeed(0);
-				if(timer.get() > 1.50 && ampEncoder.getPosition() > 3){
-				amper.set(-0.2);
-				}
 				break;
 			case PASSIVE:
 				targetVelocity = 10;
@@ -169,18 +168,16 @@ public class Shooter extends SubsystemBase {
 				setShooterVelocity(100);
 				break;
 			case AMP:
+				setSetpointAmp(3);
+				setAmpPosition();
 				targetVelocity = 15;
 				setShooterVelocity(28);
-				if (ampEncoder.getPosition() < 15) {
-					amper.set(.2);
-				}
 				break;
 			case SOURCE:
-				targetVelocity = -4;
 				setShooterVelocity(-3);
 				break;
 			case MANUAL:
-				amper.set(RobotContainer.testPad.getRightX() * .5);
+				amper.set(RobotContainer.testPad.getRightX() * .2);
 				break;
 		}
 	}

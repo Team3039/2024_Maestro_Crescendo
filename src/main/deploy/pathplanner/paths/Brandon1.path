@@ -55,12 +55,6 @@
               "data": {
                 "name": "Actuate To Shoot Fast"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Indexer Start Shoot"
-              }
             }
           ]
         }

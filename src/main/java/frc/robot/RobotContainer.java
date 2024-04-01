@@ -22,14 +22,16 @@ import frc.robot.auto.ActuateToShootFastAuto;
 import frc.robot.auto.ActuateWristToCloseShotAuto;
 import frc.robot.auto.IndexerStartShootAuto;
 import frc.robot.auto.IndexerStopShootAuto;
+import frc.robot.auto.RotateToSpeakerAuto;
 import frc.robot.auto.SpinUpSubwooferAuto;
 import frc.robot.auto.StartIntakeAuto;
 import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
-import frc.robot.commands.ActuateToShootCalculated;
+import frc.robot.commands.ActuateToAndShootNote;
 import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
+import frc.robot.commands.RotateToSpeaker;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.SpinUpSubwoofer;
 import frc.robot.commands.ClimbRoutines.ActuateClimbToIdle;
@@ -48,7 +50,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-// import frc.robot.subsystems.Orchestrator;
+// import frc.robot.subsystems.LightShow;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
 
@@ -61,7 +63,7 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Climb climb = new Climb();
   public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  // public static final Orchestrator orchestrator = new Orchestrator();
+  // public static final LightShow lightShow = new LightShow();
 
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // 5% Deadband
@@ -160,26 +162,17 @@ public class RobotContainer {
                 // -driverPad.interpolatedRightXAxis() * MaxAngularRate
                 Vision.getRotationToSpeaker()) // Drive counterclockwise with negative X (left)
         )
-    // drivetrain.applyRequest(() ->
-    // drive.withVelocityX(-testPad.interpolatedLeftYAxis() *
-    // Constants.Drive.MaxSpeed) // Drive forward with
-    // // negative Y (forward)
-    // .withVelocityY(-testPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed)
-    // // Drive left with negative X (left)
-    // .withRotationalRate(
-    // // -testPad.interpolatedRightXAxis() * MaxAngularRate
-    // Vision.getRotationToSpeaker()
-    // ) // Drive counterclockwise with negative X (left)
-    // )
     );
 
-    // this is the co piolt
+    // Pilot Bindings
     driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative())); // // reset the field-centric
                                                                                     // heading on options press
     driverTriangle.onTrue(new ActuateToClimb());
     driverX.onTrue(new ActuateClimbToIdle());
-    driverCircle.whileTrue(new ActuateToShootCalculated(.5));
+    driverCircle.whileTrue(new ActuateToAndShootNote());
+    driverSquare.whileTrue(new RotateToSpeaker());
 
+    // Co-Pilot Bindings
     operatorR1.whileTrue(new SpinUpSubwoofer());
     operatorR2.whileTrue(new ActuateRelease());
     operatorL1.whileTrue(new IndexerToShoot());
@@ -194,7 +187,7 @@ public class RobotContainer {
     testCircle.whileTrue(new ActuateShooterToCloseShot());
     testL2.whileTrue(new ActuateIntake());
     testX.whileTrue(new IndexerToShoot());
-    testR2.whileTrue(new ActuateToShootCalculated(.5));
+    testR2.whileTrue(new ActuateToAndShootNote());
     testTriangle.whileTrue(new ActuateRelease());
     testOptions.toggleOnTrue(new ActuateWristToForwardLimit());
     testStart.toggleOnTrue(new SetClimbManualOverride());
@@ -221,6 +214,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Actuate Wrist Close", new ActuateWristToCloseShotAuto());
     NamedCommands.registerCommand("Actuate To Shoot Calculated", new ActuateToShootCalculatedAuto(.5));
     NamedCommands.registerCommand("Actuate To Shoot Fast", new ActuateToShootFastAuto());
+    NamedCommands.registerCommand("Rotate To Speaker", new RotateToSpeakerAuto());
 
     configureBindings();
 

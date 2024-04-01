@@ -29,7 +29,8 @@ public class Climb extends SubsystemBase {
 	public ClimbState climbState = ClimbState.IDLE;
 
 	public CANSparkMax climbA = new CANSparkMax(Constants.Ports.CLIMB, MotorType.kBrushless);
-	// public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B, MotorType.kBrushless);
+	// public CANSparkMax climbB = new CANSparkMax(Constants.Ports.CLIMB_B,
+	// MotorType.kBrushless);
 
 	public RelativeEncoder encoder = climbA.getEncoder();
 
@@ -40,7 +41,7 @@ public class Climb extends SubsystemBase {
 
 	// neo rotations
 	public static double setpointClimb = 0;
-	
+
 	public Climb() {
 
 		climbA.setIdleMode(IdleMode.kBrake);
@@ -73,10 +74,9 @@ public class Climb extends SubsystemBase {
 	}
 
 	public void setClimbClosedLoop() {
-		@SuppressWarnings("unused")
 		double output = 0;
-	
-	output = controller.calculate(encoder.getPosition(), setpointClimb) + Constants.Climb.CLIMB_KS;
+
+		output = controller.calculate(encoder.getPosition(), setpointClimb) + Constants.Climb.CLIMB_KS;
 		climbA.set(MathUtil.clamp(output, -.2, .7));
 	}
 
@@ -95,39 +95,28 @@ public class Climb extends SubsystemBase {
 	public double getPosition() {
 		return encoder.getPosition();
 	}
-	 
-  
 
 	@Override
 	public void periodic() {
-		// SmartDashboard.putNumber("Climb Current Draw", climbA.getOutputCurrent());
+		SmartDashboard.putNumber("Climb Current Draw", climbA.getOutputCurrent());
 		SmartDashboard.putNumber("Climb Encoder", encoder.getPosition());
-		// SmartDashboard.putString("Climb State", String.valueOf(getState()));
+		SmartDashboard.putString("Climb State", String.valueOf(getState()));
 		SmartDashboard.putNumber("Climb Output", climbA.get());
-		// SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
+		SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
 		switch (climbState) {
 			case IDLE:
-				// setClimbClosedLoop();
-                if (encoder.getPosition() > 0.5){
-                    setClimbOpenLoop(-20);
-                    }
-                    else{
-                        setClimbOpenLoop(0);
-                    }
+				setSetpoint(0);
+				setClimbClosedLoop();
 				break;
 			case MANUAL:
-				setClimbOpenLoop(-1 * RobotContainer.operatorPad.getLeftY());//intuite
+				setClimbOpenLoop(-1 * RobotContainer.operatorPad.getLeftY());// intuitive
 				break;
 			case POSITION:
 				setClimbClosedLoop();
 				break;
 			case CLIMB_UP:
-                if (encoder.getPosition() < Constants.Climb.CLIMB_HEIGHT){
-                setClimbOpenLoop(20);
-                }
-                else{
-                    setClimbOpenLoop(0);
-                }
+				setSetpoint(16);
+				setClimbClosedLoop();
 				break;
 		}
 	}
