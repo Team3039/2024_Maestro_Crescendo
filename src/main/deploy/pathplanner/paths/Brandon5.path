@@ -41,13 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Actuate To Shoot Calculated"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Indexer Start Shoot"
+                "name": "Actuate To And Shoot Note"
               }
             }
           ]

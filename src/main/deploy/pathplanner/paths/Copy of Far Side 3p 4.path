@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.9,
-        "y": 2.3
+        "x": 8.050364672157917,
+        "y": 2.35
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.244094488188977,
-        "y": 4.0020320040640085
+        "x": 7.936859102289633,
+        "y": 3.6708860989150556
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 4.8
       },
       "prevControl": {
-        "x": 5.514278457128343,
-        "y": 3.8554374251605648
+        "x": 5.5289379150186875,
+        "y": 3.9433941725026314
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,7 +36,25 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Actuate To And Shoot Note"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,

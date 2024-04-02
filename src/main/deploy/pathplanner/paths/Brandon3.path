@@ -45,7 +45,7 @@
   "eventMarkers": [
     {
       "name": "Shoot 3p",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "parallel",
         "data": {
@@ -53,13 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Actuate To Shoot Calculated"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Indexer Start Shoot"
+                "name": "Actuate To And Shoot Note"
               }
             }
           ]

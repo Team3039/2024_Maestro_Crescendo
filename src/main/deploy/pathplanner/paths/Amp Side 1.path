@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.85,
-        "y": 6.6
+        "x": 1.4536086215029578,
+        "y": 6.95
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9122013943522838,
-        "y": 6.806471035400712
+        "x": 2.010668021336044,
+        "y": 6.933923582132878
       },
       "isLocked": false,
       "linkedName": null
@@ -20,23 +20,64 @@
         "y": 6.95
       },
       "prevControl": {
-        "x": 1.8586953665208825,
-        "y": 6.767028914351562
+        "x": 2.1426031423491425,
+        "y": 6.948583040023223
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [
     {
-      "waypointRelativePos": 0.25,
-      "rotationDegrees": -170.9491918737176,
-      "rotateFast": false
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.55,
+      "constraints": {
+        "maxVelocity": 0.4,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
     }
   ],
-  "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot Preload",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Actuate To And Shoot Note"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Start Intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,
@@ -45,13 +86,13 @@
   },
   "goalEndState": {
     "velocity": 0.1,
-    "rotation": -168.07372814522,
+    "rotation": -179.8144351618065,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp Side",
   "previewStartingState": {
-    "rotation": -120.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

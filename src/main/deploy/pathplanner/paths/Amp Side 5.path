@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.270256540513081,
-        "y": 4.0606698356253865
+        "x": 6.950905330382089,
+        "y": 5.336042672085345
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.19411283267011,
-        "y": 5.00254000508001
+        "x": 4.22424616277804,
+        "y": 6.611415508545304
       },
       "prevControl": {
-        "x": 5.476815398075241,
-        "y": 2.864702396071458
+        "x": 5.484959541347655,
+        "y": 7.7108748503211295
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,8 +29,38 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
-  "eventMarkers": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.85,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 0.9,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Actuate To And Shoot Note"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,
@@ -39,7 +69,7 @@
   },
   "goalEndState": {
     "velocity": 0.1,
-    "rotation": 180.0,
+    "rotation": -164.74488129694205,
     "rotateFast": false
   },
   "reversed": false,

@@ -33,7 +33,7 @@
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 0.5,
-      "maxWaypointRelativePos": 0.65,
+      "maxWaypointRelativePos": 0.6,
       "constraints": {
         "maxVelocity": 0.6,
         "maxAcceleration": 3.0,
@@ -53,13 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Actuate To Shoot Calculated"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Indexer Start Shoot"
+                "name": "Actuate To And Shoot Note"
               }
             }
           ]
@@ -67,8 +61,8 @@
       }
     },
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.85,
+      "name": "Start Intake",
+      "waypointRelativePos": 0.75,
       "command": {
         "type": "parallel",
         "data": {
