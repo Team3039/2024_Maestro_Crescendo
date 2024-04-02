@@ -5,10 +5,6 @@
 package frc.robot.subsystems;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonPipelineResult;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -16,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,6 +38,7 @@ public class Vision extends SubsystemBase {
     static double distance = 0;
     public static double speakerHeight = 2.02; //tune this value
     static double targetYaw;
+    public static double yawOffset = -1 * Units.degreesToRadians(10);
 
     public static double rotation = 0;
     public static boolean shouldRotateToSpeaker = false;
@@ -52,25 +50,14 @@ public class Vision extends SubsystemBase {
     public PhotonCamera shootingCamera = new PhotonCamera("Shooter Cam");
     // public PhotonCamera shootingCamera2 = new PhotonCamera("Shoot Cam");
 
-    PhotonPipelineResult resultShoot;
-    public static final Transform3d shootCameraToRobot = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0));
+    public static final Transform3d shootCameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(180),Units.degreesToRadians(10),Units.degreesToRadians(-30)));
     // public static final Transform3d shoot2CameraToRobot = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0));
 
-
-    public PhotonPoseEstimator photonPoseEstimatorShoot = new PhotonPoseEstimator(aprilTagFieldLayout,
-            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-            shootingCamera,
-            shootCameraToRobot);
-
-    //  public PhotonPoseEstimator photonPoseEstimatorShoot2 = new PhotonPoseEstimator(aprilTagFieldLayout,
-    //         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-    //         shootingCamera,
-    //         shoot2CameraToRobot);
     
     /** Creates a new Vision. */
     public Vision() {
         shootingCamera.setDriverMode(false);
-        // shootingCamer2.setDriverMode(false);
+        // shootingCamera2.setDriverMode(false);
         setState(VisionState.DRIVING);
     }
 
@@ -81,6 +68,19 @@ public class Vision extends SubsystemBase {
     public void setState(VisionState state) {
         visionState = state;
     }
+
+    public static Translation3d getMultiTagResult(PhotonCamera camera){
+        if (camera.getLatestResult() != null){
+      var result = camera.getLatestResult();
+    
+    if (result.getMultiTagResult().estimatedPose.isPresent) {
+      Transform3d fieldToCamera = result.getMultiTagResult().estimatedPose.best;
+      Translation3d pose = new Translation3d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getZ());
+      return pose;
+    }
+    }
+        return null;
+      }
     
     public boolean isAtRotationSetpoint(){
 
@@ -93,9 +93,9 @@ public class Vision extends SubsystemBase {
             }
         }
 
-        return Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY()) 
+        return (Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY()) 
        / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) -
-        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians()) < .1;
+        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians()) + yawOffset) < .05;
     }
 
     public static double getDistanceToSpeaker() {
@@ -134,12 +134,10 @@ public class Vision extends SubsystemBase {
 
         targetYaw = Math.atan((RobotContainer.drivetrain.getState().Pose.getY() -
                 desiredSpeakerPose.getY()) /
-                (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX()));
+                (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) + yawOffset;
 
-        if (shouldRotateToSpeaker) {
-            System.out.println(targetYaw);
-            System.out.println(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians());
-            rotation = .5 * targetAlignment
+        if (shouldRotateToSpeaker || RobotContainer.driverPad.getCircleButtonPressed()) {
+            rotation = 1.0 * targetAlignment
                     .calculate(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians(), targetYaw);
         } else {
             rotation = -RobotContainer.driverPad.getRightX() * Constants.Drive.MaxAngularRate;
@@ -149,15 +147,12 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println(isAtRotationSetpoint());
-        
-         photonPoseEstimatorShoot.update();
-        //    photonPoseEstimatorShoot2.update();
-
+    
         SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
         SmartDashboard.putNumber("Estimated Distance To Robot By Drivetrain", getDistanceToSpeaker());
         SmartDashboard.putString("Current Robot Pose", RobotContainer.drivetrain.getState().Pose.toString());
         SmartDashboard.putNumber("Rotation", getRotationToSpeaker());
+        SmartDashboard.putString("Vision State", getState().toString());
 
         // This method will be called once per scheduler
         switch (visionState) {
@@ -165,6 +160,7 @@ public class Vision extends SubsystemBase {
                 shouldRotateToSpeaker = false;
                 break;
             case ROTATING:
+            getRotationToSpeaker();
             shouldRotateToSpeaker = true;
                 break;
         }

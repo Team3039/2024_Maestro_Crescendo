@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.auto.ActuateToAndShootNoteAuto;
 import frc.robot.auto.ActuateToShootCalculatedAuto;
 import frc.robot.auto.ActuateToShootFastAuto;
 import frc.robot.auto.ActuateWristToCloseShotAuto;
@@ -29,15 +30,14 @@ import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
 import frc.robot.commands.ActuateToAndShootNote;
-import frc.robot.commands.ActuateWristToForwardLimit;
 import frc.robot.commands.IndexerToShoot;
-import frc.robot.commands.RotateToSpeaker;
 import frc.robot.commands.ShootAMP;
 import frc.robot.commands.SpinUpSubwoofer;
 import frc.robot.commands.ClimbRoutines.ActuateClimbToIdle;
 import frc.robot.commands.ClimbRoutines.ActuateToClimb;
 import frc.robot.commands.ClimbRoutines.SetClimbManualOverride;
 import frc.robot.commands.ShooterRoutines.ActuateShooterToCloseShot;
+import frc.robot.commands.ShooterRoutines.ActuateShooterToIdle;
 import frc.robot.commands.ShooterRoutines.SetShooterManualOverride;
 import frc.robot.commands.WristRoutines.ActuateWristToAlign;
 import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
@@ -49,8 +49,8 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LightShow;
 import frc.robot.subsystems.Shooter;
-// import frc.robot.subsystems.LightShow;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
 
@@ -63,7 +63,7 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Climb climb = new Climb();
   public static final Drive drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  // public static final LightShow lightShow = new LightShow();
+  public static final LightShow lightShow = new LightShow();
 
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(Constants.Drive.MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // 5% Deadband
@@ -153,7 +153,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive
-                                                                                                                         // forward
+                                                                                            // forward
                                                                                                                          // with
             // negative Y (forward)
             .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X
@@ -169,8 +169,8 @@ public class RobotContainer {
                                                                                     // heading on options press
     driverTriangle.onTrue(new ActuateToClimb());
     driverX.onTrue(new ActuateClimbToIdle());
-    driverCircle.whileTrue(new ActuateToAndShootNote());
-    driverSquare.whileTrue(new RotateToSpeaker());
+    driverCircle.onTrue(new ActuateToAndShootNote());
+    driverL2.whileTrue(new ActuateShooterToIdle());
 
     // Co-Pilot Bindings
     operatorR1.whileTrue(new SpinUpSubwoofer());
@@ -189,7 +189,6 @@ public class RobotContainer {
     testX.whileTrue(new IndexerToShoot());
     testR2.whileTrue(new ActuateToAndShootNote());
     testTriangle.whileTrue(new ActuateRelease());
-    testOptions.toggleOnTrue(new ActuateWristToForwardLimit());
     testStart.toggleOnTrue(new SetClimbManualOverride());
     testStart.toggleOnTrue(new SetWristManualOverride());
     testStart.toggleOnTrue(new SetShooterManualOverride());
@@ -215,6 +214,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Actuate To Shoot Calculated", new ActuateToShootCalculatedAuto(.5));
     NamedCommands.registerCommand("Actuate To Shoot Fast", new ActuateToShootFastAuto());
     NamedCommands.registerCommand("Rotate To Speaker", new RotateToSpeakerAuto());
+    NamedCommands.registerCommand("Actuate To And Shoot Note", new ActuateToAndShootNoteAuto());
 
     configureBindings();
 

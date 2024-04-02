@@ -8,16 +8,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter.ShooterState;
 
-public class ActuateShooterToPassive extends Command {
+// Miles is a god
+
+public class ActuateShooterToIdle extends Command {
   /** Creates a new ActuateElevatorIdle. */
-  public ActuateShooterToPassive() {
+  public ActuateShooterToIdle() {
     addRequirements(RobotContainer.shooter); 
    }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.shooter.setState(ShooterState.PASSIVE);
+    RobotContainer.shooter.setState(ShooterState.IDLE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -27,12 +29,13 @@ public class ActuateShooterToPassive extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.setState(ShooterState.IDLE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
+
+// still a god 

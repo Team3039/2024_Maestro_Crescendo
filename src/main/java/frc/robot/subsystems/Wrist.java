@@ -18,7 +18,7 @@ import frc.robot.RobotContainer;
 
 public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
-  double wristHeight = .5; //meters, tune this value
+  double wristHeight = .3; //meters, tune this value
 
   public enum WristState {
     MANUAL,
@@ -85,6 +85,7 @@ public class Wrist extends SubsystemBase {
   public void getWristPosition() {
     wristEncoder.getPosition();
   }
+  
   public double getCalculatedPosition() {
     return degreesToTicks(Math.toDegrees(Math.atan((Vision.SpeakerCenterBlue.getZ() - wristHeight) / Vision.getDistanceToSpeaker()))); 
   }

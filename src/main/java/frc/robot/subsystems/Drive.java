@@ -16,12 +16,15 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotContainer;
 import frc.robot.generated.TunerConstants;
 
 /**
@@ -31,7 +34,6 @@ import frc.robot.generated.TunerConstants;
  */
 public class Drive extends SwerveDrivetrain implements Subsystem {
     private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
-    private Vision vision = new Vision();
 
     public Drive(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency,
             SwerveModuleConstants... modules) {
@@ -101,18 +103,23 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
 
     public void periodic() {
         setVisionMeasurementStdDevs(VecBuilder.fill(
-                4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
-                4 * Math.pow(Vision.getDistanceToSpeaker(), 2),
+                3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
+                3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
                 100));
-        if (vision.photonPoseEstimatorShoot.update().isPresent()) {
 
-            addVisionMeasurement(vision.photonPoseEstimatorShoot.update().get().estimatedPose.toPose2d(),
-                    vision.photonPoseEstimatorShoot.update().get().timestampSeconds);
-        }
-        // if(vision.photonPoseEstimatorShoot2.update().isPresent()){
-
-        // addVisionMeasurement(vision.photonPoseEstimatorShoot2.update().get().estimatedPose.toPose2d(),
-        // vision.photonPoseEstimatorShoot2.update().get().timestampSeconds);
-        // }
+                if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera) != null){
+                    Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera);
+                    double time = Timer.getFPGATimestamp();
+                    if (pose != null){
+                    Pose2d usablePose = new Pose2d(pose.toTranslation2d(), RobotContainer.drivetrain.getState().Pose.getRotation());
+                    addVisionMeasurement(usablePose, time);
+                    }
+                }
+                // if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera2) != null){
+                //     Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera2);
+                //     double time = RobotContainer.vision.shootingCamera2.getLatestResult().getTimestampSeconds();
+                //     Pose2d usablePose = new Pose2d(pose.toTranslation2d(), new Rotation2d());
+                //     addVisionMeasurement(usablePose, time);
+                // }
     };
 }

@@ -25,7 +25,7 @@ public class Constants {
 		}
 		public static final int INTAKE = 13;
 		public static final int INDEXER = 14;
-		public static final int BEAM_BREAK = 15;
+		public static final int BEAM_BREAK = 3;
 		public static final int WRIST = 16;
 		public static final int SHOOTER_LEFT = 17;
 		public static final int SHOOTER_RIGHT = 18;
@@ -62,9 +62,10 @@ public class Constants {
         public static final double AMP_KP = 0;
         public static final double AMP_KI = 0;
         public static final double AMP_KD = 0;
-		public static final float AMP_FORWARD_LIMIT = 0;
+		public static final float AMP_FORWARD_LIMIT = 6;
         public static final float AMP_REVERSE_LIMIT = 0;
 		public static final double AMP_GEAR_RATIO = 0.1;
+        public static final double AMP_KG = .1875;
 
 	}
 

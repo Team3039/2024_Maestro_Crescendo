@@ -26,15 +26,13 @@ public class Intake extends SubsystemBase {
 
     public CANSparkMax intake = new CANSparkMax(Constants.Ports.INTAKE, CANSparkLowLevel.MotorType.kBrushless);
 
-    public static double speed = 0;
-
     public static boolean hasIntaked = false;
 
   public Intake() {
     intake.setIdleMode(IdleMode.kBrake);
     intake.setInverted(false);
     intake.burnFlash();
-    intake.setSmartCurrentLimit(500);
+    intake.setSmartCurrentLimit(50);
   }
 
   public void setState(IntakeState state) {

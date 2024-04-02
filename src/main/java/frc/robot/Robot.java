@@ -6,8 +6,9 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,9 +18,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Indexer.IndexerState;
 import frc.robot.subsystems.Intake.IntakeState;
-// import frc.robot.subsystems.Orchestrator.OrchestratorState;
+// import frc.robot.subsystems.LightShow.LightShowState;
 import frc.robot.subsystems.Shooter.ShooterState;
-import frc.robot.subsystems.Wrist.WristState;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
@@ -36,12 +36,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Pathfinding.setPathfinder(new LocalADStar());
-    
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()) {
+        if (alliance.get() == DriverStation.Alliance.Blue) {
+        } else if(alliance.get() == DriverStation.Alliance.Red){
+          RobotContainer.drivetrain.seedFieldRelative(new Pose2d(16, 0, new Rotation2d()));
+        }
+    }    
     robotContainer = new RobotContainer();
-
-    PortForwarder.add(1181, "10.30.39.11", 1182);
-    PortForwarder.add(1183, "10.30.39.11", 1184);
-    PortForwarder.add(1187, "10.30.39.11", 1188);
 
     RobotContainer.drivetrain.getDaqThread().setThreadPriority(99);
     SmartDashboard.putData("Auto Selector", autoChooser);
@@ -102,7 +104,7 @@ public class Robot extends TimedRobot {
     RobotContainer.shooter.setState(ShooterState.IDLE);
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
-    RobotContainer.wrist.setState(WristState.ALIGN);
+    // RobotContainer.wrist.setState(WristState.ALIGN);
   }
 
   @Override

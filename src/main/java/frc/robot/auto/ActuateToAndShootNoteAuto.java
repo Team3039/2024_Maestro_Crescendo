@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -10,10 +10,10 @@ import frc.robot.subsystems.Indexer.IndexerState;
 import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Vision.VisionState;
 import frc.robot.subsystems.Wrist.WristState;
-public class ActuateToAndShootNote extends Command {
+public class ActuateToAndShootNoteAuto extends Command {
   double wristTolerance = 0;
   /** Creates a new ActuateToIdle. */
-  public ActuateToAndShootNote() {
+  public ActuateToAndShootNoteAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
 addRequirements(RobotContainer.wrist, RobotContainer.shooter, RobotContainer.vision);
   }
@@ -37,13 +37,11 @@ addRequirements(RobotContainer.wrist, RobotContainer.shooter, RobotContainer.vis
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.setState(ShooterState.IDLE);
-    RobotContainer.vision.setState(VisionState.DRIVING);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-return false;
+return RobotContainer.indexer.getState() == IndexerState.SHOOTING;
   }
 }
