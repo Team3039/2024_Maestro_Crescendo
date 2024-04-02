@@ -32,8 +32,8 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.4,
-      "maxWaypointRelativePos": 0.45,
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 0.6,
       "constraints": {
         "maxVelocity": 0.5,
         "maxAcceleration": 3.0,
@@ -62,7 +62,7 @@
     },
     {
       "name": "Shoot Preload",
-      "waypointRelativePos": 0.35,
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -70,7 +70,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Actuate To And Shoot Note"
+                "name": "Actuate To Shoot Calculated"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Indexer Start Shoot"
               }
             }
           ]

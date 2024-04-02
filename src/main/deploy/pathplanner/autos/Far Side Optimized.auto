@@ -2,43 +2,177 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4242897057222692,
-      "y": 3.97271308828332
+      "x": 0.6738069031693622,
+      "y": 4.389693223830892
     },
-    "rotation": 180.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "Copy of Far Side 3p 1"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Spin Up Close"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.9
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Indexer Start Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Copy of Far Side 3p 2"
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Copy of Far Side 3p 1"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Start Intake"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Copy of Far Side 3p 3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Far Side 3p 2"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Copy of Far Side 3p 4"
+            "name": "Actuate To Shoot Calculated"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Copy of Far Side 3p 5"
+            "name": "Indexer Start Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.4
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Far Side 3p 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Far Side 3p 4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To Shoot Calculated"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Indexer Start Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.4
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Copy of Far Side 3p 5"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Start Intake"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]

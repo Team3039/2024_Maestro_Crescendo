@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.7373271889400925,
-        "y": 4.133967125077108
+        "x": 6.012700025400051,
+        "y": 3.782140135708843
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 4.046010377735041
       },
       "prevControl": {
-        "x": 7.420007982873108,
-        "y": 3.782140135708843
+        "x": 6.950905330382089,
+        "y": 3.899415798831598
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,31 +29,8 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.05,
-      "constraints": {
-        "maxVelocity": 0.4,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
-  "eventMarkers": [
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.6,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    }
-  ],
+  "constraintZones": [],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,
@@ -68,7 +45,7 @@
   "reversed": false,
   "folder": "Far Side Optimized",
   "previewStartingState": {
-    "rotation": 171.04837678846414,
+    "rotation": 147.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

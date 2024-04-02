@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.06,
+        "x": 7.85,
         "y": 0.8
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.727856598570341,
-        "y": 1.5978809100475346
+        "x": 4.806959613919228,
+        "y": 1.9810628510145907
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.7928081570448855,
-        "y": 1.4806052469247806
+        "x": 3.9,
+        "y": 2.6
       },
       "prevControl": {
-        "x": 6.624582737676144,
-        "y": 1.2688808082186425
-      },
-      "nextControl": {
-        "x": 4.986537973075946,
-        "y": 1.6858376573896008
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.8137813418483986,
-        "y": 2.711999709713705
-      },
-      "prevControl": {
-        "x": 4.942559599404913,
-        "y": 1.6565187416089124
+        "x": 5.149013631360597,
+        "y": 1.4109728219456439
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,25 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot 2p",
-      "waypointRelativePos": 1.8,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Actuate To And Shoot Note"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,
@@ -80,7 +46,7 @@
   "folder": "Far Side Optimized",
   "previewStartingState": {
     "rotation": 170.0,
-    "velocity": 1.0
+    "velocity": 2.0
   },
   "useDefaultConstraints": true
 }

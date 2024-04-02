@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.22424616277804,
-        "y": 6.611415508545304
+        "x": 4.19411283267011,
+        "y": 5.00254000508001
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.420007982873108,
-        "y": 7.461664066185276
+        "x": 6.138747979083261,
+        "y": 3.8113828513371315
       },
       "isLocked": false,
       "linkedName": "fresavakado"
@@ -20,21 +20,15 @@
         "y": 4.104648209296419
       },
       "prevControl": {
-        "x": 7.420007982873108,
-        "y": 4.383177909212962
+        "x": 7.3320512355310425,
+        "y": 4.075329293515731
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 133.11181199325895,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 2.0,
-    "rotation": 145.17551084304333,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp Side",
   "previewStartingState": {
-    "rotation": -162.75854060105988,
+    "rotation": 180.0,
     "velocity": 0.1
   },
   "useDefaultConstraints": true

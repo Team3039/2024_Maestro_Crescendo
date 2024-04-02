@@ -137,7 +137,7 @@ public class Vision extends SubsystemBase {
                 (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) + yawOffset;
 
         if (shouldRotateToSpeaker || RobotContainer.driverPad.getCircleButtonPressed()) {
-            rotation = .5 * targetAlignment
+            rotation = 1.0 * targetAlignment
                     .calculate(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians(), targetYaw);
         } else {
             rotation = -RobotContainer.driverPad.getRightX() * Constants.Drive.MaxAngularRate;
