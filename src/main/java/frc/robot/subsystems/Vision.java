@@ -47,16 +47,16 @@ public class Vision extends SubsystemBase {
 
     public static PIDController targetAlignment = new PIDController(10, 0, 0.00);
 
-    public PhotonCamera shootingCamera = new PhotonCamera("Shooter Cam");
+    // public PhotonCamera shootingCamera = new PhotonCamera("Shooter Cam");
     // public PhotonCamera shootingCamera2 = new PhotonCamera("Right");
 
-    public static final Transform3d shootCameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(180),Units.degreesToRadians(10),Units.degreesToRadians(-30)));
+    // public static final Transform3d shootCameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(180),Units.degreesToRadians(10),Units.degreesToRadians(-30)));
     // public static final Transform3d shoot2CameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(0),Units.degreesToRadians(10),Units.degreesToRadians(30)));
 
     
     /** Creates a new Vision. */
     public Vision() {
-        shootingCamera.setDriverMode(false);
+        // shootingCamera.setDriverMode(false);
         // shootingCamera2.setDriverMode(false);
         setState(VisionState.DRIVING);
     }

@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -102,20 +103,25 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
         super.setVisionMeasurementStdDevs(visionMeasurementStdDevs);
     }
 
+    // @SuppressWarnings("deprecation")
     public void periodic() {
-        setVisionMeasurementStdDevs(VecBuilder.fill(
-                3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
-                3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
-                100));
+        // if (!RobotState.isAutonomous()){
+        // setVisionMeasurementStdDevs(VecBuilder.fill(
+        //         3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
+        //         3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
+        //         100));
+        //        if( RobotContainer.vision.shootingCamera.hasTargets()){
+        //         if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera) != null){
+        //             Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera);
+        //             double time = Timer.getFPGATimestamp();
 
-                if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera) != null){
-                    Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera);
-                    double time = Timer.getFPGATimestamp();
-                    if (pose != null && RobotContainer.vision.shootingCamera.getLatestResult().getBestTarget().getPoseAmbiguity() < .3){
-                    Pose2d usablePose = new Pose2d(pose.toTranslation2d(), RobotContainer.drivetrain.getState().Pose.getRotation());
-                    addVisionMeasurement(usablePose, time);
-                    }
-                }
+        //             if (pose != null && RobotContainer.vision.shootingCamera.getLatestResult().getBestTarget().getPoseAmbiguity() < .3){
+        //             Pose2d usablePose = new Pose2d(pose.toTranslation2d(), RobotContainer.drivetrain.getState().Pose.getRotation());
+        //             addVisionMeasurement(usablePose, time);
+        //             }
+        //         }
+        //         }
+        //     }
 
                 // if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera2) != null){
                 //     Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera2);
