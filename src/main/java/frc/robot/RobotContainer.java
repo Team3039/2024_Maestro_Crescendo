@@ -173,9 +173,9 @@ public class RobotContainer {
     driverX.onTrue(new ActuateClimbToIdle());
 
     // Co-Pilot Bindings
-    operatorSquare.whileTrue(new ShootFromMidStage());
 
-    operatorR1.whileTrue(new ActuateShooterToIdle());
+    operatorR1.whileTrue(new ActuateShooterToCloseShot());
+
     operatorR2.whileTrue(new ActuateRelease());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
@@ -190,16 +190,16 @@ public class RobotContainer {
 
 
     // Pad For Development and Testing With One Controller
-    testStart.onTrue(new ActuateWristToTunable());
+    // testStart.onTrue(new ActuateWristToTunable());
     testSquare.whileTrue(new IndexerToShoot());
     testCircle.whileTrue(new ActuateShooterToCloseShot());
-    testL2.whileTrue(new ActuateIntake());
+    // testL2.whileTrue(new ActuateIntake());
     testX.whileTrue(new IndexerToShoot());
-    testR2.whileTrue(new ShootFromMidStage());
+    // testR2.whileTrue(new ShootFromMidStage());
     testTriangle.whileTrue(new ActuateRelease());
-    // testStart.toggleOnTrue(new SetClimbManualOverride());
-    // testStart.toggleOnTrue(new SetWristManualOverride());
-    // testStart.toggleOnTrue(new SetShooterManualOverride());
+    testStart.toggleOnTrue(new SetClimbManualOverride());
+    testStart.toggleOnTrue(new SetWristManualOverride());
+    testStart.toggleOnTrue(new SetShooterManualOverride());
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
@@ -211,11 +211,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("print hello", Commands.print("hello"));
     NamedCommands.registerCommand("Start Intake", new StartIntakeAuto());
     NamedCommands.registerCommand("Actuate Wrist Far Side Speaker Shoot", new ActuateWristToSetpoint(47, 2));
-    NamedCommands.registerCommand("Actuate Wrist Center Speaker", new ActuateWristToSetpoint(48, 0));
-    NamedCommands.registerCommand("Actuate Wrist Far Side Stage", new ActuateWristToSetpoint(40, 2));
+    NamedCommands.registerCommand("Actuate Wrist Center Speaker", new ActuateWristToSetpoint(32.25, .5));
+    NamedCommands.registerCommand("Actuate Wrist Far Side Stage", new ActuateWristToSetpoint(32, .5));
     NamedCommands.registerCommand("Align Wrist", new ActuateWristToAlign());
     NamedCommands.registerCommand("Spin Up Close", new SpinUpSubwooferAuto());
-    NamedCommands.registerCommand("Indexer Start Shoot", new IndexerStartShootAuto());
+    NamedCommands.registerCommand("Indexer Starft Shoot", new IndexerStartShootAuto());
     NamedCommands.registerCommand("Indexer Stop Shoot", new IndexerStopShootAuto());
     NamedCommands.registerCommand("Stop Intake", new StopIntakeAuto());
     NamedCommands.registerCommand("Actuate Wrist Close", new ActuateWristToCloseShotAuto());

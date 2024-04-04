@@ -88,6 +88,9 @@ public class Shooter extends SubsystemBase {
 		shooterLeft.getPosition().setUpdateFrequency(0);
 		shooterRight.getPosition().setUpdateFrequency(0);
 		shooterRight.setControl(new StrictFollower(shooterLeft.getDeviceID()));
+		amper.setSmartCurrentLimit(15);
+		ampEncoder.setPosition(0);
+
 
 		amper.burnFlash();
 
@@ -120,6 +123,7 @@ public class Shooter extends SubsystemBase {
 	+ Constants.Shooter.AMP_KG * Math.cos(Math.toRadians(ticksToDegrees(ampEncoder.getPosition())))
 	;
     amper.set(MathUtil.clamp(output, -.1, .1));
+
   }
 
 	public void setWheelSpeed(double speed) {
@@ -127,8 +131,7 @@ public class Shooter extends SubsystemBase {
 	}
 
 	public void setShooterVelocity(double RPS) {
-		shooterLeft.setControl(
-				voltageLeft.withVelocity(RPS).withFeedForward(Constants.Shooter.SHOOTER_FF));
+		shooterLeft.setControl(voltageLeft.withVelocity(RPS).withFeedForward(Constants.Shooter.SHOOTER_FF));
 	}
 
 	public boolean isAtVelocitySetpoint(){
@@ -163,7 +166,7 @@ public class Shooter extends SubsystemBase {
 				// 	else{
 						setWheelSpeed(0);
 					// }
-				setSetpointAmp(0);
+				setSetpointAmp(setpointAmp);
 				if(RobotContainer.testPad.getL2Button()){
 					setpointAmp += 5;
 				}
@@ -175,28 +178,28 @@ public class Shooter extends SubsystemBase {
 			case CLOSESHOT:
 				  if(Vision.getDistanceToSpeaker() < 2.2){
 					targetVelocity = 50;
-					setShooterVelocity(100);
-				  }
+					setWheelSpeed(.55);
+				}
 				  else{
 				targetVelocity = 50;
-				setShooterVelocity(100);
-				  }
+					setWheelSpeed(.55);
+			}
 				break;
 			case AMP:
-				setSetpointAmp(95);
+				setSetpointAmp(190);
 				setAmpPosition();
 				targetVelocity = 15;
-				setShooterVelocity(28);
+				  setWheelSpeed(.25);
 				break;
 			case SOURCE:
 				setShooterVelocity(-3);
 				break;
 			case MANUAL:
-				amper.set(RobotContainer.testPad.getRightX() * -1);
+				amper.set(RobotContainer.testPad.getRightX() * -.2);
 				break;
 			case FEEDING:
-			setShooterVelocity(90);
-			break;
+			setWheelSpeed(.4);
+				break;
 		}
 	}
 }

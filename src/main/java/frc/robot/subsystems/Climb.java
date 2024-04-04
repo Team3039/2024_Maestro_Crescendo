@@ -49,9 +49,9 @@ public class Climb extends SubsystemBase {
 		climbA.setInverted(true);
 		// climbB.setInverted(true);
 
-		climbA.enableSoftLimit(SoftLimitDirection.kForward, false);
+		climbA.enableSoftLimit(SoftLimitDirection.kForward, true);
 		climbA.enableSoftLimit(SoftLimitDirection.kReverse, true);
-		climbA.setSoftLimit(SoftLimitDirection.kForward, 22);
+		climbA.setSoftLimit(SoftLimitDirection.kForward, 206);
 		climbA.setSoftLimit(SoftLimitDirection.kReverse, 0);
 		// climbB.follow(climbA);
 
@@ -105,11 +105,18 @@ public class Climb extends SubsystemBase {
 		SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
 		switch (climbState) {
 			case IDLE:
-				setSetpoint(0);
-				setClimbClosedLoop();
+				if (RobotContainer.driverPad.getL2Button()){
+					setClimbOpenLoop(-.9);
+				}
+				if (RobotContainer.driverPad.getR2Button()){
+					setClimbOpenLoop(.9);
+				}
+			
 				break;
 			case MANUAL:
-				setClimbOpenLoop(-.1 * RobotContainer.operatorPad.getLeftY());// intuitive
+			
+				setClimbOpenLoop(-1 * RobotContainer.driverPad.getLeftY());// intuitive
+				
 				break;
 			case POSITION:
 				setClimbClosedLoop();

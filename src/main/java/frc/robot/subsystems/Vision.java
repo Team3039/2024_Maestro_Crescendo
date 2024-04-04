@@ -164,6 +164,12 @@ public class Vision extends SubsystemBase {
                 break;
             case ROTATING:
             getRotationToSpeaker();
+            if(RobotContainer.operatorPad.getTouchpad()){
+                yawOffset += Units.degreesToRadians(5);
+            }
+            if(RobotContainer.operatorPad.getCircleButton()){
+                yawOffset += Units.degreesToRadians(-5);
+            }
             shouldRotateToSpeaker = true;
                 break;
         }
