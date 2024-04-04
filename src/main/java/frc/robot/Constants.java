@@ -59,13 +59,13 @@ public class Constants {
 		public static final double SHOOTER_KI = 0.000;
 		public static final double SHOOTER_KD = 0.000;
         public static final double SHOOTER_FF = 1.75;
-        public static final double AMP_KP = 0;
+        public static final double AMP_KP = 0.003;
         public static final double AMP_KI = 0;
         public static final double AMP_KD = 0;
 		public static final float AMP_FORWARD_LIMIT = 6;
         public static final float AMP_REVERSE_LIMIT = 0;
 		public static final double AMP_GEAR_RATIO = 0.1;
-        public static final double AMP_KG = .1875;
+        public static final double AMP_KG = .0500;
 
 	}
 
@@ -91,7 +91,7 @@ public class Constants {
 	}
 
 	public static final class Climb{
-		public static final double CLIMB_KS = 0;
+		public static final double CLIMB_KS = 0.0;
         public static final double CLIMB_KP = 0;
         public static final double CLIMB_KI = 0;
         public static final double CLIMB_KD = 0;

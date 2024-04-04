@@ -77,7 +77,7 @@ public class Climb extends SubsystemBase {
 		double output = 0;
 
 		output = controller.calculate(encoder.getPosition(), setpointClimb) + Constants.Climb.CLIMB_KS;
-		climbA.set(MathUtil.clamp(output, -.2, .7));
+		climbA.set(MathUtil.clamp(output, -1, 1));
 	}
 
 	public static double getSetpoint() {
@@ -109,7 +109,7 @@ public class Climb extends SubsystemBase {
 				setClimbClosedLoop();
 				break;
 			case MANUAL:
-				setClimbOpenLoop(-1 * RobotContainer.operatorPad.getLeftY());// intuitive
+				setClimbOpenLoop(-.1 * RobotContainer.operatorPad.getLeftY());// intuitive
 				break;
 			case POSITION:
 				setClimbClosedLoop();

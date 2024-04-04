@@ -30,8 +30,10 @@ import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
 import frc.robot.commands.ActuateToAndShootNote;
+import frc.robot.commands.FeedFromMiddle;
 import frc.robot.commands.IndexerToShoot;
 import frc.robot.commands.ShootAMP;
+import frc.robot.commands.ShootFromMidStage;
 import frc.robot.commands.SpinUpSubwoofer;
 import frc.robot.commands.ClimbRoutines.ActuateClimbToIdle;
 import frc.robot.commands.ClimbRoutines.ActuateToClimb;
@@ -152,11 +154,11 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive
+        drivetrain.applyRequest(() -> drive.withVelocityX(driverPad.interpolatedLeftYAxis() * Constants.Drive.MaxSpeed) // Drive
                                                                                             // forward
                                                                                                                          // with
             // negative Y (forward)
-            .withVelocityY(-driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X
+            .withVelocityY(driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X
                                                                                           // (left)
             .withRotationalRate(
                 // -driverPad.interpolatedRightXAxis() * MaxAngularRate
@@ -169,17 +171,23 @@ public class RobotContainer {
                                                                                     // heading on options press
     driverTriangle.onTrue(new ActuateToClimb());
     driverX.onTrue(new ActuateClimbToIdle());
-    driverCircle.onTrue(new ActuateToAndShootNote());
-    driverL2.whileTrue(new ActuateShooterToIdle());
 
     // Co-Pilot Bindings
-    operatorR1.whileTrue(new SpinUpSubwoofer());
+    operatorSquare.whileTrue(new ShootFromMidStage());
+
+    operatorR1.whileTrue(new ActuateShooterToIdle());
     operatorR2.whileTrue(new ActuateRelease());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
     operatorShare.whileTrue(new ShootAMP());
     operatorStart.toggleOnTrue(new SetClimbManualOverride());
+    operatorTriangle.whileTrue(new FeedFromMiddle());
+
     operatorStart.toggleOnTrue(new SetWristManualOverride());
+    operatorCircle.onTrue(new ActuateToAndShootNote());
+    
+    
+
 
     // Pad For Development and Testing With One Controller
     testStart.onTrue(new ActuateWristToTunable());
@@ -187,11 +195,11 @@ public class RobotContainer {
     testCircle.whileTrue(new ActuateShooterToCloseShot());
     testL2.whileTrue(new ActuateIntake());
     testX.whileTrue(new IndexerToShoot());
-    testR2.whileTrue(new ActuateToAndShootNote());
+    testR2.whileTrue(new ShootFromMidStage());
     testTriangle.whileTrue(new ActuateRelease());
-    testStart.toggleOnTrue(new SetClimbManualOverride());
-    testStart.toggleOnTrue(new SetWristManualOverride());
-    testStart.toggleOnTrue(new SetShooterManualOverride());
+    // testStart.toggleOnTrue(new SetClimbManualOverride());
+    // testStart.toggleOnTrue(new SetWristManualOverride());
+    // testStart.toggleOnTrue(new SetShooterManualOverride());
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }

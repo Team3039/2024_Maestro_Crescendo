@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.4,
-        "y": 6.15
+        "x": 8.09,
+        "y": 7.43
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.7341703254835075,
-        "y": 7.227112739939765
+        "x": 8.006386298486884,
+        "y": 8.018723466018361
       },
       "isLocked": false,
-      "linkedName": "Brandon5"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.050364672157917,
-        "y": 5.89310207191843
+        "x": 4.414819115352517,
+        "y": 6.259588519177039
       },
       "prevControl": {
-        "x": 8.584836169672343,
-        "y": 5.858594288617149
+        "x": 4.949290612866943,
+        "y": 6.225080735875758
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,25 +42,7 @@
       }
     }
   ],
-  "eventMarkers": [
-    {
-      "name": "Start Intake",
-      "waypointRelativePos": 0.7,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Start Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,
@@ -69,13 +51,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 145.0,
+    "rotation": -165.37912601136847,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "5.5p Center",
   "previewStartingState": {
-    "rotation": -170.0,
+    "rotation": -178.43283347756875,
     "velocity": 0
   },
   "useDefaultConstraints": true

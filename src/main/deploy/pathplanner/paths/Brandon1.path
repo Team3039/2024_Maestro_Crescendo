@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3803113320512361,
-        "y": 5.52661562465982
+        "x": 1.35,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7761166950905336,
-        "y": 5.204107551072246
+        "x": 1.6871675314779202,
+        "y": 5.124875721180015
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.53840850538844,
-        "y": 4.265902246090207
+        "x": 2.2598788054718972,
+        "y": 4.383177909212962
       },
       "prevControl": {
-        "x": 2.4651112159367186,
-        "y": 4.573750861787438
+        "x": 2.0693058528974206,
+        "y": 4.676367067019849
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,37 +32,20 @@
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.5,
-      "maxWaypointRelativePos": 0.6,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0,
       "constraints": {
-        "maxVelocity": 0.5,
+        "maxVelocity": 4.9,
         "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
+        "maxAngularVelocity": 25.0,
         "maxAngularAcceleration": 720.0
       }
     }
   ],
   "eventMarkers": [
     {
-      "name": "RevUp",
+      "name": "New Event Marker",
       "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Actuate To Shoot Fast"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot Preload",
-      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -70,26 +53,15 @@
             {
               "type": "named",
               "data": {
-                "name": "Actuate To Shoot Calculated"
+                "name": "Actuate To And Shoot Note"
               }
             },
             {
-              "type": "named",
+              "type": "wait",
               "data": {
-                "name": "Indexer Start Shoot"
+                "waitTime": 0.4
               }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Start Intake",
-      "waypointRelativePos": 0.7,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
+            },
             {
               "type": "named",
               "data": {
@@ -109,7 +81,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 160.0,
+    "rotation": 160.97439396243132,
     "rotateFast": false
   },
   "reversed": false,

@@ -2,29 +2,33 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.ShooterRoutines;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter.ShooterState;
+import frc.robot.subsystems.Wrist.WristState;
 
-// Miles is a god
-
-public class ActuateShooterToCloseShot extends Command {
-  /** Creates a new ActuateElevatorIdle. */
-  public ActuateShooterToCloseShot() {
-    addRequirements(RobotContainer.shooter); 
-   }
+public class FeedFromMiddle extends Command {
+  /** Creates a new SetShooterToAMP Mode **/
+  public FeedFromMiddle() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.shooter, RobotContainer.wrist);
+  }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.shooter.setState(ShooterState.CLOSESHOT);
+    RobotContainer.wrist.setState(WristState.FEEDING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+    RobotContainer.shooter.setState(ShooterState.FEEDING);
+    }
+  
 
   // Called once the command ends or is interrupted.
   @Override
@@ -38,5 +42,3 @@ public class ActuateShooterToCloseShot extends Command {
     return false;
   }
 }
-
-// still a god 

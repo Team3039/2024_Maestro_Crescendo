@@ -3,87 +3,34 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.53840850538844,
-        "y": 5.629231829892232
+        "x": 2.582386879059473,
+        "y": 4.0606698356253865
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.522157552886535,
-        "y": 6.479480387532204
+        "x": 2.2012409739105196,
+        "y": 5.130810261620524
       },
       "isLocked": false,
-      "linkedName": "Brandon2"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.65,
-        "y": 6.75
+        "x": 2.1865815160201754,
+        "y": 5.467977793098444
       },
       "prevControl": {
-        "x": 2.2981730106317353,
-        "y": 6.295556805399325
+        "x": 2.2012409739105196,
+        "y": 5.160129177401213
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Brandon3"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.6,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 25.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
-  "eventMarkers": [
-    {
-      "name": "Shoot 3p",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Actuate To Shoot Calculated"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Indexer Start Shoot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake 4p",
-      "waypointRelativePos": 0.75,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Start Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "constraintZones": [],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.9,
     "maxAcceleration": 3.0,
@@ -92,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -145.0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "5.5p Center",
   "previewStartingState": {
-    "rotation": -174.16013004811333,
+    "rotation": -178.09084756700366,
     "velocity": 0
   },
   "useDefaultConstraints": true

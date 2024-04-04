@@ -11,6 +11,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,7 +19,7 @@ import frc.robot.RobotContainer;
 
 public class Wrist extends SubsystemBase {
   /** Creates a new Wrist. */
-  double wristHeight = .3; //meters, tune this value
+  double wristHeight = .15; //meters, tune this value
 
   public enum WristState {
     MANUAL,
@@ -27,7 +28,8 @@ public class Wrist extends SubsystemBase {
     ALIGN,
     CLOSESHOT,
     TUNABLE,
-    ESTIMATED
+    ESTIMATED,
+    FEEDING
 
   }
 
@@ -87,6 +89,9 @@ public class Wrist extends SubsystemBase {
   }
   
   public double getCalculatedPosition() {
+    if(Vision.getDistanceToSpeaker() > 2){
+      wristHeight = .8;
+    }
     return degreesToTicks(Math.toDegrees(Math.atan((Vision.SpeakerCenterBlue.getZ() - wristHeight) / Vision.getDistanceToSpeaker()))); 
   }
 
@@ -106,7 +111,6 @@ public class Wrist extends SubsystemBase {
    return wristDegrees / (Constants.Wrist.WRIST_GEAR_RATIO * 360.0);
   }
  
-
   @Override
   public void periodic() {
     // System.out.println(RobotContainer.indexer.getNoteDetected());
@@ -116,12 +120,18 @@ public class Wrist extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Position Encoder", wristEncoder.getPosition());
     // SmartDashboard.putNumber("Wrist Position Degrees",
     // ticksToDegrees(wristEncoder.getPosition()));
+
     SmartDashboard.putNumber("Setpoint Wrist", getSetpoint());
+    SmartDashboard.putNumber("Calculated Pos Wrist", getCalculatedPosition());
+
 
     switch (wristState) {
       case MANUAL:
         wrist.set(RobotContainer.operatorPad.getRightY() * -1); // intuitive
         break;
+      case FEEDING:
+      setSetpointWrist(34);
+      setWristPosition();
       case POSITION:
         setWristPosition();
         break;
@@ -139,14 +149,14 @@ public class Wrist extends SubsystemBase {
         break;
       case TUNABLE:
       if(RobotContainer.testPad.getL1Button()){
-        setSetpointWrist(ticksToDegrees(setpointWrist + .2));
+       setpointWrist += .2;
       }
       if(RobotContainer.testPad.getR1Button()){
-        setSetpointWrist(ticksToDegrees(setpointWrist - .2));
+        setpointWrist -= .2;
       }
       setWristPosition();
         break;
-      case ESTIMATED:
+      case ESTIMATED:  
       setSetpointWrist(getCalculatedPosition());
       setWristPosition();;
         break;

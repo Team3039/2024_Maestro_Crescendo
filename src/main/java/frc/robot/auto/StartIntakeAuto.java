@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Indexer.IndexerState;
 import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Vision.VisionState;
 import frc.robot.subsystems.Wrist.WristState;
 
 public class StartIntakeAuto extends Command {
@@ -29,6 +30,7 @@ public class StartIntakeAuto extends Command {
     RobotContainer.intake.setState(IntakeState.INTAKING);
     RobotContainer.indexer.setState(IndexerState.INDEXING);
     RobotContainer.wrist.setState(WristState.ALIGN);
+    RobotContainer.vision.setState(VisionState.DRIVING);
   }
 
   // Called once the command ends or is interrupted.

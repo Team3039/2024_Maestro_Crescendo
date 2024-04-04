@@ -1,0 +1,79 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3803113320512361,
+      "y": 5.52661562465982
+    },
+    "rotation": 178.26429541107143
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Brandon1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Shoot Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Brandon2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Brandon3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Shoot Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Brandon4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Shoot Note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Brandon5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Brandon 6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Shoot Note"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

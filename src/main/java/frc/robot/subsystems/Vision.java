@@ -38,20 +38,20 @@ public class Vision extends SubsystemBase {
     static double distance = 0;
     public static double speakerHeight = 2.02; //tune this value
     static double targetYaw;
-    public static double yawOffset = -1 * Units.degreesToRadians(10);
+    public static double yawOffset = -1 * Units.degreesToRadians(11);
 
     public static double rotation = 0;
     public static boolean shouldRotateToSpeaker = false;
     int indexID;
     double desiredAllianceID;
 
-    public static PIDController targetAlignment = new PIDController(6, 0, 0.00);
+    public static PIDController targetAlignment = new PIDController(10, 0, 0.00);
 
     public PhotonCamera shootingCamera = new PhotonCamera("Shooter Cam");
-    // public PhotonCamera shootingCamera2 = new PhotonCamera("Shoot Cam");
+    // public PhotonCamera shootingCamera2 = new PhotonCamera("Right");
 
     public static final Transform3d shootCameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(180),Units.degreesToRadians(10),Units.degreesToRadians(-30)));
-    // public static final Transform3d shoot2CameraToRobot = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0));
+    // public static final Transform3d shoot2CameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(0),Units.degreesToRadians(10),Units.degreesToRadians(30)));
 
     
     /** Creates a new Vision. */
@@ -73,6 +73,7 @@ public class Vision extends SubsystemBase {
         if (camera.getLatestResult() != null){
       var result = camera.getLatestResult();
     
+
     if (result.getMultiTagResult().estimatedPose.isPresent) {
       Transform3d fieldToCamera = result.getMultiTagResult().estimatedPose.best;
       Translation3d pose = new Translation3d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getZ());
@@ -95,7 +96,7 @@ public class Vision extends SubsystemBase {
 
         return (Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY()) 
        / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) -
-        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians()) + yawOffset) < .05;
+        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians())) < .1;
     }
 
     public static double getDistanceToSpeaker() {
@@ -131,12 +132,13 @@ public class Vision extends SubsystemBase {
                 desiredSpeakerPose = SpeakerCenterRed;
             }
         }
+        
 
         targetYaw = Math.atan((RobotContainer.drivetrain.getState().Pose.getY() -
                 desiredSpeakerPose.getY()) /
                 (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) + yawOffset;
 
-        if (shouldRotateToSpeaker || RobotContainer.driverPad.getCircleButtonPressed()) {
+        if (shouldRotateToSpeaker || RobotContainer.driverPad.getL1Button()) {
             rotation = 1.0 * targetAlignment
                     .calculate(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians(), targetYaw);
         } else {
@@ -151,7 +153,8 @@ public class Vision extends SubsystemBase {
         SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
         SmartDashboard.putNumber("Estimated Distance To Robot By Drivetrain", getDistanceToSpeaker());
         SmartDashboard.putString("Current Robot Pose", RobotContainer.drivetrain.getState().Pose.toString());
-        SmartDashboard.putNumber("Rotation", getRotationToSpeaker());
+        SmartDashboard.putNumber("Rotation", Units.radiansToDegrees(targetYaw));
+        SmartDashboard.putBoolean("Is At Rotation Setpoint", isAtRotationSetpoint());
         SmartDashboard.putString("Vision State", getState().toString());
 
         // This method will be called once per scheduler

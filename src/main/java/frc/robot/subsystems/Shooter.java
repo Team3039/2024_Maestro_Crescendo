@@ -35,7 +35,8 @@ public class Shooter extends SubsystemBase {
 		CLOSESHOT,
 		MANUAL,
 		AMP,
-		SOURCE
+		SOURCE,
+		FEEDING
 	}
 
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
@@ -116,8 +117,9 @@ public class Shooter extends SubsystemBase {
 	 public void setAmpPosition() {
     double output = 0;
     output = ampController.calculate(ticksToDegrees(ampEncoder.getPosition()), setpointAmp)
-	+ Constants.Shooter.AMP_KG * Math.cos(ticksToDegrees(ampEncoder.getPosition()));
-    amper.set(MathUtil.clamp(output, -.4, .4));
+	+ Constants.Shooter.AMP_KG * Math.cos(Math.toRadians(ticksToDegrees(ampEncoder.getPosition())))
+	;
+    amper.set(MathUtil.clamp(output, -.1, .1));
   }
 
 	public void setWheelSpeed(double speed) {
@@ -136,7 +138,7 @@ public class Shooter extends SubsystemBase {
 	@Override
 	public void periodic() {
 		timer.start();
-		System.out.println(isAtVelocitySetpoint());
+		// System.out.println(isAtVelocitySetpoint());
 		SmartDashboard.putNumber("RPS Shooter", shooterLeft.getRotorVelocity().getValueAsDouble());
 		SmartDashboard.putBoolean("Shooter At Setpoint", shooterLeft.getRotorVelocity().getValueAsDouble() >= targetVelocity);
 
@@ -155,17 +157,33 @@ public class Shooter extends SubsystemBase {
 
 		switch (shooterState) {
 			case IDLE:
-			setSetpointAmp(0);
-				// setAmpPosition();
-				setWheelSpeed(0);
+				// if(Vision.getDistanceToSpeaker() < 8){
+				// 	setShooterVelocity(10);
+				// }
+				// 	else{
+						setWheelSpeed(0);
+					// }
+				setSetpointAmp(0);
+				if(RobotContainer.testPad.getL2Button()){
+					setpointAmp += 5;
+				}
+				  if(RobotContainer.testPad.getR2Button()){
+					setpointAmp-= 5;
+				}
+				  setAmpPosition();
 				break;
-
 			case CLOSESHOT:
-				targetVelocity = 63;
-				setShooterVelocity(120);
+				  if(Vision.getDistanceToSpeaker() < 2.2){
+					targetVelocity = 50;
+					setShooterVelocity(100);
+				  }
+				  else{
+				targetVelocity = 50;
+				setShooterVelocity(100);
+				  }
 				break;
 			case AMP:
-				setSetpointAmp(3);
+				setSetpointAmp(95);
 				setAmpPosition();
 				targetVelocity = 15;
 				setShooterVelocity(28);
@@ -176,6 +194,9 @@ public class Shooter extends SubsystemBase {
 			case MANUAL:
 				amper.set(RobotContainer.testPad.getRightX() * -1);
 				break;
+			case FEEDING:
+			setShooterVelocity(90);
+			break;
 		}
 	}
 }

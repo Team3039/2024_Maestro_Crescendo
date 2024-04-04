@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.65,
-        "y": 6.75
+        "x": 2.1426031423491425,
+        "y": 5.42399941942741
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.65,
-        "y": 6.75
+        "x": 3.142603142349142,
+        "y": 5.42399941942741
       },
       "isLocked": false,
-      "linkedName": "Brandon3"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.1,
-        "y": 7.45
+        "x": 4.1509488733263185,
+        "y": 5.907761529808774
       },
       "prevControl": {
-        "x": 7.1,
-        "y": 7.45
+        "x": 3.1509488733263185,
+        "y": 5.907761529808774
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Brandon4"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.15,
+      "maxWaypointRelativePos": 0.1,
       "constraints": {
         "maxVelocity": 0.7,
         "maxAcceleration": 3.0,
@@ -44,54 +44,8 @@
   ],
   "eventMarkers": [
     {
-      "name": "Shoot 4p",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "Actuate To Shoot Calculated"
-                    }
-                  },
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "Rotate To Speaker"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Indexer Start Shoot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Intake",
-      "waypointRelativePos": 0.65,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": []
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.05,
       "command": {
         "type": "parallel",
         "data": {
@@ -115,13 +69,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -174.2894068625004,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "5.5p Center",
   "previewStartingState": {
-    "rotation": -150.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

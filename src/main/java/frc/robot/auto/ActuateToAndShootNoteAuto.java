@@ -11,7 +11,6 @@ import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Vision.VisionState;
 import frc.robot.subsystems.Wrist.WristState;
 public class ActuateToAndShootNoteAuto extends Command {
-  double wristTolerance = 0;
   /** Creates a new ActuateToIdle. */
   public ActuateToAndShootNoteAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,19 +28,19 @@ addRequirements(RobotContainer.wrist, RobotContainer.shooter, RobotContainer.vis
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if (RobotContainer.wrist.isAtSetpoint(.5) && RobotContainer.vision.isAtRotationSetpoint() && RobotContainer.shooter.isAtVelocitySetpoint()){
-    RobotContainer.indexer.setState(IndexerState.SHOOTING);
-   }
+   
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.indexer.setState(IndexerState.SHOOTING);
+    RobotContainer.vision.setState(VisionState.DRIVING);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-return RobotContainer.indexer.getState() == IndexerState.SHOOTING;
-  }
+  return    RobotContainer.wrist.isAtSetpoint(.1) && RobotContainer.vision.isAtRotationSetpoint() && RobotContainer.shooter.isAtVelocitySetpoint();
+}
 }

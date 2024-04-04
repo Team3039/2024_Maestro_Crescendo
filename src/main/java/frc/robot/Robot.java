@@ -16,10 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Climb.ClimbState;
 import frc.robot.subsystems.Indexer.IndexerState;
 import frc.robot.subsystems.Intake.IntakeState;
 // import frc.robot.subsystems.LightShow.LightShowState;
 import frc.robot.subsystems.Shooter.ShooterState;
+import frc.robot.subsystems.Wrist.WristState;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
@@ -62,7 +64,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     SignalLogger.stop();
     RobotContainer.shooter.setState(ShooterState.IDLE);
-    RobotContainer.indexer.setState(IndexerState.IDLE);
+    // RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
     // RobotContainer.orchestrator.setState(OrchestratorState.SILENT);
   }
@@ -105,6 +107,7 @@ public class Robot extends TimedRobot {
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
     // RobotContainer.wrist.setState(WristState.ALIGN);
+    RobotContainer.climb.setState(ClimbState.IDLE);
   }
 
   @Override
