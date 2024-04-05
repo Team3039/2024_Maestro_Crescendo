@@ -17,6 +17,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -149,10 +150,10 @@ public class Shooter extends SubsystemBase {
 
 		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
-		SmartDashboard.putNumber("Amper Position", ampEncoder.getPosition());
-		SmartDashboard.putNumber("Amper Current", amper.getOutputCurrent());
+		// SmartDashboard.putNumber("Amper Position", ampEncoder.getPosition());
+		// SmartDashboard.putNumber("Amper Current", amper.getOutputCurrent());
 
-		SmartDashboard.putNumber("Amper Setpoint", getSetpointAmp());
+		// SmartDashboard.putNumber("Amper Setpoint", getSetpointAmp());
 
 		// if (RobotState.isTeleop() && RobotState.isEnabled() && Vision.getDistanceToSpeaker() < 8){
 		// 	shooterState = ShooterState.PASSIVE;
@@ -166,39 +167,39 @@ public class Shooter extends SubsystemBase {
 				// 	else{
 						setWheelSpeed(0);
 					// }
-				setSetpointAmp(setpointAmp);
-				if(RobotContainer.testPad.getL2Button()){
-					setpointAmp += 5;
-				}
-				  if(RobotContainer.testPad.getR2Button()){
-					setpointAmp-= 5;
-				}
-				  setAmpPosition();
+				// setSetpointAmp(setpointAmp);
+				// if(RobotContainer.testPad.getL2Button()){
+				// 	setpointAmp += 5;
+				// }
+				//   if(RobotContainer.testPad.getR2Button()){
+				// 	setpointAmp-= 5;
+				// }
+				//   setAmpPosition();
 				break;
 			case CLOSESHOT:
-				  if(Vision.getDistanceToSpeaker() < 2.2){
+				  if(DriverStation.getAlliance().isPresent() && Vision.getDistanceToSpeaker() < 2.2){
 					targetVelocity = 50;
-					setWheelSpeed(.55);
-				}
+					setShooterVelocity(100);
+						}
 				  else{
 				targetVelocity = 50;
-					setWheelSpeed(.55);
+				setShooterVelocity(100);	
 			}
 				break;
 			case AMP:
-				setSetpointAmp(190);
-				setAmpPosition();
+				// setSetpointAmp(190);
+				// setAmpPosition();
 				targetVelocity = 15;
-				  setWheelSpeed(.25);
+				setShooterVelocity(28);
 				break;
 			case SOURCE:
 				setShooterVelocity(-3);
 				break;
 			case MANUAL:
-				amper.set(RobotContainer.testPad.getRightX() * -.2);
+				// amper.set(RobotContainer.testPad.getRightX() * -.2);
 				break;
 			case FEEDING:
-			setWheelSpeed(.4);
+			setShooterVelocity(90);
 				break;
 		}
 	}

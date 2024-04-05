@@ -38,13 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Pathfinding.setPathfinder(new LocalADStar());
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent()) {
-        if (alliance.get() == DriverStation.Alliance.Blue) {
-        } else if(alliance.get() == DriverStation.Alliance.Red){
-          RobotContainer.drivetrain.seedFieldRelative(new Pose2d(16, 0, new Rotation2d()));
-        }
-    }    
+
     robotContainer = new RobotContainer();
 
     RobotContainer.drivetrain.getDaqThread().setThreadPriority(99);
@@ -64,7 +58,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     SignalLogger.stop();
     RobotContainer.shooter.setState(ShooterState.IDLE);
-    // RobotContainer.indexer.setState(IndexerState.IDLE);
+    RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
     // RobotContainer.orchestrator.setState(OrchestratorState.SILENT);
   }
@@ -81,8 +75,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     SignalLogger.start();
     autoCommand = robotContainer.getAutonomousCommand();
-    RobotContainer.drivetrain.setOperatorPerspectiveForward(
-        Rotation2d.fromDegrees(DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Red ? 0 : 180));
+        if (DriverStation.getAlliance().isPresent()){
+          RobotContainer.drivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Red ? 0 : 180));
+        }
 
     if (autoCommand != null) {
       autoCommand.schedule();

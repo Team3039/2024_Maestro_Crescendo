@@ -148,7 +148,6 @@ public class RobotContainer {
   // public Command goToFarRedTrap = drivetrain.getAutoPath("Red Trap Far");
   // public Command goToRedTrapCenter = drivetrain.getAutoPath("Red Trap Center");
 
-  private final Telemetry logger = new Telemetry(Constants.Drive.MaxSpeed);
 
   private void configureBindings() {
 
@@ -201,7 +200,6 @@ public class RobotContainer {
     testStart.toggleOnTrue(new SetWristManualOverride());
     testStart.toggleOnTrue(new SetShooterManualOverride());
 
-    drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public RobotContainer() {

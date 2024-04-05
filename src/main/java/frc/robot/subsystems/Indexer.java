@@ -63,7 +63,7 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
       SmartDashboard.putBoolean("hasNote", getNoteDetected());
       SmartDashboard.putString("Indexer State", String.valueOf(getState()));
-      SmartDashboard.putBoolean("hasIndexed", hasIndexed);
+      // SmartDashboard.putBoolean("hasIndexed", hasIndexed);
     switch (indexerState) {
       case IDLE:
         setWheelSpeed(0.0);

@@ -55,7 +55,7 @@ public class Constants {
 	}
 
 	public static final class Shooter {
-		public static final double SHOOTER_KP = 0.00;
+		public static final double SHOOTER_KP = 0.12;
 		public static final double SHOOTER_KI = 0.000;
 		public static final double SHOOTER_KD = 0.000;
         public static final double SHOOTER_FF = 1.75;

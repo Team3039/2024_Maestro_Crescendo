@@ -98,11 +98,11 @@ public class Climb extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Climb Current Draw", climbA.getOutputCurrent());
-		SmartDashboard.putNumber("Climb Encoder", encoder.getPosition());
-		SmartDashboard.putString("Climb State", String.valueOf(getState()));
-		SmartDashboard.putNumber("Climb Output", climbA.get());
-		SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
+		// SmartDashboard.putNumber("Climb Current Draw", climbA.getOutputCurrent());
+		// SmartDashboard.putNumber("Climb Encoder", encoder.getPosition());
+		// SmartDashboard.putString("Climb State", String.valueOf(getState()));
+		// SmartDashboard.putNumber("Climb Output", climbA.get());
+		// SmartDashboard.putNumber("Setpoint Climb", getSetpoint());
 		switch (climbState) {
 			case IDLE:
 				if (RobotContainer.driverPad.getL2Button()){

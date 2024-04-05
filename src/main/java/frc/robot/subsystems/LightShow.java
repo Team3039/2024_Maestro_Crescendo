@@ -7,12 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdleConfiguration;
-import com.ctre.phoenix.led.ColorFlowAnimation;
-import com.ctre.phoenix.led.FireAnimation;
-import com.ctre.phoenix6.Orchestra;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -20,23 +15,11 @@ import frc.robot.subsystems.Intake.IntakeState;
 
 public class LightShow extends SubsystemBase {
     /** Creates a new Orchestra. */
-    Orchestra show = new Orchestra();
     CANdle light = new CANdle(Constants.Ports.CANdleID);
 
-    int song = 0;
-
-    String[] songs = {
-            "HaloConcert.chrp",
-            "Lifelight.chrp",
-            "WiiSmashRemix.chrp",
-            "TeenTitans.chrp",
-            "HaloConcert.chrp"
-    };
 
     public enum LightShowState {
-        SILENT,
-        PLAYLIST,
-        LIGHTSHOW
+        SILENT
     }
 
     LightShowState lightShowState = LightShowState.SILENT;
@@ -97,9 +80,7 @@ public class LightShow extends SubsystemBase {
 
         switch (lightShowState) {
             case SILENT:
-                if (show.isPlaying()) {
-                    show.stop();
-                }
+              
                if (RobotContainer.intake.intakeState == IntakeState.RELEASE) {
                     lightRed();
                 } else if (RobotContainer.indexer.beamBreak.get()) {
@@ -109,24 +90,6 @@ public class LightShow extends SubsystemBase {
                 } else{
                     light.setLEDs(0, 0, 0);
                 }
-                break;
-
-            case PLAYLIST:
-                if (RobotContainer.operatorPad.getPOV() == 90 && song < 5) {
-                    song += 1;
-                    show.loadMusic(songs[song]);
-                    show.play();
-                }
-                if (RobotContainer.operatorPad.getPOV() == 270 && song > 0) {
-                    song -= 1;
-                    show.loadMusic(songs[song]);
-                    show.play();
-                }
-                break;
-
-            case LIGHTSHOW:
-                show.loadMusic("WiiSmashRemix.chrp");
-                show.play();
                 break;
         }
     }

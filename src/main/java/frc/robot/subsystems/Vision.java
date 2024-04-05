@@ -96,7 +96,7 @@ public class Vision extends SubsystemBase {
 
         return (Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY()) 
        / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) -
-        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians())) < .1;
+        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians())) + yawOffset < .1;
     }
 
     public static double getDistanceToSpeaker() {
@@ -128,8 +128,10 @@ public class Vision extends SubsystemBase {
         if (alliance.isPresent()) {
             if (alliance.get() == DriverStation.Alliance.Blue) {
                 desiredSpeakerPose = SpeakerCenterBlue;
-            } else {
+                yawOffset = -1 * Units.degreesToRadians(-169);
+            } else if (alliance.get() == DriverStation.Alliance.Red){
                 desiredSpeakerPose = SpeakerCenterRed;
+               yawOffset = -1 * Units.degreesToRadians(11);
             }
         }
         
@@ -150,25 +152,31 @@ public class Vision extends SubsystemBase {
     @Override
     public void periodic() {
     
-        SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
-        SmartDashboard.putNumber("Estimated Distance To Robot By Drivetrain", getDistanceToSpeaker());
-        SmartDashboard.putString("Current Robot Pose", RobotContainer.drivetrain.getState().Pose.toString());
-        SmartDashboard.putNumber("Rotation", Units.radiansToDegrees(targetYaw));
-        SmartDashboard.putBoolean("Is At Rotation Setpoint", isAtRotationSetpoint());
-        SmartDashboard.putString("Vision State", getState().toString());
+        // SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
+        // SmartDashboard.putNumber("Estimated Distance To Speaker By Drivetrain", getDistanceToSpeaker());
+        // SmartDashboard.putString("Current Robot Pose", RobotContainer.drivetrain.getState().Pose.toString());
+        // SmartDashboard.putNumber("Rotation", Units.radiansToDegrees(targetYaw));
+        // SmartDashboard.putBoolean("Is At Rotation Setpoint", isAtRotationSetpoint());
+        // SmartDashboard.putString("Vision State", getState().toString());
 
         // This method will be called once per scheduler
         switch (visionState) {
             case DRIVING:
                 shouldRotateToSpeaker = false;
+                if(RobotContainer.operatorPad.getShareButton()){
+                    yawOffset += Units.degreesToRadians(2);
+                }
+                if(RobotContainer.operatorPad.getOptionsButton()){
+                    yawOffset += Units.degreesToRadians(-2);
+                }
                 break;
             case ROTATING:
             getRotationToSpeaker();
-            if(RobotContainer.operatorPad.getTouchpad()){
-                yawOffset += Units.degreesToRadians(5);
+            if(RobotContainer.operatorPad.getShareButton()){
+                yawOffset += Units.degreesToRadians(2);
             }
-            if(RobotContainer.operatorPad.getCircleButton()){
-                yawOffset += Units.degreesToRadians(-5);
+            if(RobotContainer.operatorPad.getOptionsButton()){
+                yawOffset += Units.degreesToRadians(-2);
             }
             shouldRotateToSpeaker = true;
                 break;

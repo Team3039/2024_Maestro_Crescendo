@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -89,10 +90,15 @@ public class Wrist extends SubsystemBase {
   }
   
   public double getCalculatedPosition() {
-    if(Vision.getDistanceToSpeaker() > 2){
-      wristHeight = .8;
+    if(DriverStation.getAlliance().isPresent() ){
+      if(Vision.getDistanceToSpeaker() > 2){
+        wristHeight = .8;
+      }
+      else{ wristHeight = 0.15;
+      }
+      return degreesToTicks(Math.toDegrees(Math.atan((Vision.SpeakerCenterBlue.getZ() - wristHeight) / Vision.getDistanceToSpeaker()))); 
     }
-    return degreesToTicks(Math.toDegrees(Math.atan((Vision.SpeakerCenterBlue.getZ() - wristHeight) / Vision.getDistanceToSpeaker()))); 
+    return 0;
   }
 
   public void setWristPosition() {
@@ -117,12 +123,12 @@ public class Wrist extends SubsystemBase {
 
     // SmartDashboard.putNumber("Wrist Speed", wrist.get());
     SmartDashboard.putString("WristState", String.valueOf(getState()));
-    SmartDashboard.putNumber("Wrist Position Encoder", wristEncoder.getPosition());
+    // SmartDashboard.putNumber("Wrist Position Encoder", wristEncoder.getPosition());
     // SmartDashboard.putNumber("Wrist Position Degrees",
     // ticksToDegrees(wristEncoder.getPosition()));
 
-    SmartDashboard.putNumber("Setpoint Wrist", getSetpoint());
-    SmartDashboard.putNumber("Calculated Pos Wrist", getCalculatedPosition());
+    // SmartDashboard.putNumber("Setpoint Wrist", getSetpoint());
+    // SmartDashboard.putNumber("Calculated Pos Wrist", getCalculatedPosition());
 
 
     switch (wristState) {
