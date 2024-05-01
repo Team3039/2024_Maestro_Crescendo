@@ -14,32 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Spin Up Close"
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Indexer Start Shoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "Actuate To And Shoot Note"
           }
         },
         {
@@ -56,12 +31,6 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Indexer Stop Shoot"
-                      }
-                    },
                     {
                       "type": "wait",
                       "data": {
@@ -89,52 +58,14 @@
                 "data": {
                   "pathName": "Far Side 3p 2"
                 }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Actuate Wrist Close"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    }
-                  ]
-                }
               }
             ]
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Indexer Start Shoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              }
-            ]
+            "name": "Actuate To And Shoot Note"
           }
         },
         {
@@ -194,23 +125,23 @@
                       "data": {
                         "name": "Actuate Wrist Close"
                       }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Actuate To And Shoot Note"
+                      }
                     }
                   ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Indexer Start Shoot"
           }
         }
       ]

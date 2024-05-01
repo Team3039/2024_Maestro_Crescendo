@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -36,7 +39,7 @@ public class Vision extends SubsystemBase {
     double setpointWrist;
     double setpointShooter;
     static double distance = 0;
-    public static double speakerHeight = 2.02; //tune this value
+    public static double speakerHeight = 2.02; // tune this value
     static double targetYaw;
     public static double yawOffset = -1 * Units.degreesToRadians(11);
 
@@ -47,20 +50,27 @@ public class Vision extends SubsystemBase {
 
     public static PIDController targetAlignment = new PIDController(10, 0, 0.00);
 
-    // public PhotonCamera shootingCamera = new PhotonCamera("Shooter Cam");
-    // public PhotonCamera shootingCamera2 = new PhotonCamera("Right");
+    public PhotonCamera leftCamera = new PhotonCamera("Left");
+    // public PhotonCamera shootingCamera2 = new PhotonCamera("Right"); 
 
-    // public static final Transform3d shootCameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(180),Units.degreesToRadians(10),Units.degreesToRadians(-30)));
-    // public static final Transform3d shoot2CameraToRobot = new Transform3d(new Translation3d(Units.inchesToMeters(-12), Units.inchesToMeters(4), Units.inchesToMeters(18)), new Rotation3d(Units.degreesToRadians(0),Units.degreesToRadians(10),Units.degreesToRadians(30)));
+    public static final Transform3d shootLeftCameraToRobot = 
+    new Transform3d(new Translation3d(Units.inchesToMeters(4), Units.inchesToMeters(12), Units.inchesToMeters(18)), 
+    new Rotation3d(Units.degreesToRadians(180), Units.degreesToRadians(-10), Units.degreesToRadians(-30)));
 
-    
+    // public static final Transform3d shootRightCameraToRobot = 
+    // new Transform3d(new Translation3d(Units.inchesToMeters(4), Units.inchesToMeters(-12), Units.inchesToMeters(18)),
+    // new Rotation3d(Units.degreesToRadians(0),Units.degreesToRadians(-10),Units.degreesToRadians(30)));
+
+    PhotonPoseEstimator leftCamPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, leftCamera, shootLeftCameraToRobot);
+    // PhotonPoseEstimator rightCamPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, shootRightCameraToRobot);
+
     /** Creates a new Vision. */
     public Vision() {
-        // shootingCamera.setDriverMode(false);
+        leftCamera.setDriverMode(false);
         // shootingCamera2.setDriverMode(false);
         setState(VisionState.DRIVING);
     }
-
+    
     public VisionState getState() {
         return visionState;
     }
@@ -69,21 +79,21 @@ public class Vision extends SubsystemBase {
         visionState = state;
     }
 
-    public static Translation3d getMultiTagResult(PhotonCamera camera){
-        if (camera.getLatestResult() != null){
-      var result = camera.getLatestResult();
-    
+    public static Translation3d getMultiTagResult(PhotonCamera camera) {
+        if (camera.getLatestResult() != null) {
+            var result = camera.getLatestResult();
 
-    if (result.getMultiTagResult().estimatedPose.isPresent) {
-      Transform3d fieldToCamera = result.getMultiTagResult().estimatedPose.best;
-      Translation3d pose = new Translation3d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getZ());
-      return pose;
-    }
-    }
+            if (result.getMultiTagResult().estimatedPose.isPresent) {
+                Transform3d fieldToCamera = result.getMultiTagResult().estimatedPose.best;
+                Translation3d pose = new Translation3d(fieldToCamera.getX(), fieldToCamera.getY(),
+                        fieldToCamera.getZ());
+                return pose;
+            }
+        }
         return null;
-      }
-    
-    public boolean isAtRotationSetpoint(){
+    }
+
+    public boolean isAtRotationSetpoint() {
 
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -94,9 +104,9 @@ public class Vision extends SubsystemBase {
             }
         }
 
-        return (Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY()) 
-       / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) -
-        RobotContainer.drivetrain.getState().Pose.getRotation().getRadians())) + yawOffset < .1;
+        return (Math.abs(Math.atan((RobotContainer.drivetrain.getState().Pose.getY() - desiredSpeakerPose.getY())
+                / (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) -
+                RobotContainer.drivetrain.getState().Pose.getRotation().getRadians())) < .5;
     }
 
     public static double getDistanceToSpeaker() {
@@ -124,23 +134,22 @@ public class Vision extends SubsystemBase {
 
     public static double getRotationToSpeaker() {
 
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            if (alliance.get() == DriverStation.Alliance.Blue) {
-                desiredSpeakerPose = SpeakerCenterBlue;
-                yawOffset = -1 * Units.degreesToRadians(-169);
-            } else if (alliance.get() == DriverStation.Alliance.Red){
-                desiredSpeakerPose = SpeakerCenterRed;
-               yawOffset = -1 * Units.degreesToRadians(11);
-            }
-        }
-        
-
-        targetYaw = Math.atan((RobotContainer.drivetrain.getState().Pose.getY() -
-                desiredSpeakerPose.getY()) /
-                (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX())) + yawOffset;
-
         if (shouldRotateToSpeaker || RobotContainer.driverPad.getL1Button()) {
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                if (alliance.get() == DriverStation.Alliance.Blue) {
+                    desiredSpeakerPose = SpeakerCenterBlue;
+                    // yawOffset = -1 * Units.degreesToRadians(180);
+                } else if (alliance.get() == DriverStation.Alliance.Red) {
+                    desiredSpeakerPose = SpeakerCenterRed;
+                }
+            }
+
+            targetYaw = Math.atan((RobotContainer.drivetrain.getState().Pose.getY() -
+                    desiredSpeakerPose.getY()) /
+                    (RobotContainer.drivetrain.getState().Pose.getX() - desiredSpeakerPose.getX()));
+                
             rotation = 1.0 * targetAlignment
                     .calculate(RobotContainer.drivetrain.getState().Pose.getRotation().getRadians(), targetYaw);
         } else {
@@ -151,34 +160,25 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-    
-        // SmartDashboard.putNumber("Wrist Target Pos", RobotContainer.wrist.getCalculatedPosition());
-        // SmartDashboard.putNumber("Estimated Distance To Speaker By Drivetrain", getDistanceToSpeaker());
-        // SmartDashboard.putString("Current Robot Pose", RobotContainer.drivetrain.getState().Pose.toString());
+        // SmartDashboard.putNumber("Wrist Target Pos",
+        // RobotContainer.wrist.getCalculatedPosition());
+        // SmartDashboard.putNumber("Estimated Distance To Speaker By Drivetrain",
+        // getDistanceToSpeaker());
+        // System.out.println(leftCamPoseEstimator.update());
+        SmartDashboard.putString("Current Robot Pose",
+        RobotContainer.drivetrain.getState().Pose.toString());
         // SmartDashboard.putNumber("Rotation", Units.radiansToDegrees(targetYaw));
-        // SmartDashboard.putBoolean("Is At Rotation Setpoint", isAtRotationSetpoint());
+        SmartDashboard.putBoolean("Is At Rotation Setpoint", isAtRotationSetpoint());
         // SmartDashboard.putString("Vision State", getState().toString());
 
         // This method will be called once per scheduler
         switch (visionState) {
             case DRIVING:
                 shouldRotateToSpeaker = false;
-                if(RobotContainer.operatorPad.getShareButton()){
-                    yawOffset += Units.degreesToRadians(2);
-                }
-                if(RobotContainer.operatorPad.getOptionsButton()){
-                    yawOffset += Units.degreesToRadians(-2);
-                }
                 break;
             case ROTATING:
-            getRotationToSpeaker();
-            if(RobotContainer.operatorPad.getShareButton()){
-                yawOffset += Units.degreesToRadians(2);
-            }
-            if(RobotContainer.operatorPad.getOptionsButton()){
-                yawOffset += Units.degreesToRadians(-2);
-            }
-            shouldRotateToSpeaker = true;
+                getRotationToSpeaker();
+                shouldRotateToSpeaker = true;
                 break;
         }
     }

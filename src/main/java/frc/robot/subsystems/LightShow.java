@@ -47,14 +47,14 @@ public class LightShow extends SubsystemBase {
     // has Note
     public void lightOrange() {
         // set brightness
-        light.configBrightnessScalar(1);
+        light.configBrightnessScalar(5);
         // set color
         light.setLEDs(255, 85, 0);
     }
 
     public void lightBlue() {
         // set brightness
-        light.configBrightnessScalar(1);
+        light.configBrightnessScalar(5);
         // set color
         light.setLEDs(0, 0, 255);
     }
@@ -62,15 +62,15 @@ public class LightShow extends SubsystemBase {
     // Intaking
     public void lightGreen() {
         // set brightness
-        light.configBrightnessScalar(1);
+        light.configBrightnessScalar(5);
         // set color
         light.setLEDs(0, 255, 0);
     }
 
     public void lightRed() {
         // set brightness
-        light.configBrightnessScalar(1);
-        // set color
+        light.configBrightnessScalar(5);
+        // set colo
         light.setLEDs(255, 0, 0);
     }
 

@@ -39,6 +39,7 @@ public class Indexer extends SubsystemBase {
     indexer.setIdleMode(IdleMode.kBrake);
 
     indexer.setInverted(false);
+    indexer.setSmartCurrentLimit(40);
 	
   }
 
@@ -75,7 +76,7 @@ public class Indexer extends SubsystemBase {
       //   setWheelSpeed(.3);
       // }
       //  else{ 
-        setWheelSpeed(.8);
+        setWheelSpeed(.75);
       // }
         break;
       case INDEXING:
@@ -86,7 +87,7 @@ public class Indexer extends SubsystemBase {
         setWheelSpeed(0);
       }
       else{
-      setWheelSpeed(.5);
+      setWheelSpeed(.4);
       }
         break;
       case MANUAL:

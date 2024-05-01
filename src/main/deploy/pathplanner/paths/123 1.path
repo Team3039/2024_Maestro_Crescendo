@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.77,
-        "y": 0.57
+        "x": 0.7792735585471178,
+        "y": 4.456475198664683
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.804493514302598,
-        "y": 0.5384265172386701
-      },
-      "isLocked": false,
-      "linkedName": "Source1"
-    },
-    {
-      "anchor": {
-        "x": 3.007511157879459,
-        "y": 2.594724046590951
-      },
-      "prevControl": {
-        "x": 3.493954885537748,
-        "y": 2.18428715137927
-      },
-      "nextControl": {
-        "x": 2.53840850538844,
-        "y": 2.990529409630248
+        "x": 1.2190572952574483,
+        "y": 3.093145614862659
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.9303474162503883,
-        "y": 4.703242739818813
+        "x": 4.3122029101201065,
+        "y": 1.495264704815124
       },
       "prevControl": {
-        "x": 1.1502392846055531,
-        "y": 4.498010329353992
+        "x": 3.110941777439111,
+        "y": 2.009567352468038
+      },
+      "nextControl": {
+        "x": 5.238446907921334,
+        "y": 1.0987066813497173
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.913950272344991,
+        "y": 0.9263962972370389
+      },
+      "prevControl": {
+        "x": 8.783337566675133,
+        "y": 0.5700900290689468
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Source2"
+      "linkedName": "Interruptor1"
     }
   ],
   "rotationTargets": [],
@@ -55,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 109.39582726245825,
+    "rotation": -16.260204708311782,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "New Folder",
   "previewStartingState": {
-    "rotation": -179.49534766658994,
+    "rotation": -60.949782684431135,
     "velocity": 0
   },
   "useDefaultConstraints": true

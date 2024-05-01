@@ -14,33 +14,31 @@ public class ActuateToAndShootNoteAuto extends Command {
   /** Creates a new ActuateToIdle. */
   public ActuateToAndShootNoteAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
-addRequirements(RobotContainer.wrist, RobotContainer.shooter, RobotContainer.vision);
+addRequirements(RobotContainer.wrist, RobotContainer.shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.wrist.setState(WristState.ESTIMATED);
+    RobotContainer.wrist.setState(WristState.CLOSESHOT);
     RobotContainer.shooter.setState(ShooterState.CLOSESHOT);
-    RobotContainer.vision.setState(VisionState.ROTATING);
+    // RobotContainer.vision.setState(VisionState.ROTATING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     RobotContainer.indexer.setState(IndexerState.SHOOTING);
-    RobotContainer.vision.setState(VisionState.DRIVING);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  return    RobotContainer.wrist.isAtSetpoint(.1) && RobotContainer.vision.isAtRotationSetpoint() && RobotContainer.shooter.isAtVelocitySetpoint();
+  return    RobotContainer.wrist.isAtSetpoint(1)  && RobotContainer.shooter.isAtVelocitySetpoint();
 }
 }

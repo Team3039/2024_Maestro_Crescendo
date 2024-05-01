@@ -37,7 +37,8 @@ public class Shooter extends SubsystemBase {
 		MANUAL,
 		AMP,
 		SOURCE,
-		FEEDING
+		FEEDING,
+		CLIMBING
 	}
 
 	public TalonFX shooterLeft = new TalonFX(Constants.Ports.SHOOTER_LEFT);
@@ -89,7 +90,7 @@ public class Shooter extends SubsystemBase {
 		shooterLeft.getPosition().setUpdateFrequency(0);
 		shooterRight.getPosition().setUpdateFrequency(0);
 		shooterRight.setControl(new StrictFollower(shooterLeft.getDeviceID()));
-		amper.setSmartCurrentLimit(15);
+		amper.setSmartCurrentLimit(10);
 		ampEncoder.setPosition(0);
 
 
@@ -151,7 +152,7 @@ public class Shooter extends SubsystemBase {
 		SmartDashboard.putString("Shooter State", String.valueOf(getState()));
 
 		// SmartDashboard.putNumber("Amper Position", ampEncoder.getPosition());
-		// SmartDashboard.putNumber("Amper Current", amper.getOutputCurrent());
+		SmartDashboard.putNumber("Amper Current", amper.getOutputCurrent());
 
 		// SmartDashboard.putNumber("Amper Setpoint", getSetpointAmp());
 
@@ -167,39 +168,40 @@ public class Shooter extends SubsystemBase {
 				// 	else{
 						setWheelSpeed(0);
 					// }
-				// setSetpointAmp(setpointAmp);
-				// if(RobotContainer.testPad.getL2Button()){
-				// 	setpointAmp += 5;
-				// }
-				//   if(RobotContainer.testPad.getR2Button()){
-				// 	setpointAmp-= 5;
-				// }
-				//   setAmpPosition();
+				setSetpointAmp(0);
+				// if
+				  setAmpPosition();
 				break;
 			case CLOSESHOT:
 				  if(DriverStation.getAlliance().isPresent() && Vision.getDistanceToSpeaker() < 2.2){
-					targetVelocity = 50;
-					setShooterVelocity(100);
+					targetVelocity = 55;
+					setShooterVelocity(150);
 						}
 				  else{
-				targetVelocity = 50;
-				setShooterVelocity(100);	
+				targetVelocity = 55;
+				setShooterVelocity(150);	
 			}
+				setSetpointAmp(0);
+				 setAmpPosition();
 				break;
 			case AMP:
-				// setSetpointAmp(190);
-				// setAmpPosition();
+				setSetpointAmp(220);
+				setAmpPosition();
 				targetVelocity = 15;
-				setShooterVelocity(28);
+				setShooterVelocity(35);
 				break;
+			case CLIMBING:
+				setSetpointAmp(150);
+				setAmpPosition();
+				setWheelSpeed(0);
 			case SOURCE:
-				setShooterVelocity(-3);
+				setShooterVelocity(-100);
 				break;
 			case MANUAL:
 				// amper.set(RobotContainer.testPad.getRightX() * -.2);
 				break;
 			case FEEDING:
-			setShooterVelocity(90);
+			setShooterVelocity(35);
 				break;
 		}
 	}

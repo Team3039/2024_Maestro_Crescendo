@@ -30,7 +30,8 @@ public class Wrist extends SubsystemBase {
     CLOSESHOT,
     TUNABLE,
     ESTIMATED,
-    FEEDING
+    FEEDING,
+    SOURCING
 
   }
 
@@ -92,7 +93,7 @@ public class Wrist extends SubsystemBase {
   public double getCalculatedPosition() {
     if(DriverStation.getAlliance().isPresent() ){
       if(Vision.getDistanceToSpeaker() > 2){
-        wristHeight = .8;
+        wristHeight = .25;
       }
       else{ wristHeight = 0.15;
       }
@@ -128,6 +129,8 @@ public class Wrist extends SubsystemBase {
     // ticksToDegrees(wristEncoder.getPosition()));
 
     // SmartDashboard.putNumber("Setpoint Wrist", getSetpoint());
+    SmartDashboard.putBoolean("Wrist At Setpoint", (Math.abs(getCalculatedPosition() - wristEncoder.getPosition()) < .3));
+
     // SmartDashboard.putNumber("Calculated Pos Wrist", getCalculatedPosition());
 
 
@@ -142,7 +145,7 @@ public class Wrist extends SubsystemBase {
         setWristPosition();
         break;
       case AMP:
-        setSetpointWrist(-20);
+        setSetpointWrist(55);
         setWristPosition();
         break;
       case ALIGN:
@@ -150,22 +153,25 @@ public class Wrist extends SubsystemBase {
         setWristPosition();
         break;
       case CLOSESHOT:
-        setSetpointWrist(ticksToDegrees(53));
+        setSetpointWrist(ticksToDegrees(52));
         setWristPosition();
         break;
       case TUNABLE:
-      if(RobotContainer.testPad.getL1Button()){
-       setpointWrist += .2;
-      }
-      if(RobotContainer.testPad.getR1Button()){
-        setpointWrist -= .2;
-      }
-      setWristPosition();
+      // if(RobotContainer.testPad.getL1Button()){
+      //  setpointWrist += .2;
+      // }
+      // if(RobotContainer.testPad.getR1Button()){
+      //   setpointWrist -= .2;
+      // }
+      // setWristPosition();
         break;
       case ESTIMATED:  
       setSetpointWrist(getCalculatedPosition());
       setWristPosition();;
         break;
+        case SOURCING:
+        setSetpointWrist(26);
+        setWristPosition();
     }
   }
 

@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 7.9994637767053325,
-        "y": 0.7838737899698015
+        "x": 8.084977281065674,
+        "y": 0.7553692885163543
       },
       "prevControl": {
-        "x": 6.9994637767053325,
-        "y": 0.7838737899698017
+        "x": 7.084977281065674,
+        "y": 0.7553692885163545
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "stash game",
+  "folder": "stash",
   "previewStartingState": {
     "rotation": 119.74488129694224,
     "velocity": 0

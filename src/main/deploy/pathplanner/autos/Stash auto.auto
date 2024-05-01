@@ -1,0 +1,91 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7308159060762569,
+      "y": 4.375440973104168
+    },
+    "rotation": 120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Shoot Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "stash 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Feed Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "stash 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Feed Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "stash3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actuate To And Feed Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "stash 4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

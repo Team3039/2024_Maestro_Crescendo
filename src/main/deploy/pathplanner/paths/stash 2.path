@@ -3,24 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.9994637767053325,
-        "y": 0.7838737899698015
+        "x": 8.084977281065674,
+        "y": 0.7553692885163543
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.970959275251885,
-        "y": 0.7696215392430785
+        "x": 8.056472779612227,
+        "y": 0.7411170377896313
       },
       "isLocked": false,
       "linkedName": "stash1"
     },
     {
       "anchor": {
-        "x": 7.842689018711372,
+        "x": 8.084977281065674,
         "y": 2.4371348742697485
       },
       "prevControl": {
-        "x": 5.548076651708859,
+        "x": 5.7903649140631615,
         "y": 1.6675133350266698
       },
       "nextControl": null,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "stash game",
+  "folder": "stash",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

@@ -7,38 +7,35 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter.ShooterState;
-import frc.robot.subsystems.Wrist.WristState;
 
-public class ShootAMP extends Command {
-  /** Creates a new SetShooterToAMP Mode **/
-  public ShootAMP() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter, RobotContainer.wrist);
-  }
+// Miles is a god
+
+public class ActuateShooterToCLIMB extends Command {
+  /** Creates a new ActuateElevatorIdle. */
+  public ActuateShooterToCLIMB() {
+    addRequirements(RobotContainer.shooter); 
+   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.wrist.setState(WristState.AMP);
+    RobotContainer.shooter.setState(ShooterState.CLIMBING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    RobotContainer.shooter.setState(ShooterState.AMP);
-    }
-  
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.setState(ShooterState.IDLE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
+
+// still a god 

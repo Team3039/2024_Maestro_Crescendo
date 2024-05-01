@@ -10,13 +10,19 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentricFacingAngle;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.auto.ActuateToAndFeedNote;
 import frc.robot.auto.ActuateToAndShootNoteAuto;
 import frc.robot.auto.ActuateToShootCalculatedAuto;
 import frc.robot.auto.ActuateToShootFastAuto;
@@ -29,21 +35,15 @@ import frc.robot.auto.StartIntakeAuto;
 import frc.robot.auto.StopIntakeAuto;
 import frc.robot.commands.ActuateIntake;
 import frc.robot.commands.ActuateRelease;
+import frc.robot.commands.ActuateShooterToCLIMB;
 import frc.robot.commands.ActuateToAndShootNote;
 import frc.robot.commands.FeedFromMiddle;
 import frc.robot.commands.IndexerToShoot;
 import frc.robot.commands.ShootAMP;
-import frc.robot.commands.ShootFromMidStage;
 import frc.robot.commands.SpinUpSubwoofer;
-import frc.robot.commands.ClimbRoutines.ActuateClimbToIdle;
-import frc.robot.commands.ClimbRoutines.ActuateToClimb;
 import frc.robot.commands.ClimbRoutines.SetClimbManualOverride;
-import frc.robot.commands.ShooterRoutines.ActuateShooterToCloseShot;
-import frc.robot.commands.ShooterRoutines.ActuateShooterToIdle;
-import frc.robot.commands.ShooterRoutines.SetShooterManualOverride;
 import frc.robot.commands.WristRoutines.ActuateWristToAlign;
 import frc.robot.commands.WristRoutines.ActuateWristToSetpoint;
-import frc.robot.commands.WristRoutines.ActuateWristToTunable;
 import frc.robot.commands.WristRoutines.SetWristManualOverride;
 import frc.robot.controllers.InterpolatedPS4Gamepad;
 import frc.robot.generated.TunerConstants;
@@ -74,28 +74,51 @@ public class RobotContainer {
   /*
    * InterpolatedPS4GamePad Treats Axis Inputs Exponentially Instead Of Linearly
    */
+  // public static final InterpolatedPS4Gamepad driverPad = new InterpolatedPS4Gamepad(3);
   public static final InterpolatedPS4Gamepad driverPad = new InterpolatedPS4Gamepad(0); // Pilot Joystick
   public static final InterpolatedPS4Gamepad operatorPad = new InterpolatedPS4Gamepad(1); // Co-Pilot Joystick
-  public static final InterpolatedPS4Gamepad testPad = new InterpolatedPS4Gamepad(2); // Testing Joystick
+  // public static final InterpolatedPS4Gamepad testPad = new InterpolatedPS4Gamepad(2); // Testing Joystick
+  // driver Xbox 
 
-  /* Driver Buttons */
-  private final JoystickButton driverX = new JoystickButton(driverPad, PS4Controller.Button.kCross.value);
-  private final JoystickButton driverSquare = new JoystickButton(driverPad, PS4Controller.Button.kSquare.value);
-  private final JoystickButton driverTriangle = new JoystickButton(driverPad, PS4Controller.Button.kTriangle.value);
-  private final JoystickButton driverCircle = new JoystickButton(driverPad, PS4Controller.Button.kCircle.value);
+//    private final JoystickButton xboxdriverX = new JoystickButton(driverPad, XboxController.Button.kCross.value);
+//    private final JoystickButton xboxdriverSquare = new JoystickButton(driverPad, XboxController.Button.kSquare.value);
+//    private final JoystickButton xobxdriverTriangle = new JoystickButton(driverPad, XboxController.Button.kTriangle.value);
+//    private final JoystickButton xboxdriverCircle = new JoystickButton(driverPad, XboxController.Button.kCircle.value);
+
+//   private final JoystickButton xboxdriverL1 = new JoystickButton(driverPad, XboxController.Button.kL1.value);
+//   private final JoystickButton xboxdriverR1 = new JoystickButton(driverPad, XboxController.Button.kL2.value);
+//   private final JoystickButton xboxdriverL2 = new JoystickButton(driverPad, XboxController.Button.kL2.value);
+//   private final JoystickButton xboxdriverR2 = new JoystickButton(driverPad, XboxController.Button.kR2.value);
+//   private final JoystickButton xboxdriverL3 = new JoystickButton(driverPad, XboxController.Button.kL3.value);
+//   private final JoystickButton xboxdriverR3 = new JoystickButton(driverPad, XboxController.Button.kR3.value);
+
+//  private final JoystickButton xboxdriverPadButton = new JoystickButton(driverPad, XboxController.Button.kTouchpad.value);
+//  private final JoystickButton xboxdriverStart = new JoystickButton(driverPad, XboxController.Button.kPS.value);
+
+//  private final JoystickButton xboxdriverShare = new JoystickButton(driverPad, XboxController.Button.kShare.value);
+//  private final JoystickButton xboxdriverOptions = new JoystickButton(driverPad, XboxController.Button.kOptions.value);
+
+
+
+
+  // Driver Ps4 
+   private final JoystickButton driverX = new JoystickButton(driverPad, PS4Controller.Button.kCross.value);
+   private final JoystickButton driverSquare = new JoystickButton(driverPad, PS4Controller.Button.kSquare.value);
+   private final JoystickButton driverTriangle = new JoystickButton(driverPad, PS4Controller.Button.kTriangle.value);
+   private final JoystickButton driverCircle = new JoystickButton(driverPad, PS4Controller.Button.kCircle.value);
 
   private final JoystickButton driverL1 = new JoystickButton(driverPad, PS4Controller.Button.kL1.value);
-  private final JoystickButton driverR1 = new JoystickButton(driverPad, PS4Controller.Button.kR1.value);
+  private final JoystickButton driverR1 = new JoystickButton(driverPad, PS4Controller.Button.kL2.value);
   private final JoystickButton driverL2 = new JoystickButton(driverPad, PS4Controller.Button.kL2.value);
   private final JoystickButton driverR2 = new JoystickButton(driverPad, PS4Controller.Button.kR2.value);
   private final JoystickButton driverL3 = new JoystickButton(driverPad, PS4Controller.Button.kL3.value);
   private final JoystickButton driverR3 = new JoystickButton(driverPad, PS4Controller.Button.kR3.value);
 
-  private final JoystickButton driverPadButton = new JoystickButton(driverPad, PS4Controller.Button.kTouchpad.value);
-  private final JoystickButton driverStart = new JoystickButton(driverPad, PS4Controller.Button.kPS.value);
+ private final JoystickButton driverPadButton = new JoystickButton(driverPad, PS4Controller.Button.kTouchpad.value);
+ private final JoystickButton driverStart = new JoystickButton(driverPad, PS4Controller.Button.kPS.value);
 
-  private final JoystickButton driverShare = new JoystickButton(driverPad, PS4Controller.Button.kShare.value);
-  private final JoystickButton driverOptions = new JoystickButton(driverPad, PS4Controller.Button.kOptions.value);
+ private final JoystickButton driverShare = new JoystickButton(driverPad, PS4Controller.Button.kShare.value);
+ private final JoystickButton driverOptions = new JoystickButton(driverPad, PS4Controller.Button.kOptions.value);
 
   /* Operator Buttons */
   private final JoystickButton operatorX = new JoystickButton(operatorPad, PS4Controller.Button.kCross.value);
@@ -117,24 +140,24 @@ public class RobotContainer {
   private final JoystickButton operatorShare = new JoystickButton(operatorPad, PS4Controller.Button.kShare.value);
   private final JoystickButton operatorOptions = new JoystickButton(operatorPad, PS4Controller.Button.kOptions.value);
 
-  /* Operator Buttons */
-  private final JoystickButton testX = new JoystickButton(testPad, PS4Controller.Button.kCross.value);
-  private final JoystickButton testSquare = new JoystickButton(testPad, PS4Controller.Button.kSquare.value);
-  private final JoystickButton testTriangle = new JoystickButton(testPad, PS4Controller.Button.kTriangle.value);
-  private final JoystickButton testCircle = new JoystickButton(testPad, PS4Controller.Button.kCircle.value);
+//   /* Operator Buttons */
+//   private final JoystickButton testX = new JoystickButton(testPad, PS4Controller.Button.kCross.value);
+//   private final JoystickButton testSquare = new JoystickButton(testPad, PS4Controller.Button.kSquare.value);
+//   private final JoystickButton testTriangle = new JoystickButton(testPad, PS4Controller.Button.kTriangle.value);
+//   private final JoystickButton testCircle = new JoystickButton(testPad, PS4Controller.Button.kCircle.value);
 
-  private final JoystickButton testL1 = new JoystickButton(testPad, PS4Controller.Button.kL1.value);
-  private final JoystickButton testR1 = new JoystickButton(testPad, PS4Controller.Button.kR1.value);
+//   private final JoystickButton testL1 = new JoystickButton(testPad, PS4Controller.Button.kL1.value);
+//   private final JoystickButton testR1 = new JoystickButton(testPad, PS4Controller.Button.kR1.value);
 
-  private final JoystickButton testL2 = new JoystickButton(testPad, PS4Controller.Button.kL2.value);
-  private final JoystickButton testR2 = new JoystickButton(testPad, PS4Controller.Button.kR2.value);
-  private final JoystickButton testR3 = new JoystickButton(testPad, PS4Controller.Button.kR3.value);
+  // private final JoystickButton testL2 = new JoystickButton(testPad, PS4Controller.Button.kL2.value);
+  // private final JoystickButton testR2 = new JoystickButton(testPad, PS4Controller.Button.kR2.value);
+//   private final JoystickButton testR3 = new JoystickButton(testPad, PS4Controller.Button.kR3.value);
 
-  private final JoystickButton testPadButton = new JoystickButton(testPad, PS4Controller.Button.kTouchpad.value);
-  private final JoystickButton testStart = new JoystickButton(testPad, PS4Controller.Button.kPS.value);
+//   private final JoystickButton testPadButton = new JoystickButton(testPad, PS4Controller.Button.kTouchpad.value);
+//   private final JoystickButton testStart = new JoystickButton(testPad, PS4Controller.Button.kPS.value);
 
-  private final JoystickButton testShare = new JoystickButton(testPad, PS4Controller.Button.kShare.value);
-  private final JoystickButton testOptions = new JoystickButton(testPad, PS4Controller.Button.kOptions.value);
+//   private final JoystickButton testShare = new JoystickButton(testPad, PS4Controller.Button.kShare.value);
+//   private final JoystickButton testOptions = new JoystickButton(testPad, PS4Controller.Button.kOptions.value);
 
   public static final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   public static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -149,7 +172,25 @@ public class RobotContainer {
   // public Command goToRedTrapCenter = drivetrain.getAutoPath("Red Trap Center");
 
 
+
   private void configureBindings() {
+      SmartDashboard.putData("Pathfind to Stage Shot", AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("Shoot Underneath Stage"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0
+  ));
+
+  SmartDashboard.putData("Pathfinding Test", AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("Test Pathfinding"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0
+  ));
 
     drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
@@ -160,27 +201,31 @@ public class RobotContainer {
             .withVelocityY(driverPad.interpolatedLeftXAxis() * Constants.Drive.MaxSpeed) // Drive left with negative X
                                                                                           // (left)
             .withRotationalRate(
-                // -driverPad.interpolatedRightXAxis() * MaxAngularRate
+                // -driverPad.interpolatedRightXAxis() * Constants.Drive.MaxAngularRate
                 Vision.getRotationToSpeaker()) // Drive counterclockwise with negative X (left)
-        )
+            )
     );
 
     // Pilot Bindings
-    driverOptions.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative())); // // reset the field-centric
+    driverOptions.whileTrue(drivetrain.run(() -> 
+    RobotContainer.drivetrain.seedFieldRelative(new Pose2d(13.03, 4.12, new Rotation2d()))
+
+    // drivetrain.seedFieldRelative()
+    )); // // reset the field-centric
                                                                                     // heading on options press
-    driverTriangle.onTrue(new ActuateToClimb());
-    driverX.onTrue(new ActuateClimbToIdle());
+  
 
     // Co-Pilot Bindings
 
-    operatorR1.whileTrue(new ActuateShooterToCloseShot());
-
+    operatorR1.whileTrue(new SpinUpSubwoofer());
+    operatorPadButton.onTrue(new ActuateShooterToCLIMB());
     operatorR2.whileTrue(new ActuateRelease());
     operatorL1.whileTrue(new IndexerToShoot());
     operatorL2.whileTrue(new ActuateIntake());
     operatorShare.whileTrue(new ShootAMP());
     operatorStart.toggleOnTrue(new SetClimbManualOverride());
     operatorTriangle.whileTrue(new FeedFromMiddle());
+
 
     operatorStart.toggleOnTrue(new SetWristManualOverride());
     operatorCircle.onTrue(new ActuateToAndShootNote());
@@ -189,16 +234,8 @@ public class RobotContainer {
 
 
     // Pad For Development and Testing With One Controller
-    // testStart.onTrue(new ActuateWristToTunable());
-    testSquare.whileTrue(new IndexerToShoot());
-    testCircle.whileTrue(new ActuateShooterToCloseShot());
-    // testL2.whileTrue(new ActuateIntake());
-    testX.whileTrue(new IndexerToShoot());
-    // testR2.whileTrue(new ShootFromMidStage());
-    testTriangle.whileTrue(new ActuateRelease());
-    testStart.toggleOnTrue(new SetClimbManualOverride());
-    testStart.toggleOnTrue(new SetWristManualOverride());
-    testStart.toggleOnTrue(new SetShooterManualOverride());
+    // testStart.onTrue(new Actuate
+    
 
   }
 
@@ -221,6 +258,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Actuate To Shoot Fast", new ActuateToShootFastAuto());
     NamedCommands.registerCommand("Rotate To Speaker", new RotateToSpeakerAuto());
     NamedCommands.registerCommand("Actuate To And Shoot Note", new ActuateToAndShootNoteAuto());
+        NamedCommands.registerCommand("0", new ActuateToAndFeedNote());
+
 
     configureBindings();
 

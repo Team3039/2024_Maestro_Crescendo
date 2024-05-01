@@ -4,11 +4,14 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.pathplanner.lib.pathfinding.LocalADStar;
+import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.pathfinding.RemoteADStar;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -37,7 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    // Pathfinding.setPathfinder(new LocalADStar());
+    Pathfinding.setPathfinder(new LocalADStar());
 
     robotContainer = new RobotContainer();
 
@@ -46,6 +49,7 @@ public class Robot extends TimedRobot {
     for (int module = 0; module < 3; module++) {
       RobotContainer.drivetrain.getModule(module).getDriveMotor().getConfigurator().apply(configs);
   }
+  RobotContainer.drivetrain.seedFieldRelative(new Pose2d(13.65, 5.55, new Rotation2d()));
    
   }
 
@@ -56,7 +60,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    SignalLogger.stop();
     RobotContainer.shooter.setState(ShooterState.IDLE);
     RobotContainer.indexer.setState(IndexerState.IDLE);
     RobotContainer.intake.setState(IntakeState.IDLE);
@@ -73,7 +76,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    SignalLogger.start();
     autoCommand = robotContainer.getAutonomousCommand();
         if (DriverStation.getAlliance().isPresent()){
           RobotContainer.drivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Red ? 0 : 180));

@@ -1,13 +1,13 @@
 package frc.robot.controllers;
 
-import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 
-public class InterpolatedPS4Gamepad extends PS4Controller {
+public class InterpolatedXboxGamepad extends XboxController {
 
     static double deadZoneThreshold;
     static double fullThrottleThreshold;
 
-    public InterpolatedPS4Gamepad(int port) {
+    public InterpolatedXboxGamepad(int port) {
         super(port);
 
         deadZoneThreshold = 0.05;
@@ -34,19 +34,12 @@ public class InterpolatedPS4Gamepad extends PS4Controller {
         return ((Math.sin(this.getLeftX())) * 1.2);
     }
 
-    // ps4 user 
     public double interpolatedRightXAxis() {
-        if (Math.abs(this.getRightX()) <= 0.03)
+        if (Math.abs(this.getLeftX()) <= 0.03)
             return 0.0;
-        return (Math.sin(this.getRightX()) * -1.0
+        return -(Math.sin(this.getLeftX()) * -1.0
         );
     }
-
-    
-    
-
-
-
 
     // public double getLeftX() {
     //     if (Math.abs(this.getLeftX()) <= 0.05) {
@@ -69,11 +62,11 @@ public class InterpolatedPS4Gamepad extends PS4Controller {
     //     return super.getLeftY();
     // }
 
-    public double interpolatedRightYAxis() {
-        if (Math.abs(this.getRightY()) <= 0.05) {
-            return 0.0;
-        }
-        return super.getRightY();
-    }
+    // public double getRightY() {
+    //     if (Math.abs(this.getRightY()) <= 0.05) {
+    //         return 0.0;
+    //     }
+    //     return super.getRightY();
+    // }
 
 }

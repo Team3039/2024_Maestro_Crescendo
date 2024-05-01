@@ -16,6 +16,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
@@ -56,8 +57,8 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
         }
 
         final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-                new PIDConstants(1.0, 0, 0), // Translation constants
-                new PIDConstants(1.0, 0, 0), // Rotation constants
+                new PIDConstants(3.0, 0, 0), // Translation constants
+                new PIDConstants(3.0, 0, 0), // Rotation constants
                 TunerConstants.kSpeedAt12VoltsMps,
                 driveBaseRadius, // Drive base radius (distance from center to furthest module)
                 new ReplanningConfig());
@@ -103,33 +104,58 @@ public class Drive extends SwerveDrivetrain implements Subsystem {
         super.setVisionMeasurementStdDevs(visionMeasurementStdDevs);
     }
 
-    // @SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
     public void periodic() {
-        // if (!RobotState.isAutonomous()){
-        // setVisionMeasurementStdDevs(VecBuilder.fill(
-        //         3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
-        //         3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
-        //         100));
-        //        if( RobotContainer.vision.shootingCamera.hasTargets()){
-        //         if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera) != null){
-        //             Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera);
-        //             double time = Timer.getFPGATimestamp();
+        if (!RobotState.isAutonomous()) {
+            RobotContainer.vision.leftCamera.getLatestResult();
+            setVisionMeasurementStdDevs(VecBuilder.fill(
+                    3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
+                    3 * Math.pow(Vision.getDistanceToSpeaker(), 1.6),
+                    100));
+            if (RobotContainer.vision.leftCamera.getLatestResult().hasTargets()) {
+                // // System.out.println("has targets");
+                if(Vision.getMultiTagResult(RobotContainer.vision.leftCamera)!=null ){
+                    Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.leftCamera);
+                    double time = Timer.getFPGATimestamp();
 
-        //             if (pose != null && RobotContainer.vision.shootingCamera.getLatestResult().getBestTarget().getPoseAmbiguity() < .3){
-        //             Pose2d usablePose = new Pose2d(pose.toTranslation2d(), RobotContainer.drivetrain.getState().Pose.getRotation());
-        //             addVisionMeasurement(usablePose, time);
-        //             }
-        //         }
-        //         }
-        //     }
+                    if(pose !=null){
+                    Pose2d usablePose = new Pose2d(pose.toTranslation2d(), RobotContainer.drivetrain.getState().Pose.getRotation());
+                    addVisionMeasurement(usablePose, time);
+                }
 
-                // if(Vision.getMultiTagResult(RobotContainer.vision.shootingCamera2) != null){
-                //     Translation3d pose = Vision.getMultiTagResult(RobotContainer.vision.shootingCamera2);
-                //     double time = Timer.getFPGATimestamp();
-                //     if (pose != null && RobotContainer.vision.shootingCamera2.getLatestResult().getBestTarget().getPoseAmbiguity() < .3){
-                //     Pose2d usablePose = new Pose2d(pose.toTranslation2d(), RobotContainer.drivetrain.getState().Pose.getRotation());
-                //     addVisionMeasurement(usablePose, time);
-                //     }
-                // }
+
+                // if (!RobotContainer.vision.leftCamPoseEstimator.update().isEmpty()) {
+                //     System.out.println(RobotContainer.vision.leftCamPoseEstimator.update());
+                    // Pose3d pose = RobotContainer.vision.leftCamPoseEstimator.update().get().estimatedPose;
+                    // double time = RobotContainer.vision.leftCamPoseEstimator.update().get().timestampSeconds;
+
+                    // if (pose != null) {
+                    //     System.out.println("has pose");
+                    //     System.out.println(pose);
+
+                    //     Pose2d usablePose = pose.toPose2d();
+                    //     addVisionMeasurement(usablePose, time);
+                    // }
+                }
+            }
+
+            // if( RobotContainer.vision.shootingCamera2.hasTargets()){
+            // if(!RobotContainer.vision.rightCamPoseEstimator.update().isEmpty()){
+            // Pose3d pose =
+            // RobotContainer.vision.rightCamPoseEstimator.update().get().estimatedPose;
+            // double time =
+            // RobotContainer.vision.rightCamPoseEstimator.update().get().timestampSeconds;
+
+            // if (pose != null &&
+            // RobotContainer.vision.shootingCamera2.getLatestResult().getBestTarget().getPoseAmbiguity()
+            // < .3){
+            // Pose2d usablePose = pose.toPose2d();
+            // addVisionMeasurement(usablePose, time);
+            // }
+            // }
+            // }
+
+        }
+
     };
 }

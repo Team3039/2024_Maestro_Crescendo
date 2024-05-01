@@ -23,12 +23,13 @@ addRequirements(RobotContainer.wrist, RobotContainer.shooter, RobotContainer.vis
   public void initialize() {
     RobotContainer.wrist.setState(WristState.ESTIMATED);
     RobotContainer.shooter.setState(ShooterState.CLOSESHOT);
+    RobotContainer.vision.setState(VisionState.ROTATING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if (RobotContainer.wrist.isAtSetpoint(.2) && RobotContainer.vision.isAtRotationSetpoint() && RobotContainer.shooter.isAtVelocitySetpoint()){
+   if (RobotContainer.wrist.isAtSetpoint(.1) && RobotContainer.vision.isAtRotationSetpoint() && RobotContainer.shooter.isAtVelocitySetpoint()){
     RobotContainer.indexer.setState(IndexerState.SHOOTING);
    }
   }
@@ -37,11 +38,14 @@ addRequirements(RobotContainer.wrist, RobotContainer.shooter, RobotContainer.vis
   @Override
   public void end(boolean interrupted) {
     RobotContainer.shooter.setState(ShooterState.IDLE);
+    RobotContainer.vision.setState(VisionState.DRIVING);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-return false;
+return RobotContainer.wrist.isAtSetpoint(.1) && RobotContainer.shooter.isAtVelocitySetpoint();
+
+
   }
 }

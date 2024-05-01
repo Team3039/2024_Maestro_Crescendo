@@ -14,25 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Spin Up Close"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.8
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Indexer Start Shoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.4
+            "name": "Actuate To And Shoot Note"
           }
         },
         {

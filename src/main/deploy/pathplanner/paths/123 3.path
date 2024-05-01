@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.084977281065674,
-        "y": 2.4371348742697485
+        "x": 8.328894372074458,
+        "y": 3.3423563989985126
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.873535969294162,
-        "y": 2.351621369909406
+        "x": 9.328894372074458,
+        "y": 3.3423563989985126
       },
       "isLocked": false,
-      "linkedName": "stash2"
+      "linkedName": "123 1"
     },
     {
       "anchor": {
-        "x": 7.913950272344991,
-        "y": 4.090395958569695
+        "x": 8.328894372074458,
+        "y": 4.881599477484669
       },
       "prevControl": {
-        "x": 6.913950272344991,
-        "y": 4.090395958569695
+        "x": 7.610580935447585,
+        "y": 4.749664356471571
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "stash3"
+      "linkedName": "123 2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": 46.31598159345459,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -39,13 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -94.28915332881898,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "stash",
+  "folder": "New Folder",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
