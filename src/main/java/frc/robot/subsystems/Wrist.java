@@ -92,11 +92,8 @@ public class Wrist extends SubsystemBase {
   
   public double getCalculatedPosition() {
     if(DriverStation.getAlliance().isPresent() ){
-      if(Vision.getDistanceToSpeaker() > 2){
-        wristHeight = .25;
-      }
-      else{ wristHeight = 0.15;
-      }
+     wristHeight = 0.55;
+      
       return degreesToTicks(Math.toDegrees(Math.atan((Vision.SpeakerCenterBlue.getZ() - wristHeight) / Vision.getDistanceToSpeaker()))); 
     }
     return 0;
