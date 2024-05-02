@@ -182,9 +182,44 @@ public class RobotContainer {
     ), 
     1.0
   ));
+   SmartDashboard.putData("pathfinding mid side", AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("pathfinding mid side"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0
+  ));
 
-  SmartDashboard.putData("Pathfinding Test", AutoBuilder.pathfindThenFollowPath(
-    PathPlannerPath.fromPathFile("Test Pathfinding"), 
+  SmartDashboard.putData("pathfind source side", AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("pathfind source side"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0
+  ));
+    
+   Command pathfindToAmp = AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("Amp Pathfinding"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0
+  );
+
+    SmartDashboard.putData("pathfind amp side stage", AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("pathfind amp side stage"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0
+  ));
+
+  SmartDashboard.putData("Amp Pathfinding", AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("Amp Pathfinding"), 
     new PathConstraints(
       4.0, 4.0, 
       Units.degreesToRadians(360), Units.degreesToRadians(540)
@@ -209,9 +244,49 @@ public class RobotContainer {
     // Pilot Bindings
     driverOptions.whileTrue(drivetrain.run(() -> 
     RobotContainer.drivetrain.seedFieldRelative(new Pose2d(13.03, 4.12, new Rotation2d()))
+    ));
+    while (RobotContainer.driverPad.getShareButton()) { 
+      AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("Amp Pathfinding"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0);
+    }
+ while (RobotContainer.driverPad.getTriangleButton()) { 
+      AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("pathfinding mid side"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0);
+    }
+
+     while (RobotContainer.driverPad.getCircleButton()) { 
+      AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("pathfind source side"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0);
+    }
+ while (RobotContainer.driverPad.getSquareButton()) { 
+      AutoBuilder.pathfindThenFollowPath(
+    PathPlannerPath.fromPathFile("pathfind amp side stage"), 
+    new PathConstraints(
+      4.0, 4.0, 
+      Units.degreesToRadians(360), Units.degreesToRadians(540)
+    ), 
+    1.0);
+    }
+
+
 
     // drivetrain.seedFieldRelative()
-    )); // // reset the field-centric
+     // // reset the field-centric
                                                                                     // heading on options press
   
 

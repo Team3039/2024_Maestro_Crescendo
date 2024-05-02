@@ -174,11 +174,11 @@ public class Shooter extends SubsystemBase {
 				break;
 			case CLOSESHOT:
 				  if(DriverStation.getAlliance().isPresent() && Vision.getDistanceToSpeaker() < 2.2){
-					targetVelocity = 65;
+					targetVelocity = 75;
 					setShooterVelocity(150);
 						}
 				  else{
-				targetVelocity = 70;
+				targetVelocity = 80;
 				setShooterVelocity(150);	
 			}
 				setSetpointAmp(0);
