@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.6,
-        "y": 7.05
+        "x": 2.65,
+        "y": 6.912341602460982
       },
       "prevControl": {
-        "x": 2.3326305166754002,
-        "y": 7.204365843170549
+        "x": 1.7806127056698557,
+        "y": 6.670053340106681
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -164.74488129694225,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4p Center Primitive",
+  "folder": null,
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6,
-        "y": 7.05
+        "x": 2.65,
+        "y": 6.91
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8638584360002945,
-        "y": 6.8976612609472765
+        "x": 1.564689696044782,
+        "y": 6.729584850276401
       },
       "isLocked": false,
       "linkedName": null
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4p Center Primitive",
+  "folder": null,
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

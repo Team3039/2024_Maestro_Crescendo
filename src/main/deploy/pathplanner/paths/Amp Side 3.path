@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0.1,
-    "rotation": -172.1466866980217,
+    "rotation": -170.03939740706699,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp Side",
+  "folder": null,
   "previewStartingState": {
     "rotation": -170.0,
     "velocity": 2.0

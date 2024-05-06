@@ -18,15 +18,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Amp Side 1"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              },
               {
                 "type": "path",
                 "data": {
@@ -34,31 +34,18 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Start Intake"
-                      }
-                    }
-                  ]
+                  "name": "Actuate To And Shoot Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Start Intake"
           }
         },
         {
@@ -74,6 +61,31 @@
           }
         },
         {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Actuate To And Shoot Note"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Amp Side 4"
@@ -83,6 +95,25 @@
           "type": "path",
           "data": {
             "pathName": "Amp Side 5"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Actuate To And Shoot Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Intake"
+                }
+              }
+            ]
           }
         },
         {
