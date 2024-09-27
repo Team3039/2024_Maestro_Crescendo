@@ -40,7 +40,7 @@ public class Vision extends SubsystemBase {
     double setpointWrist;
     double setpointShooter;
     static double distance = 0;
-    public static double speakerHeight = 2.02; // tune this value
+    public static double speakerHeight = 2.04; // tune this value
     static double targetYaw;
     public static double yawOffset = -1 * Units.degreesToRadians(11);
 
@@ -58,7 +58,7 @@ public class Vision extends SubsystemBase {
     new Transform3d(new Translation3d(Units.inchesToMeters(4), Units.inchesToMeters(12), Units.inchesToMeters(18)), 
     new Rotation3d(Units.degreesToRadians(180), Units.degreesToRadians(-10), Units.degreesToRadians(-30)));
 
-    // public static final Transform3d shootRightCameraToRobot = 
+  //  public static final Transform3d shootRightCameraToRobot = 
     // new Transform3d(new Translation3d(Units.inchesToMeters(4), Units.inchesToMeters(-12), Units.inchesToMeters(18)),
     // new Rotation3d(Units.degreesToRadians(0),Units.degreesToRadians(-10),Units.degreesToRadians(30)));
 
