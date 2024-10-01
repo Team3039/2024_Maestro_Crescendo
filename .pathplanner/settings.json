@@ -3,8 +3,9 @@
   "robotLength": 0.8763,
   "holonomicMode": true,
   "pathFolders": [
-    "stash",
-    "New Folder"
+    "New Folder",
+    "source side ",
+    "stash"
   ],
   "autoFolders": [],
   "defaultMaxVel": 4.9,

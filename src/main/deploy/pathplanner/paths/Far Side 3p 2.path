@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 1.1298789264245197,
-        "y": 4.418197725284339
+        "x": 1.043143800573316,
+        "y": 4.133967125077108
       },
       "prevControl": {
-        "x": 1.3497707947796846,
-        "y": 4.2129653148195185
+        "x": 1.263035668928481,
+        "y": 3.928734714612287
       },
       "nextControl": null,
       "isLocked": false,
@@ -59,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "stash",
   "previewStartingState": {
     "rotation": -179.49534766658994,
     "velocity": 0

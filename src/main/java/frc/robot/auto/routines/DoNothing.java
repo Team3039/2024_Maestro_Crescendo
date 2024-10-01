@@ -11,7 +11,7 @@ public class DoNothing extends SequentialCommandGroup {
 
   public DoNothing() {
     addCommands(
-      new InstantCommand(() -> System.out.println("Do nothing poggers"))
+      new InstantCommand(() -> System.out.println("Do nothing you dick face"))
     );
   }
 }

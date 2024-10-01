@@ -287,7 +287,7 @@ public class RobotContainer {
 
     // drivetrain.seedFieldRelative()
      // // reset the field-centric
-                                                                                    // heading on options press
+    // heading on options press
   
 
     // Co-Pilot Bindings

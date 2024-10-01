@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "stash",
   "previewStartingState": {
     "rotation": 120.0,
     "velocity": 0
